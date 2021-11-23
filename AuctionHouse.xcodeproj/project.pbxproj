@@ -14,6 +14,26 @@
 		5A9A836B274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8369274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld */; };
 		5A9A836D274BD8E500F80CB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A9A836C274BD8E500F80CB9 /* Assets.xcassets */; };
 		5A9A8370274BD8E500F80CB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9A836E274BD8E500F80CB9 /* LaunchScreen.storyboard */; };
+		5AC3BBD2274CFF0700166B0A /* DropDownCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBD1274CFF0700166B0A /* DropDownCustomView.swift */; };
+		5AC3BBD4274CFF0F00166B0A /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBD3274CFF0F00166B0A /* ImagePickerManager.swift */; };
+		5AC3BBD6274CFF1800166B0A /* ImageSwiperCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBD5274CFF1800166B0A /* ImageSwiperCustomView.swift */; };
+		5AC3BBD8274CFF1E00166B0A /* PriceDetailsCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBD7274CFF1E00166B0A /* PriceDetailsCustomView.swift */; };
+		5AC3BBDA274CFF2500166B0A /* VideoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBD9274CFF2500166B0A /* VideoManager.swift */; };
+		5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBDB274CFF2D00166B0A /* VideoPlayerCustomView.swift */; };
+		5AC3BBDF274D001D00166B0A /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBDE274D001D00166B0A /* DashboardViewController.swift */; };
+		5AC3BBE2274D005900166B0A /* PriceDetailsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBE1274D005900166B0A /* PriceDetailsCell.swift */; };
+		5AC3BBE4274D005F00166B0A /* PriceDetailsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3BBE3274D005F00166B0A /* PriceDetailsCell.xib */; };
+		5AC3BBE6274D006500166B0A /* SellDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBE5274D006500166B0A /* SellDetailsViewController.swift */; };
+		5AC3BBE8274D008100166B0A /* SellDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBE7274D008100166B0A /* SellDetailsViewModel.swift */; };
+		5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBE9274D008700166B0A /* TextViewCell.swift */; };
+		5AC3BBEC274D008C00166B0A /* TextViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3BBEB274D008C00166B0A /* TextViewCell.xib */; };
+		5AC3BBEF274D00CB00166B0A /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3BBEE274D00CB00166B0A /* ContactCell.xib */; };
+		5AC3BBF1274D00D300166B0A /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF0274D00D300166B0A /* ContactCell.swift */; };
+		5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF2274D00D900166B0A /* ContactListViewController.swift */; };
+		5AC3BBF6274D010D00166B0A /* ChatMesengerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF5274D010D00166B0A /* ChatMesengerViewController.swift */; };
+		5AC3BBF9274D014500166B0A /* AuctionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */; };
+		5AC3BBFB274D014C00166B0A /* AuctionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */; };
+		5AC3BBFD274D015600166B0A /* AuctionListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3BBFC274D015600166B0A /* AuctionListCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +46,26 @@
 		5A9A836C274BD8E500F80CB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A9A836F274BD8E500F80CB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5A9A8371274BD8E500F80CB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5AC3BBD1274CFF0700166B0A /* DropDownCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropDownCustomView.swift; sourceTree = "<group>"; };
+		5AC3BBD3274CFF0F00166B0A /* ImagePickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
+		5AC3BBD5274CFF1800166B0A /* ImageSwiperCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSwiperCustomView.swift; sourceTree = "<group>"; };
+		5AC3BBD7274CFF1E00166B0A /* PriceDetailsCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceDetailsCustomView.swift; sourceTree = "<group>"; };
+		5AC3BBD9274CFF2500166B0A /* VideoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoManager.swift; sourceTree = "<group>"; };
+		5AC3BBDB274CFF2D00166B0A /* VideoPlayerCustomView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoPlayerCustomView.swift; sourceTree = "<group>"; };
+		5AC3BBDE274D001D00166B0A /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
+		5AC3BBE1274D005900166B0A /* PriceDetailsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PriceDetailsCell.swift; sourceTree = "<group>"; };
+		5AC3BBE3274D005F00166B0A /* PriceDetailsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PriceDetailsCell.xib; sourceTree = "<group>"; };
+		5AC3BBE5274D006500166B0A /* SellDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellDetailsViewController.swift; sourceTree = "<group>"; };
+		5AC3BBE7274D008100166B0A /* SellDetailsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellDetailsViewModel.swift; sourceTree = "<group>"; };
+		5AC3BBE9274D008700166B0A /* TextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
+		5AC3BBEB274D008C00166B0A /* TextViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextViewCell.xib; sourceTree = "<group>"; };
+		5AC3BBEE274D00CB00166B0A /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
+		5AC3BBF0274D00D300166B0A /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
+		5AC3BBF2274D00D900166B0A /* ContactListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListViewController.swift; sourceTree = "<group>"; };
+		5AC3BBF5274D010D00166B0A /* ChatMesengerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMesengerViewController.swift; sourceTree = "<group>"; };
+		5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionListViewController.swift; sourceTree = "<group>"; };
+		5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionListCell.swift; sourceTree = "<group>"; };
+		5AC3BBFC274D015600166B0A /* AuctionListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuctionListCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +82,12 @@
 		5A9A8354274BD8E400F80CB9 = {
 			isa = PBXGroup;
 			children = (
+				5AC3BBF7274D012B00166B0A /* AuctionList */,
+				5AC3BBF4274D00EF00166B0A /* ChatMessenger */,
+				5AC3BBED274D00BB00166B0A /* Contact */,
+				5AC3BBE0274D004300166B0A /* SellDetails */,
+				5AC3BBDD274D000800166B0A /* Dashboard */,
+				5AC3BBD0274CFEE400166B0A /* CustomViews */,
 				5A9A835F274BD8E400F80CB9 /* AuctionHouse */,
 				5A9A835E274BD8E400F80CB9 /* Products */,
 			);
@@ -68,6 +114,68 @@
 				5A9A8369274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld */,
 			);
 			path = AuctionHouse;
+			sourceTree = "<group>";
+		};
+		5AC3BBD0274CFEE400166B0A /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				5AC3BBDB274CFF2D00166B0A /* VideoPlayerCustomView.swift */,
+				5AC3BBD9274CFF2500166B0A /* VideoManager.swift */,
+				5AC3BBD7274CFF1E00166B0A /* PriceDetailsCustomView.swift */,
+				5AC3BBD5274CFF1800166B0A /* ImageSwiperCustomView.swift */,
+				5AC3BBD3274CFF0F00166B0A /* ImagePickerManager.swift */,
+				5AC3BBD1274CFF0700166B0A /* DropDownCustomView.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		5AC3BBDD274D000800166B0A /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				5AC3BBDE274D001D00166B0A /* DashboardViewController.swift */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		5AC3BBE0274D004300166B0A /* SellDetails */ = {
+			isa = PBXGroup;
+			children = (
+				5AC3BBEB274D008C00166B0A /* TextViewCell.xib */,
+				5AC3BBE3274D005F00166B0A /* PriceDetailsCell.xib */,
+				5AC3BBE9274D008700166B0A /* TextViewCell.swift */,
+				5AC3BBE1274D005900166B0A /* PriceDetailsCell.swift */,
+				5AC3BBE7274D008100166B0A /* SellDetailsViewModel.swift */,
+				5AC3BBE5274D006500166B0A /* SellDetailsViewController.swift */,
+			);
+			path = SellDetails;
+			sourceTree = "<group>";
+		};
+		5AC3BBED274D00BB00166B0A /* Contact */ = {
+			isa = PBXGroup;
+			children = (
+				5AC3BBEE274D00CB00166B0A /* ContactCell.xib */,
+				5AC3BBF0274D00D300166B0A /* ContactCell.swift */,
+				5AC3BBF2274D00D900166B0A /* ContactListViewController.swift */,
+			);
+			path = Contact;
+			sourceTree = "<group>";
+		};
+		5AC3BBF4274D00EF00166B0A /* ChatMessenger */ = {
+			isa = PBXGroup;
+			children = (
+				5AC3BBF5274D010D00166B0A /* ChatMesengerViewController.swift */,
+			);
+			path = ChatMessenger;
+			sourceTree = "<group>";
+		};
+		5AC3BBF7274D012B00166B0A /* AuctionList */ = {
+			isa = PBXGroup;
+			children = (
+				5AC3BBFC274D015600166B0A /* AuctionListCell.xib */,
+				5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */,
+				5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */,
+			);
+			path = AuctionList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,8 +236,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AC3BBEF274D00CB00166B0A /* ContactCell.xib in Resources */,
 				5A9A8370274BD8E500F80CB9 /* LaunchScreen.storyboard in Resources */,
+				5AC3BBEC274D008C00166B0A /* TextViewCell.xib in Resources */,
+				5AC3BBFD274D015600166B0A /* AuctionListCell.xib in Resources */,
 				5A9A836D274BD8E500F80CB9 /* Assets.xcassets in Resources */,
+				5AC3BBE4274D005F00166B0A /* PriceDetailsCell.xib in Resources */,
 				5A9A8368274BD8E400F80CB9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -142,9 +254,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A9A836B274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld in Sources */,
+				5AC3BBE6274D006500166B0A /* SellDetailsViewController.swift in Sources */,
+				5AC3BBD6274CFF1800166B0A /* ImageSwiperCustomView.swift in Sources */,
+				5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */,
+				5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */,
+				5AC3BBDA274CFF2500166B0A /* VideoManager.swift in Sources */,
+				5AC3BBF9274D014500166B0A /* AuctionListViewController.swift in Sources */,
 				5A9A8365274BD8E400F80CB9 /* ViewController.swift in Sources */,
 				5A9A8361274BD8E400F80CB9 /* AppDelegate.swift in Sources */,
+				5AC3BBE2274D005900166B0A /* PriceDetailsCell.swift in Sources */,
+				5AC3BBF1274D00D300166B0A /* ContactCell.swift in Sources */,
+				5AC3BBD2274CFF0700166B0A /* DropDownCustomView.swift in Sources */,
 				5A9A8363274BD8E400F80CB9 /* SceneDelegate.swift in Sources */,
+				5AC3BBDF274D001D00166B0A /* DashboardViewController.swift in Sources */,
+				5AC3BBD8274CFF1E00166B0A /* PriceDetailsCustomView.swift in Sources */,
+				5AC3BBF6274D010D00166B0A /* ChatMesengerViewController.swift in Sources */,
+				5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */,
+				5AC3BBD4274CFF0F00166B0A /* ImagePickerManager.swift in Sources */,
+				5AC3BBE8274D008100166B0A /* SellDetailsViewModel.swift in Sources */,
+				5AC3BBFB274D014C00166B0A /* AuctionListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
