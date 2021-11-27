@@ -104,7 +104,7 @@ class SellDetailsViewController: UIViewController {
     
     @objc private func videoSelectionAction(_ notification: NSNotification) {
         if let videoUrl = notification.userInfo?[Notification.Name.videoUrlNotifi] as? URL {
-            viewModel.videoList.append(videoUrl)
+            viewModel.videoList = [videoUrl]
 //            let data = try? Data(contentsOf: videoUrl)
 //            print(data?.count)
 //            UserDefaults.standard.set(data, forKey: "testVideoSave")
@@ -122,6 +122,8 @@ class SellDetailsViewController: UIViewController {
     
     @objc private func postButtonAction(sender: UIButton) {
         print("post button tapped.")
+        guard editOption == false else { return }
+        viewModel.saveDataToStore()
     }
     
     private func collectEditedInfo() {
