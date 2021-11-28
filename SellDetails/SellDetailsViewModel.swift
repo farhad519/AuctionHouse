@@ -69,7 +69,7 @@ final class SellDetailsViewModel {
         }
     }
     
-    func saveDataToStore() {
+    func saveDataToStore(completion: () -> Void) {
         guard let context = context else { return }
         let auctionSellItem = AuctionSellItem(context: context)
         auctionSellItem.title = editedValue.title
@@ -81,8 +81,10 @@ final class SellDetailsViewModel {
         auctionSellItem.video = coreDataObjectFromVideo()
         do {
             try context.save()
+            completion()
         } catch {
             print("could not save to store. \(error)")
+            completion()
         }
     }
     

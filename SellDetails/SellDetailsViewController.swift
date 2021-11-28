@@ -123,7 +123,12 @@ class SellDetailsViewController: UIViewController {
     @objc private func postButtonAction(sender: UIButton) {
         print("post button tapped.")
         guard editOption == false else { return }
-        viewModel.saveDataToStore()
+        GlobalUITask.showSpinner(viewController: self)
+        viewModel.saveDataToStore() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                GlobalUITask.removeSpinner(viewController: self)
+            }
+        }
     }
     
     private func collectEditedInfo() {
