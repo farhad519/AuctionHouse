@@ -7,11 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */; };
+		5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */; };
+		5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */; };
+		5A5343F9274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */; };
 		5A9A8361274BD8E400F80CB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8360274BD8E400F80CB9 /* AppDelegate.swift */; };
 		5A9A8363274BD8E400F80CB9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8362274BD8E400F80CB9 /* SceneDelegate.swift */; };
 		5A9A8365274BD8E400F80CB9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8364274BD8E400F80CB9 /* ViewController.swift */; };
 		5A9A8368274BD8E400F80CB9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9A8366274BD8E400F80CB9 /* Main.storyboard */; };
-		5A9A836B274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8369274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld */; };
 		5A9A836D274BD8E500F80CB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A9A836C274BD8E500F80CB9 /* Assets.xcassets */; };
 		5A9A8370274BD8E500F80CB9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A9A836E274BD8E500F80CB9 /* LaunchScreen.storyboard */; };
 		5AC3BBD2274CFF0700166B0A /* DropDownCustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBD1274CFF0700166B0A /* DropDownCustomView.swift */; };
@@ -37,12 +40,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataClass.swift"; sourceTree = "<group>"; };
+		5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionListViewModel.swift; sourceTree = "<group>"; };
+		5A5343F8274D6B2D00912DC1 /* AuctionHouse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AuctionHouse.xcdatamodel; sourceTree = "<group>"; };
 		5A9A835D274BD8E400F80CB9 /* AuctionHouse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuctionHouse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9A8360274BD8E400F80CB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5A9A8362274BD8E400F80CB9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		5A9A8364274BD8E400F80CB9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		5A9A8367274BD8E400F80CB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		5A9A836A274BD8E400F80CB9 /* AuctionHouse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AuctionHouse.xcdatamodel; sourceTree = "<group>"; };
 		5A9A836C274BD8E500F80CB9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A9A836F274BD8E500F80CB9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5A9A8371274BD8E500F80CB9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -79,9 +85,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A181FD3274E325B00E9D874 /* CoreDataClass */ = {
+			isa = PBXGroup;
+			children = (
+				5A181FD4274E327600E9D874 /* AuctionSellItem */,
+			);
+			path = CoreDataClass;
+			sourceTree = "<group>";
+		};
+		5A181FD4274E327600E9D874 /* AuctionSellItem */ = {
+			isa = PBXGroup;
+			children = (
+				5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */,
+				5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */,
+			);
+			path = AuctionSellItem;
+			sourceTree = "<group>";
+		};
+		5A5343F5274D6AF900912DC1 /* Backend */ = {
+			isa = PBXGroup;
+			children = (
+				5A181FD3274E325B00E9D874 /* CoreDataClass */,
+				5A5343F6274D6B0300912DC1 /* CoreDataModel */,
+			);
+			path = Backend;
+			sourceTree = "<group>";
+		};
+		5A5343F6274D6B0300912DC1 /* CoreDataModel */ = {
+			isa = PBXGroup;
+			children = (
+				5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */,
+			);
+			path = CoreDataModel;
+			sourceTree = "<group>";
+		};
 		5A9A8354274BD8E400F80CB9 = {
 			isa = PBXGroup;
 			children = (
+				5A5343F5274D6AF900912DC1 /* Backend */,
 				5AC3BBF7274D012B00166B0A /* AuctionList */,
 				5AC3BBF4274D00EF00166B0A /* ChatMessenger */,
 				5AC3BBED274D00BB00166B0A /* Contact */,
@@ -111,7 +152,6 @@
 				5A9A836C274BD8E500F80CB9 /* Assets.xcassets */,
 				5A9A836E274BD8E500F80CB9 /* LaunchScreen.storyboard */,
 				5A9A8371274BD8E500F80CB9 /* Info.plist */,
-				5A9A8369274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld */,
 			);
 			path = AuctionHouse;
 			sourceTree = "<group>";
@@ -174,6 +214,7 @@
 				5AC3BBFC274D015600166B0A /* AuctionListCell.xib */,
 				5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */,
 				5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */,
+				5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */,
 			);
 			path = AuctionList;
 			sourceTree = "<group>";
@@ -253,12 +294,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A9A836B274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld in Sources */,
 				5AC3BBE6274D006500166B0A /* SellDetailsViewController.swift in Sources */,
 				5AC3BBD6274CFF1800166B0A /* ImageSwiperCustomView.swift in Sources */,
+				5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */,
 				5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */,
+				5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */,
 				5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */,
 				5AC3BBDA274CFF2500166B0A /* VideoManager.swift in Sources */,
+				5A5343F9274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld in Sources */,
 				5AC3BBF9274D014500166B0A /* AuctionListViewController.swift in Sources */,
 				5A9A8365274BD8E400F80CB9 /* ViewController.swift in Sources */,
 				5A9A8361274BD8E400F80CB9 /* AppDelegate.swift in Sources */,
@@ -272,6 +315,7 @@
 				5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */,
 				5AC3BBD4274CFF0F00166B0A /* ImagePickerManager.swift in Sources */,
 				5AC3BBE8274D008100166B0A /* SellDetailsViewModel.swift in Sources */,
+				5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */,
 				5AC3BBFB274D014C00166B0A /* AuctionListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,12 +538,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		5A9A8369274BD8E400F80CB9 /* AuctionHouse.xcdatamodeld */ = {
+		5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
-				5A9A836A274BD8E400F80CB9 /* AuctionHouse.xcdatamodel */,
+				5A5343F8274D6B2D00912DC1 /* AuctionHouse.xcdatamodel */,
 			);
-			currentVersion = 5A9A836A274BD8E400F80CB9 /* AuctionHouse.xcdatamodel */;
+			currentVersion = 5A5343F8274D6B2D00912DC1 /* AuctionHouse.xcdatamodel */;
 			path = AuctionHouse.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

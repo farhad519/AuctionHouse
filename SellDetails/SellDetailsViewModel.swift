@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 enum SellDetailsEditedEnum {
     case title
@@ -28,6 +29,10 @@ final class SellDetailsViewModel {
     var editedValue: SellDetailsEditedValue
     var imageList: [UIImage] = []
     var videoList: [URL] = []
+    
+    private var context: NSManagedObjectContext? {
+        (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
+    }
     
     init() {
         editedValue = SellDetailsEditedValue(
@@ -63,4 +68,60 @@ final class SellDetailsViewModel {
             return isEmpty(string: editedValue.description) ? "" : editedValue.description
         }
     }
+    
+    func saveDataToStore() {
+        guard let context = context else { return }
+        let auctionSellItem = AuctionSellItem(context: context)
+        auctionSellItem.title = editedValue.title
+        auctionSellItem.type = editedValue.type
+        auctionSellItem.price = Double(editedValue.price) ?? 0.0
+        auctionSellItem.negotiable = (editedValue.negotiable.lowercased() == "yes") ? true : false
+        auctionSellItem.sellDescription = editedValue.description
+        auctionSellItem.image = coreDataObjectFromImages()
+        auctionSellItem.video = coreDataObjectFromVideo()
+        do {
+            try context.save()
+        } catch {
+            print("could not save to store. \(error)")
+        }
+    }
+    
+    private func coreDataObjectFromVideo() -> Data? {
+        guard let url = videoList.first else { return nil }
+        do {
+            let data = try Data(contentsOf: url)
+            return data
+        } catch {
+            print("error caught \(error)")
+            return nil
+        }
+    }
+    
+    private func coreDataObjectFromImages() -> Data? {
+        let dataArray = NSMutableArray()
+        
+        for image in imageList {
+            if let data = image.pngData() {
+                dataArray.add(data)
+            }
+        }
+        
+        return try? NSKeyedArchiver.archivedData(withRootObject: dataArray, requiringSecureCoding: true)
+    }
+
+//    private func imagesFromCoreData(object: Data?) -> [UIImage]? {
+//        guard let object = object else { return nil }
+//        
+//        var retrievedImages = [UIImage]()
+//        
+//        if let dataArray = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: object) {
+//            for data in dataArray {
+//                if let data = data as? Data, let image = UIImage(data: data) {
+//                    retrievedImages.append(image)
+//                }
+//            }
+//        }
+//        
+//        return retrievedImages
+//    }
 }

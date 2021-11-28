@@ -7,12 +7,6 @@
 
 import UIKit
 
-enum AuctionListViewType {
-    case bidListView
-    case createdView
-    case auctionListView
-}
-
 class AuctionListViewController: UIViewController {
     private let headerHeight: CGFloat = 200
     private var selfWidth: CGFloat = 0.0
@@ -28,11 +22,11 @@ class AuctionListViewController: UIViewController {
     private let leftSearchView = UITextView()
     private let rightSearchView = UITextView()
     private let pageNumLabel = UILabel()
-    private var auctionListViewType = AuctionListViewType.auctionListView
+    private var viewModel: AuctionListViewModel!
     
     static func makeViewController(auctionListViewType: AuctionListViewType) -> AuctionListViewController {
         let vc = AuctionListViewController()
-        vc.auctionListViewType = auctionListViewType
+        vc.viewModel = AuctionListViewModel(auctionListViewType: auctionListViewType)
         return vc
     }
     
@@ -84,19 +78,20 @@ extension AuctionListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        viewModel.auctionSellItemList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellId, for: indexPath) as! AuctionListCell
+        let item = viewModel.getItem(at: indexPath.item)
         
-        cell.buyImageView?.image = UIImage(named: "img1")
+        cell.buyImageView?.image = item.image
         cell.buyImageView.backgroundColor = .black
         cell.buyImageView?.layer.cornerRadius = 10
         
-        cell.upperLabel.text = "12.3$"
+        cell.upperLabel.text = item.upperString
         cell.upperLabel.backgroundColor = .clear
-        cell.lowerLabel.text = "Fixed"
+        cell.lowerLabel.text = item.lowerString
         cell.lowerLabel.backgroundColor = .clear
         
         cell.arrowLabel.text = ">"
@@ -127,7 +122,7 @@ extension AuctionListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        switch auctionListViewType {
+        switch viewModel.auctionListViewType {
         case .bidListView:
             return 30
         case .createdView:
@@ -138,7 +133,7 @@ extension AuctionListViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        switch auctionListViewType {
+        switch viewModel.auctionListViewType {
         case .bidListView:
             let view = UIView()
             view.backgroundColor = .white

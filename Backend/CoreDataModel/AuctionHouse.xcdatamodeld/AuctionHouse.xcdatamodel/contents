@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19206" systemVersion="20G80" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AuctionSellItem" representedClassName="AuctionSellItem" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="negotiable" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="ownerId" optional="YES" attributeType="String"/>
+        <attribute name="price" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="sellDescription" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="video" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+    </entity>
+    <elements>
+        <element name="AuctionSellItem" positionX="-45" positionY="0" width="128" height="164"/>
+    </elements>
+</model>
