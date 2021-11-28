@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */; };
 		5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */; };
+		5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A356AC627539B3D00A5F3DC /* HelperViews.swift */; };
 		5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */; };
 		5A5343F9274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */; };
 		5A9A8361274BD8E400F80CB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8360274BD8E400F80CB9 /* AppDelegate.swift */; };
@@ -42,6 +43,7 @@
 /* Begin PBXFileReference section */
 		5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		5A356AC627539B3D00A5F3DC /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
 		5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionListViewModel.swift; sourceTree = "<group>"; };
 		5A5343F8274D6B2D00912DC1 /* AuctionHouse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AuctionHouse.xcdatamodel; sourceTree = "<group>"; };
 		5A9A835D274BD8E400F80CB9 /* AuctionHouse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuctionHouse.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,6 +167,7 @@
 				5AC3BBD5274CFF1800166B0A /* ImageSwiperCustomView.swift */,
 				5AC3BBD3274CFF0F00166B0A /* ImagePickerManager.swift */,
 				5AC3BBD1274CFF0700166B0A /* DropDownCustomView.swift */,
+				5A356AC627539B3D00A5F3DC /* HelperViews.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				5AC3BBDF274D001D00166B0A /* DashboardViewController.swift in Sources */,
 				5AC3BBD8274CFF1E00166B0A /* PriceDetailsCustomView.swift in Sources */,
 				5AC3BBF6274D010D00166B0A /* ChatMesengerViewController.swift in Sources */,
+				5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */,
 				5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */,
 				5AC3BBD4274CFF0F00166B0A /* ImagePickerManager.swift in Sources */,
 				5AC3BBE8274D008100166B0A /* SellDetailsViewModel.swift in Sources */,
