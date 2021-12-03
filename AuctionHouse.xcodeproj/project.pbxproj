@@ -7,8 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A06AB982756C0D400E858A4 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A06AB972756C0D400E858A4 /* SignUp.storyboard */; };
+		5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */; };
 		5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */; };
 		5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */; };
+		5A2384062758A87500443734 /* SignUpMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384052758A87500443734 /* SignUpMainViewController.swift */; };
+		5A2384082758A88700443734 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384072758A88700443734 /* SignUpViewController.swift */; };
+		5A23840A2758A89600443734 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384092758A89600443734 /* SignInViewController.swift */; };
 		5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A356AC627539B3D00A5F3DC /* HelperViews.swift */; };
 		5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */; };
 		5A5343F9274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */; };
@@ -41,8 +46,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A06AB972756C0D400E858A4 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
+		5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMainViewModel.swift; sourceTree = "<group>"; };
 		5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		5A2384052758A87500443734 /* SignUpMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMainViewController.swift; sourceTree = "<group>"; };
+		5A2384072758A88700443734 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		5A2384092758A89600443734 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		5A356AC627539B3D00A5F3DC /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
 		5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionListViewModel.swift; sourceTree = "<group>"; };
 		5A5343F8274D6B2D00912DC1 /* AuctionHouse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AuctionHouse.xcdatamodel; sourceTree = "<group>"; };
@@ -87,6 +97,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A06AB962756C0A600E858A4 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				5A06AB972756C0D400E858A4 /* SignUp.storyboard */,
+				5A2384052758A87500443734 /* SignUpMainViewController.swift */,
+				5A2384072758A88700443734 /* SignUpViewController.swift */,
+				5A2384092758A89600443734 /* SignInViewController.swift */,
+				5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
 		5A181FD3274E325B00E9D874 /* CoreDataClass */ = {
 			isa = PBXGroup;
 			children = (
@@ -124,6 +146,7 @@
 		5A9A8354274BD8E400F80CB9 = {
 			isa = PBXGroup;
 			children = (
+				5A06AB962756C0A600E858A4 /* SignUp */,
 				5A5343F5274D6AF900912DC1 /* Backend */,
 				5AC3BBF7274D012B00166B0A /* AuctionList */,
 				5AC3BBF4274D00EF00166B0A /* ChatMessenger */,
@@ -285,6 +308,7 @@
 				5AC3BBEC274D008C00166B0A /* TextViewCell.xib in Resources */,
 				5AC3BBFD274D015600166B0A /* AuctionListCell.xib in Resources */,
 				5A9A836D274BD8E500F80CB9 /* Assets.xcassets in Resources */,
+				5A06AB982756C0D400E858A4 /* SignUp.storyboard in Resources */,
 				5AC3BBE4274D005F00166B0A /* PriceDetailsCell.xib in Resources */,
 				5A9A8368274BD8E400F80CB9 /* Main.storyboard in Resources */,
 			);
@@ -300,6 +324,7 @@
 				5AC3BBE6274D006500166B0A /* SellDetailsViewController.swift in Sources */,
 				5AC3BBD6274CFF1800166B0A /* ImageSwiperCustomView.swift in Sources */,
 				5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */,
+				5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */,
 				5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */,
 				5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */,
 				5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */,
@@ -311,6 +336,7 @@
 				5AC3BBE2274D005900166B0A /* PriceDetailsCell.swift in Sources */,
 				5AC3BBF1274D00D300166B0A /* ContactCell.swift in Sources */,
 				5AC3BBD2274CFF0700166B0A /* DropDownCustomView.swift in Sources */,
+				5A23840A2758A89600443734 /* SignInViewController.swift in Sources */,
 				5A9A8363274BD8E400F80CB9 /* SceneDelegate.swift in Sources */,
 				5AC3BBDF274D001D00166B0A /* DashboardViewController.swift in Sources */,
 				5AC3BBD8274CFF1E00166B0A /* PriceDetailsCustomView.swift in Sources */,
@@ -321,6 +347,8 @@
 				5AC3BBE8274D008100166B0A /* SellDetailsViewModel.swift in Sources */,
 				5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */,
 				5AC3BBFB274D014C00166B0A /* AuctionListCell.swift in Sources */,
+				5A2384082758A88700443734 /* SignUpViewController.swift in Sources */,
+				5A2384062758A87500443734 /* SignUpMainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
