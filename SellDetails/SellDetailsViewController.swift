@@ -55,7 +55,7 @@ class SellDetailsViewController: UIViewController {
         selfWidth = self.view.frame.width
         selfHeight = self.view.frame.height
         
-        navigationItem.title = "Sell details"
+        //navigationItem.title = "Sell details"
         if isBidView == false {
             navigationItem.rightBarButtonItem = editButton
         }
@@ -83,6 +83,13 @@ class SellDetailsViewController: UIViewController {
         )
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.backgroundColor = .clear
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.tintColor = .black
+    }
+    
     @objc private func editTapped() {
         if editOption {
             editOption = false
@@ -96,8 +103,8 @@ class SellDetailsViewController: UIViewController {
     }
 
     @objc private func imageSelectionAction(_ notification: NSNotification) {
-        if let image = notification.userInfo?[Notification.Name.imgSelectedNotifi] as? UIImage {
-            viewModel.imageList.append(image)
+        if let imageUrl = notification.userInfo?[Notification.Name.imgSelectedNotifi] as? URL {
+            viewModel.imageUrlList.append(imageUrl)
         }
         tableView.reloadData()
     }
@@ -116,24 +123,50 @@ class SellDetailsViewController: UIViewController {
         guard
             let curPageIdx = imageSwiperCustomView?.curImagePage,
             curPageIdx < viewModel.imageList.count else { return }
-        viewModel.imageList.remove(at: curPageIdx)
+        viewModel.imageUrlList.remove(at: curPageIdx)
         tableView.reloadData()
     }
     
     @objc private func postButtonAction(sender: UIButton) {
         print("post button tapped.")
         guard editOption == false else { return }
+        
+        if let errorString = viewModel.isAnyFieldEmpty() {
+            showFieldEmptyAlert(errorString: errorString)
+            return
+        }
+        
         GlobalUITask.showSpinner(viewController: self)
-        viewModel.saveDataToStore() {
+        viewModel.saveDataToFireStore() {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 GlobalUITask.removeSpinner(viewController: self)
             }
         }
     }
     
+    private func showFieldEmptyAlert(errorString: String) {
+        let actionController = UIAlertController(
+            title: "",
+            message: errorString,
+            preferredStyle: .alert
+        )
+        
+        actionController.addAction(
+            UIAlertAction(
+                title: "Ok",
+                style: .default,
+                handler: nil
+            )
+        )
+        
+        present(actionController, animated: true)
+    }
+    
     private func collectEditedInfo() {
         let textViewCell = tableView.cellForRow(at: IndexPath(item: 0, section: 2)) as? TextViewCell
-        viewModel.editedValue.description = textViewCell?.descriptionTextView.text ?? ""
+        viewModel.editedValue.description = textViewCell?.descriptionTextView.textColor == .black
+        ? (textViewCell?.descriptionTextView.text ?? "")
+        : ""
         let priceDetailsCell = tableView.cellForRow(at: IndexPath(item: 0, section: 3)) as? PriceDetailsCell
         viewModel.editedValue.title = priceDetailsCell?.titleField.text ?? ""
         viewModel.editedValue.type = priceDetailsCell?.typeField.text ?? ""

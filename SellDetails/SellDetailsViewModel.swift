@@ -7,6 +7,8 @@
 
 import UIKit
 import CoreData
+import Firebase
+import FirebaseStorage
 
 enum SellDetailsEditedEnum {
     case title
@@ -27,7 +29,13 @@ struct SellDetailsEditedValue {
 final class SellDetailsViewModel {
     let descriptionTextViewPlaceHolder = TextViewPlaceHolder("Write description here .....")
     var editedValue: SellDetailsEditedValue
-    var imageList: [UIImage] = []
+    var imageList: [UIImage] {
+        imageUrlList.compactMap {
+            guard let data = try? Data(contentsOf: $0) else { return nil }
+            return UIImage(data: data)
+        }
+    }
+    var imageUrlList: [URL] = []
     var videoList: [URL] = []
     
     private var context: NSManagedObjectContext? {
@@ -42,6 +50,25 @@ final class SellDetailsViewModel {
             negotiable: "",
             description: ""
         )
+    }
+    
+    func isAnyFieldEmpty() -> String? {
+        if imageUrlList.isEmpty {
+            return "Need at least one image of the product."
+        }
+        if editedValue.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return "Need description about the product."
+        }
+        if editedValue.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return "Need title about the product."
+        }
+        if editedValue.type.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return "Need type about the product."
+        }
+        if editedValue.price.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return "Need price for the product."
+        }
+        return nil
     }
     
     func isEmpty(string: String) -> Bool {
@@ -69,24 +96,25 @@ final class SellDetailsViewModel {
         }
     }
     
-    func saveDataToStore(completion: () -> Void) {
-        guard let context = context else { return }
-        let auctionSellItem = AuctionSellItem(context: context)
-        auctionSellItem.title = editedValue.title
-        auctionSellItem.type = editedValue.type
-        auctionSellItem.price = Double(editedValue.price) ?? 0.0
-        auctionSellItem.negotiable = (editedValue.negotiable.lowercased() == "yes") ? true : false
-        auctionSellItem.sellDescription = editedValue.description
-        auctionSellItem.image = coreDataObjectFromImages()
-        auctionSellItem.video = coreDataObjectFromVideo()
-        do {
-            try context.save()
-            completion()
-        } catch {
-            print("could not save to store. \(error)")
-            completion()
-        }
-    }
+//    func saveDataToStore(completion: () -> Void) {
+//        guard let context = context else { return }
+//        let auctionSellItem = AuctionSellItem(context: context)
+//        auctionSellItem.title = editedValue.title
+//        auctionSellItem.type = editedValue.type
+//        auctionSellItem.price = Double(editedValue.price) ?? 0.0
+//        auctionSellItem.negotiable = (editedValue.negotiable.lowercased() == "yes") ? true : false
+//        auctionSellItem.sellDescription = editedValue.description
+//        auctionSellItem.image = coreDataObjectFromImages()
+//        auctionSellItem.video = coreDataObjectFromVideo()
+//        do {
+//            try context.save()
+//            completion()
+//        } catch {
+//            print("could not save to store. \(error)")
+//            completion()
+//        }
+//        saveDataToFireStore()
+//    }
     
     private func coreDataObjectFromVideo() -> Data? {
         guard let url = videoList.first else { return nil }
@@ -109,6 +137,104 @@ final class SellDetailsViewModel {
         }
         
         return try? NSKeyedArchiver.archivedData(withRootObject: dataArray, requiringSecureCoding: true)
+    }
+    
+    func saveDataToFireStore(completion: @escaping () -> Void) {
+        let workGroup = DispatchGroup()
+        var videoUrlString: String = ""
+        var imageUrlStringList: [String] = []
+        
+        workGroup.enter()
+        getSavedUrlForVideo { url in
+            videoUrlString = url?.absoluteString ?? ""
+            workGroup.leave()
+        }
+        
+        workGroup.enter()
+        getSavedUrlForImages { imagesUrlList in
+            imageUrlStringList = imagesUrlList.compactMap { $0.absoluteString }
+            workGroup.leave()
+        }
+        
+        let negotiableValue = (editedValue.negotiable.lowercased() == "yes") ? true : false
+        let priceValue = Double(editedValue.price) ?? 0.0
+        guard let ownerId = Auth.auth().currentUser?.uid else { return }
+        
+        workGroup.notify(queue: DispatchQueue.main, execute: { [weak self] in
+            guard let editedValue = self?.editedValue else {
+                completion()
+                return
+            }
+            let db = Firestore.firestore()
+            db
+                .collection(MyKeys.AuctionSellItem.rawValue)
+                .addDocument(
+                    data: [
+                        MyKeys.AuctionSellItemField.title.rawValue: editedValue.title,
+                        MyKeys.AuctionSellItemField.sellDescription.rawValue: editedValue.description,
+                        MyKeys.AuctionSellItemField.type.rawValue: editedValue.type,
+                        MyKeys.AuctionSellItemField.negotiable.rawValue: negotiableValue,
+                        MyKeys.AuctionSellItemField.price.rawValue: priceValue,
+                        MyKeys.AuctionSellItemField.ownerId.rawValue: ownerId,
+                        MyKeys.AuctionSellItemField.video.rawValue: videoUrlString,
+                        MyKeys.AuctionSellItemField.images.rawValue: imageUrlStringList,
+                    ]
+                ) { error in
+                    completion()
+                    guard error == nil else { return }
+                }
+        })
+        
+    }
+    
+    func getSavedUrlForImages(completion: @escaping ([URL]) -> Void) {
+        let workGroup = DispatchGroup()
+        var urlList: [URL] = []
+        let storage = Storage.storage()
+        imageUrlList.forEach {
+            let imageUID = UUID().uuidString
+            let storageRef = storage.reference()
+                .child(MyKeys.imagesFolder.rawValue)
+                .child(imageUID)
+            workGroup.enter()
+            storageRef.putFile(from: $0, metadata: nil) { (metadata, error) in
+                guard error == nil else {
+                    workGroup.leave()
+                    return
+                }
+                storageRef.downloadURL { (url, error) in
+                    guard let url = url else {
+                        workGroup.leave()
+                        return
+                    }
+                    urlList.append(url)
+                    workGroup.leave()
+                }
+            }
+        }
+        
+        workGroup.notify(queue: DispatchQueue.main, execute: {
+            completion(urlList)
+        })
+    }
+    
+    func getSavedUrlForVideo(completion: @escaping (URL?) -> Void) {
+        guard let url = videoList.first else {
+            completion(nil)
+            return
+        }
+        let storage = Storage.storage()
+        let videoUID = UUID().uuidString
+        let storageRef = storage.reference()
+            .child(MyKeys.videoFolder.rawValue)
+            .child(videoUID)
+        storageRef.putFile(from: url, metadata: nil) { (metadata, error) in
+            guard error == nil else { return }
+            storageRef.downloadURL { (url, error) in
+                guard let url = url else { return }
+                completion(url)
+            }
+        }
     }
 
 //    private func imagesFromCoreData(object: Data?) -> [UIImage]? {

@@ -128,17 +128,19 @@ extension ImagePickerManager: UIImagePickerControllerDelegate, UINavigationContr
         imagePickerController.delegate = self
         imagePickerController.sourceType = .photoLibrary
         //imagePickerController.allowsEditing = true
+        GlobalUITask.showSpinner(viewController: parentViewController ?? UIViewController())
         parentViewController?.present(imagePickerController, animated: true)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let editedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+        if let editedImageUrl = info[UIImagePickerController.InfoKey.imageURL] as? URL {
             NotificationCenter.default.post(
                 name: Notification.Name.imgSelectedNotifi,
                 object: nil,
-                userInfo: [Notification.Name.imgSelectedNotifi: editedImage]
+                userInfo: [Notification.Name.imgSelectedNotifi: editedImageUrl]
             )
         }
+        GlobalUITask.removeSpinner(viewController: parentViewController ?? UIViewController())
         parentViewController?.dismiss(animated: true, completion: nil)
     }
 }
