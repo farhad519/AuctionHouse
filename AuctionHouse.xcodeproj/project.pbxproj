@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5A01CE4227694BF800F3BDF2 /* MyKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A01CE4127694BF800F3BDF2 /* MyKeys.swift */; };
 		5A06AB982756C0D400E858A4 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A06AB972756C0D400E858A4 /* SignUp.storyboard */; };
 		5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */; };
 		5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		32942F238A5D113EEEE0F9E6 /* Pods_AuctionHouse.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AuctionHouse.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A01CE4127694BF800F3BDF2 /* MyKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKeys.swift; sourceTree = "<group>"; };
 		5A06AB972756C0D400E858A4 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
 		5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMainViewModel.swift; sourceTree = "<group>"; };
 		5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			children = (
 				5A181FD3274E325B00E9D874 /* CoreDataClass */,
 				5A5343F6274D6B0300912DC1 /* CoreDataModel */,
+				5A01CE4127694BF800F3BDF2 /* MyKeys.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */,
 				5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */,
 				5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */,
+				5A01CE4227694BF800F3BDF2 /* MyKeys.swift in Sources */,
 				5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */,
 				5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */,
 				5AC3BBDA274CFF2500166B0A /* VideoManager.swift in Sources */,
