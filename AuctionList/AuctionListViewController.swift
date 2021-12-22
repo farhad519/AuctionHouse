@@ -27,6 +27,7 @@ class AuctionListViewController: UIViewController {
     static func makeViewController(auctionListViewType: AuctionListViewType) -> AuctionListViewController {
         let vc = AuctionListViewController()
         vc.viewModel = AuctionListViewModel(auctionListViewType: auctionListViewType)
+        vc.viewModel.delegate = vc
         return vc
     }
     
@@ -85,9 +86,10 @@ extension AuctionListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellId, for: indexPath) as! AuctionListCell
         let item = viewModel.getItem(at: indexPath.item)
         
-        cell.buyImageView?.image = item.image
+        cell.buyImageView.image = item.image
         cell.buyImageView.backgroundColor = .black
         cell.buyImageView?.layer.cornerRadius = 10
+        cell.buyImageView.contentMode = .scaleAspectFill
         
         cell.upperLabel.text = item.upperString
         cell.upperLabel.backgroundColor = .clear
@@ -373,6 +375,14 @@ extension AuctionListViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.text = "Placeholder"
             textView.textColor = UIColor.lightGray
+        }
+    }
+}
+
+extension AuctionListViewController: AuctionListViewControllerDelegate {
+    func reloadViewController() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
 }

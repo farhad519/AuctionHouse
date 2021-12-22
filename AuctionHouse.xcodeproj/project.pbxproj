@@ -18,6 +18,9 @@
 		5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A356AC627539B3D00A5F3DC /* HelperViews.swift */; };
 		5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */; };
 		5A5343F9274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */; };
+		5A565FC2276E89E3007758C2 /* DataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A565FC1276E89E3007758C2 /* DataCollector.swift */; };
+		5A565FC4276E8B54007758C2 /* FireDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A565FC3276E8B54007758C2 /* FireDataModel.swift */; };
+		5A565FC6276ECC1D007758C2 /* CommonCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A565FC5276ECC1D007758C2 /* CommonCode.swift */; };
 		5A97F26A275B844D0045DCEC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A97F269275B844D0045DCEC /* GoogleService-Info.plist */; };
 		5A9A8361274BD8E400F80CB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8360274BD8E400F80CB9 /* AppDelegate.swift */; };
 		5A9A8363274BD8E400F80CB9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8362274BD8E400F80CB9 /* SceneDelegate.swift */; };
@@ -61,6 +64,9 @@
 		5A356AC627539B3D00A5F3DC /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
 		5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionListViewModel.swift; sourceTree = "<group>"; };
 		5A5343F8274D6B2D00912DC1 /* AuctionHouse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AuctionHouse.xcdatamodel; sourceTree = "<group>"; };
+		5A565FC1276E89E3007758C2 /* DataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollector.swift; sourceTree = "<group>"; };
+		5A565FC3276E8B54007758C2 /* FireDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireDataModel.swift; sourceTree = "<group>"; };
+		5A565FC5276ECC1D007758C2 /* CommonCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCode.swift; sourceTree = "<group>"; };
 		5A97F269275B844D0045DCEC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A9A835D274BD8E400F80CB9 /* AuctionHouse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuctionHouse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9A8360274BD8E400F80CB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -138,9 +144,11 @@
 		5A5343F5274D6AF900912DC1 /* Backend */ = {
 			isa = PBXGroup;
 			children = (
+				5A565FC0276E87FC007758C2 /* DataLayer */,
 				5A181FD3274E325B00E9D874 /* CoreDataClass */,
 				5A5343F6274D6B0300912DC1 /* CoreDataModel */,
 				5A01CE4127694BF800F3BDF2 /* MyKeys.swift */,
+				5A565FC5276ECC1D007758C2 /* CommonCode.swift */,
 			);
 			path = Backend;
 			sourceTree = "<group>";
@@ -151,6 +159,15 @@
 				5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */,
 			);
 			path = CoreDataModel;
+			sourceTree = "<group>";
+		};
+		5A565FC0276E87FC007758C2 /* DataLayer */ = {
+			isa = PBXGroup;
+			children = (
+				5A565FC1276E89E3007758C2 /* DataCollector.swift */,
+				5A565FC3276E8B54007758C2 /* FireDataModel.swift */,
+			);
+			path = DataLayer;
 			sourceTree = "<group>";
 		};
 		5A9A8354274BD8E400F80CB9 = {
@@ -405,17 +422,20 @@
 				5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */,
 				5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */,
 				5AC3BBDA274CFF2500166B0A /* VideoManager.swift in Sources */,
+				5A565FC2276E89E3007758C2 /* DataCollector.swift in Sources */,
 				5A5343F9274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld in Sources */,
 				5AC3BBF9274D014500166B0A /* AuctionListViewController.swift in Sources */,
 				5A9A8365274BD8E400F80CB9 /* ViewController.swift in Sources */,
 				5A9A8361274BD8E400F80CB9 /* AppDelegate.swift in Sources */,
 				5AC3BBE2274D005900166B0A /* PriceDetailsCell.swift in Sources */,
+				5A565FC6276ECC1D007758C2 /* CommonCode.swift in Sources */,
 				5AC3BBF1274D00D300166B0A /* ContactCell.swift in Sources */,
 				5AC3BBD2274CFF0700166B0A /* DropDownCustomView.swift in Sources */,
 				5A23840A2758A89600443734 /* SignInViewController.swift in Sources */,
 				5A9A8363274BD8E400F80CB9 /* SceneDelegate.swift in Sources */,
 				5AC3BBDF274D001D00166B0A /* DashboardViewController.swift in Sources */,
 				5AC3BBD8274CFF1E00166B0A /* PriceDetailsCustomView.swift in Sources */,
+				5A565FC4276E8B54007758C2 /* FireDataModel.swift in Sources */,
 				5AC3BBF6274D010D00166B0A /* ChatMesengerViewController.swift in Sources */,
 				5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */,
 				5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */,
