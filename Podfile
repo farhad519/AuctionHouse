@@ -11,4 +11,5 @@ target 'AuctionHouse' do
 	pod 'Firebase/Firestore'
 	pod 'Firebase/Core'
 	pod 'Firebase/Storage'
+	pod 'ReactiveSwift', '~> 6.1'
 end

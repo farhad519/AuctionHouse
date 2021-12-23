@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ReactiveSwift
 
 class SignUpMainViewController: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
