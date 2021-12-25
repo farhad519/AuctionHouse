@@ -7,6 +7,7 @@
 
 import CoreData
 import UIKit
+import ReactiveSwift
 
 protocol AuctionListViewControllerDelegate {
     func reloadViewController()
@@ -19,12 +20,12 @@ enum AuctionListViewType {
 }
 
 struct AuctionListCellStruct {
-    var image: UIImage
+    var imageUrlString: String
     var upperString: String
     var lowerString: String
     var sellDescription: String
     init() {
-        image = UIImage()
+        imageUrlString = ""
         upperString = "0.0$"
         lowerString = "Fixed"
         sellDescription = "NA"
@@ -33,7 +34,7 @@ struct AuctionListCellStruct {
 
 class AuctionListViewModel {
     var auctionListViewType = AuctionListViewType.auctionListView
-    var auctionSellItemList: [AuctionListCellStruct] = []
+    var auctionSellItemList: [FireAuctionItem] = []
     var delegate: AuctionListViewControllerDelegate?
     private let dataCollector: DataCollector
     
@@ -51,45 +52,67 @@ class AuctionListViewModel {
         dataCollector.getMySellList { [weak self] result in
             switch result {
             case .success(let auctionList):
-                self?.getImageFromServer(auctionList: auctionList) { cellItemList in
-                    self?.auctionSellItemList = cellItemList
-                    self?.delegate?.reloadViewController()
-                }
+                self?.auctionSellItemList = auctionList
+                self?.delegate?.reloadViewController()
+//                self?.getImageFromServer(auctionList: auctionList) { cellItemList in
+//                    self?.auctionSellItemList = cellItemList
+//                    self?.delegate?.reloadViewController()
+//                }
             case .failure(let error):
                 print("[AuctionListViewModel][setupMyAuctionListDataSource] error at retrieving data with \(error)")
             }
         }
     }
     
-    private func getImageFromServer(auctionList: [FireAuctionItem], completion: @escaping ([AuctionListCellStruct]) -> Void) {
-        var cellItemList: [AuctionListCellStruct] = []
-        let workGroup = DispatchGroup()
-        auctionList.forEach {
-            var cellItem = AuctionListCellStruct()
-            cellItem.upperString = "\($0.price)$"
-            cellItem.lowerString = $0.negotiable == false ? "Fixed" : "Negotiable"
-            cellItem.sellDescription = $0.description
-            workGroup.enter()
-            dataCollector.getImage(urlString: $0.imagesUrlStringList.first ?? "") { result in
-                switch result {
-                case .success(let recievedImage):
-                    cellItem.image = recievedImage
-                    print("[AuctionListViewModel][getImageFromServer] image recieved.")
-                case .failure(let error):
-                    print("[AuctionListViewModel][getImageFromServer] error at retrieving image with \(error)")
-                }
-                cellItemList.append(cellItem)
-                workGroup.leave()
-            }
-        }
-        workGroup.notify(queue: DispatchQueue.main, execute: {
-            completion(cellItemList)
-        })
+    func fetchImageSignal(urlString: String) -> SignalProducer<UIImage, NSError> {
+      return SignalProducer { [weak self] observer, disposable in
+          self?.dataCollector.getImage(urlString: urlString) { result in
+              switch result {
+              case .success(let image):
+                  observer.send(value: image)
+                  observer.sendCompleted()
+              case .failure(let error):
+                  print("[AuctionListViewModel][fetchImageSignal] error at retrieving image with \(error)")
+                  observer.sendCompleted()
+              }
+          }
+      }
     }
+    
+//    private func getImageFromServer(auctionList: [FireAuctionItem], completion: @escaping ([AuctionListCellStruct]) -> Void) {
+//        var cellItemList: [AuctionListCellStruct] = []
+//        let workGroup = DispatchGroup()
+//        auctionList.forEach {
+//            var cellItem = AuctionListCellStruct()
+//            cellItem.upperString = "\($0.price)$"
+//            cellItem.lowerString = $0.negotiable == false ? "Fixed" : "Negotiable"
+//            cellItem.sellDescription = $0.description
+//            workGroup.enter()
+//            dataCollector.getImage(urlString: $0.imagesUrlStringList.first ?? "") { result in
+//                switch result {
+//                case .success(let recievedImage):
+//                    cellItem.image = recievedImage
+//                    print("[AuctionListViewModel][getImageFromServer] image recieved.")
+//                case .failure(let error):
+//                    print("[AuctionListViewModel][getImageFromServer] error at retrieving image with \(error)")
+//                }
+//                cellItemList.append(cellItem)
+//                workGroup.leave()
+//            }
+//        }
+//        workGroup.notify(queue: DispatchQueue.main, execute: {
+//            completion(cellItemList)
+//        })
+//    }
     
     func getItem(at index: Int) -> AuctionListCellStruct {
         guard index < auctionSellItemList.count else { return AuctionListCellStruct() }
-        return auctionSellItemList[index]
+        var cellItem = AuctionListCellStruct()
+        cellItem.upperString = "\(auctionSellItemList[index].price)$"
+        cellItem.lowerString = auctionSellItemList[index].negotiable == false ? "Fixed" : "Negotiable"
+        cellItem.sellDescription = auctionSellItemList[index].description
+        cellItem.imageUrlString = auctionSellItemList[index].imagesUrlStringList.first ?? ""
+        return cellItem
     }
 
 //    func loadDataFromStore() {

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ReactiveSwift
 
 class AuctionListViewController: UIViewController {
     private let headerHeight: CGFloat = 200
@@ -54,7 +55,10 @@ class AuctionListViewController: UIViewController {
         self.view.addSubview(tableView)
     }
     
-    @objc private func detailsButtonAction() {
+    @objc private func detailsButtonAction(sender: UIButton) {
+        let buttonPosition:CGPoint = sender.convert(CGPoint.zero, to:self.tableView)
+        let indexPath = self.tableView.indexPathForRow(at: buttonPosition)
+        print("\(String(describing: indexPath))")
         let actionController = UIAlertController(
             title: "Details",
             message: "This is details but also inside more details please check.",
@@ -86,7 +90,17 @@ extension AuctionListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellId, for: indexPath) as! AuctionListCell
         let item = viewModel.getItem(at: indexPath.item)
         
-        cell.buyImageView.image = item.image
+        viewModel.fetchImageSignal(urlString: item.imageUrlString)
+            .startWithResult { [weak cell] result in
+                switch result {
+                case .success(let image):
+                    DispatchQueue.main.async {
+                        cell?.buyImageView.image = image
+                    }
+                case .failure(let error):
+                    print("[AuctionListViewController][cellForRowAt] error at fetching image \(error)")
+                }
+            }
         cell.buyImageView.backgroundColor = .black
         cell.buyImageView?.layer.cornerRadius = 10
         cell.buyImageView.contentMode = .scaleAspectFill
