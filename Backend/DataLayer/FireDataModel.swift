@@ -15,6 +15,7 @@ enum DataCollectorError: Error {
 }
 
 struct FireAuctionItem {
+    var id: String
     var title: String
     var type: String
     var description: String

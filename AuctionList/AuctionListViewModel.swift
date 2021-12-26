@@ -28,7 +28,7 @@ struct AuctionListCellStruct {
         imageUrlString = ""
         upperString = "0.0$"
         lowerString = "Fixed"
-        sellDescription = "NA"
+        sellDescription = ""
     }
 }
 

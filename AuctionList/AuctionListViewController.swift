@@ -58,10 +58,12 @@ class AuctionListViewController: UIViewController {
     @objc private func detailsButtonAction(sender: UIButton) {
         let buttonPosition:CGPoint = sender.convert(CGPoint.zero, to:self.tableView)
         let indexPath = self.tableView.indexPathForRow(at: buttonPosition)
-        print("\(String(describing: indexPath))")
+        let description = viewModel.getItem(at: indexPath?.item ?? viewModel.auctionSellItemList.count).sellDescription
+        
+        //print("\(String(describing: indexPath))")
         let actionController = UIAlertController(
             title: "Details",
-            message: "This is details but also inside more details please check.",
+            message: description,
             preferredStyle: .alert
         )
         
@@ -107,8 +109,15 @@ extension AuctionListViewController: UITableViewDataSource {
         
         cell.upperLabel.text = item.upperString
         cell.upperLabel.backgroundColor = .clear
+        cell.upperLabel.font = UIFont(name: "Helvetica", size: 15)!
+        cell.upperLabel.textColor = .lightGray
         cell.lowerLabel.text = item.lowerString
         cell.lowerLabel.backgroundColor = .clear
+        cell.lowerLabel.font = UIFont(name: "Helvetica", size: 15)!
+        cell.lowerLabel.textColor = .lightGray
+        
+        cell.titleLabel.text = "The time time y=t asd description yet asd huy asdf yet are of the."
+        cell.titleLabel.font = UIFont(name: "Helvetica", size: 15)!
         
         cell.arrowLabel.text = ">"
         cell.arrowLabel.backgroundColor = .clear
@@ -134,7 +143,7 @@ extension AuctionListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        90
+        100
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
