@@ -13,4 +13,5 @@ class AuctionListCell: UITableViewCell {
     @IBOutlet weak var lowerLabel: UILabel!
     @IBOutlet weak var detailsButton: UIButton!
     @IBOutlet weak var arrowLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
 }

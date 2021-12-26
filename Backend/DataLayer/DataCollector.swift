@@ -28,16 +28,17 @@ class DataCollector {
                 completion(.failure(DataCollectorError.noSnapShot))
                 return
             }
-            let auctionItemDatas = snapShot.documents.compactMap { doucment in
+            let auctionItemDatas = snapShot.documents.compactMap { document in
                 FireAuctionItem(
-                    title: doucment[MyKeys.AuctionSellItemField.title.rawValue] as? String ?? "",
-                    type: doucment[MyKeys.AuctionSellItemField.type.rawValue] as? String ?? "",
-                    description: doucment[MyKeys.AuctionSellItemField.sellDescription.rawValue] as? String ?? "",
-                    price: doucment[MyKeys.AuctionSellItemField.price.rawValue] as? Double ?? 0.0,
-                    negotiable: doucment[MyKeys.AuctionSellItemField.negotiable.rawValue] as? Bool ?? false,
-                    ownerId: doucment[MyKeys.AuctionSellItemField.ownerId.rawValue] as? String ?? "",
-                    videoUrlString: doucment[MyKeys.AuctionSellItemField.video.rawValue] as? String ?? "",
-                    imagesUrlStringList: doucment[MyKeys.AuctionSellItemField.images.rawValue] as? [String] ?? []
+                    id: document.documentID,
+                    title: document[MyKeys.AuctionSellItemField.title.rawValue] as? String ?? "",
+                    type: document[MyKeys.AuctionSellItemField.type.rawValue] as? String ?? "",
+                    description: document[MyKeys.AuctionSellItemField.sellDescription.rawValue] as? String ?? "",
+                    price: document[MyKeys.AuctionSellItemField.price.rawValue] as? Double ?? 0.0,
+                    negotiable: document[MyKeys.AuctionSellItemField.negotiable.rawValue] as? Bool ?? false,
+                    ownerId: document[MyKeys.AuctionSellItemField.ownerId.rawValue] as? String ?? "",
+                    videoUrlString: document[MyKeys.AuctionSellItemField.video.rawValue] as? String ?? "",
+                    imagesUrlStringList: document[MyKeys.AuctionSellItemField.images.rawValue] as? [String] ?? []
                 )
             }
             completion(.success(auctionItemDatas))
