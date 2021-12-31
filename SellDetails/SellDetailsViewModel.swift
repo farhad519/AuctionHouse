@@ -10,6 +10,12 @@ import CoreData
 import Firebase
 import FirebaseStorage
 
+enum SellDetailsViewType {
+    case forCreate
+    case forModify
+    case forBid
+}
+
 enum SellDetailsEditedEnum {
     case title
     case type
@@ -24,6 +30,12 @@ struct SellDetailsEditedValue {
     var price: String
     var negotiable: String
     var description: String
+}
+
+struct ImageUrlCouple {
+    var image: UIImage
+    var urlString: String
+    var isFromCloud: Bool
 }
 
 final class SellDetailsViewModel {
@@ -42,7 +54,10 @@ final class SellDetailsViewModel {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     }
     
-    init() {
+    var viewType: SellDetailsViewType
+    var fireAuctionItem: FireAuctionItem?
+    
+    init(viewType: SellDetailsViewType) {
         editedValue = SellDetailsEditedValue(
             title: "",
             type: "",
@@ -50,6 +65,19 @@ final class SellDetailsViewModel {
             negotiable: "",
             description: ""
         )
+        self.viewType = viewType
+    }
+    
+    init(viewType: SellDetailsViewType, fireAuctionItem: FireAuctionItem) {
+        self.fireAuctionItem = fireAuctionItem
+        editedValue = SellDetailsEditedValue(
+            title: fireAuctionItem.title,
+            type: fireAuctionItem.type,
+            price: String(fireAuctionItem.price),
+            negotiable: fireAuctionItem.negotiable ? "yes" : "no",
+            description: fireAuctionItem.description
+        )
+        self.viewType = viewType
     }
     
     func isAnyFieldEmpty() -> String? {

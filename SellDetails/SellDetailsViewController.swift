@@ -24,9 +24,7 @@ class SellDetailsViewController: UIViewController {
     private var imageSwiperCustomView: ImageSwiperCustomView?
     private var videoPlayerCustomView: VideoPlayerCustomView?
     
-    private let viewModel = SellDetailsViewModel()
-    
-    private var isBidView = true
+    private var viewModel: SellDetailsViewModel!
     
     private var editButton: UIBarButtonItem {
         UIBarButtonItem(
@@ -44,9 +42,17 @@ class SellDetailsViewController: UIViewController {
         )
     }
     
-    static func makeViewController(isBidView: Bool) -> SellDetailsViewController {
+    static func makeViewController(viewType: SellDetailsViewType, fireAuctionItem: FireAuctionItem? = nil) -> SellDetailsViewController {
         let vc = SellDetailsViewController()
-        vc.isBidView = isBidView
+        guard let fireAuctionItem = fireAuctionItem else {
+            vc.viewModel = SellDetailsViewModel(viewType: .forCreate)
+            return vc
+        }
+        if viewType == SellDetailsViewType.forCreate {
+            vc.viewModel = SellDetailsViewModel(viewType: viewType)
+        } else {
+            vc.viewModel = SellDetailsViewModel(viewType: viewType, fireAuctionItem: fireAuctionItem)
+        }
         return vc
     }
     
@@ -56,7 +62,7 @@ class SellDetailsViewController: UIViewController {
         selfHeight = self.view.frame.height
         
         //navigationItem.title = "Sell details"
-        if isBidView == false {
+        if viewModel.viewType != SellDetailsViewType.forBid {
             navigationItem.rightBarButtonItem = editButton
         }
         
@@ -373,7 +379,7 @@ extension SellDetailsViewController: UITableViewDelegate {
         )
         view.addSubview(postButton)
         
-        if isBidView == true {
+        if viewModel.viewType == SellDetailsViewType.forBid {
             postButton.setTitle("Bid", for: .normal)
             postButton.backgroundColor = .red
         }

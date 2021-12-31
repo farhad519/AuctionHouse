@@ -61,7 +61,7 @@ class DashboardViewController: UIViewController {
             dropDownAction: [
                 {
                     self.navigationController?.pushViewController(
-                        SellDetailsViewController.makeViewController(isBidView: false),
+                        SellDetailsViewController.makeViewController(viewType: .forCreate),
                         animated: true
                     )
                 },

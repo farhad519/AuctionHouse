@@ -105,7 +105,7 @@ class AuctionListViewModel {
 //        })
 //    }
     
-    func getItem(at index: Int) -> AuctionListCellStruct {
+    func getCellItem(at index: Int) -> AuctionListCellStruct {
         guard index < auctionSellItemList.count else { return AuctionListCellStruct() }
         var cellItem = AuctionListCellStruct()
         cellItem.upperString = "\(auctionSellItemList[index].price)$"
@@ -113,6 +113,11 @@ class AuctionListViewModel {
         cellItem.sellDescription = auctionSellItemList[index].description
         cellItem.imageUrlString = auctionSellItemList[index].imagesUrlStringList.first ?? ""
         return cellItem
+    }
+    
+    func getFireAuctionItem(at index: Int) -> FireAuctionItem? {
+        guard index < auctionSellItemList.count else { return nil }
+        return auctionSellItemList[index]
     }
 
 //    func loadDataFromStore() {
