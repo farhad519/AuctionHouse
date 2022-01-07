@@ -116,7 +116,7 @@ extension AuctionListViewController: UITableViewDataSource {
         cell.lowerLabel.font = UIFont(name: "Helvetica", size: 15)!
         cell.lowerLabel.textColor = .lightGray
         
-        cell.titleLabel.text = "The time time y=t asd description yet asd huy asdf yet are of the."
+        cell.titleLabel.text = item.title
         cell.titleLabel.font = UIFont(name: "Helvetica", size: 15)!
         
         cell.arrowLabel.text = ">"
@@ -141,11 +141,42 @@ extension AuctionListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         guard let fireAuctionItem = viewModel.getFireAuctionItem(at: indexPath.item) else {
-            print("[AuctionListViewController][didSelectRowAt] item not available at \(indexPath)")
+            print("[AuctionListViewController][didSelectRowAt] item not available at \(indexPath).")
             return
         }
-        let vc = SellDetailsViewController.makeViewController(viewType: .forModify, fireAuctionItem: fireAuctionItem)
-        navigationController?.pushViewController(vc, animated: true)
+        GlobalUITask.showSpinner(viewController: self)
+        let workGroup = DispatchGroup()
+        var imageUrlCoupleList: [ImageUrlCouple] = []
+        fireAuctionItem.imagesUrlStringList.forEach {
+            guard let url = URL(string: $0) else {
+                print("[AuctionListViewController][didSelectRowAt] error at converting url.")
+                return
+            }
+            workGroup.enter()
+            viewModel.dataCollector.getImage(urlString: $0) { result in
+                switch result {
+                case .success(let image):
+                    imageUrlCoupleList.append(
+                        ImageUrlCouple(image: image, url: url, isFromCloud: true)
+                    )
+                case .failure(let error):
+                    print("[AuctionListViewController][didSelectRowAt] error at fetching image \(error).")
+                }
+                workGroup.leave()
+            }
+        }
+        
+        workGroup.notify(queue: DispatchQueue.main, execute: { [weak self] in
+            DispatchQueue.main.async {
+                let vc = SellDetailsViewController.makeViewController(
+                    viewType: .forModify,
+                    imageUrlCoupleList: imageUrlCoupleList,
+                    fireAuctionItem: fireAuctionItem
+                )
+                GlobalUITask.removeSpinner(viewController: self ?? UIViewController())
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+        })
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

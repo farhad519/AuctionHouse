@@ -42,16 +42,25 @@ class SellDetailsViewController: UIViewController {
         )
     }
     
-    static func makeViewController(viewType: SellDetailsViewType, fireAuctionItem: FireAuctionItem? = nil) -> SellDetailsViewController {
+    static func makeViewController(
+        viewType: SellDetailsViewType,
+        imageUrlCoupleList: [ImageUrlCouple] = [],
+        fireAuctionItem: FireAuctionItem? = nil
+    ) -> SellDetailsViewController {
         let vc = SellDetailsViewController()
-        guard let fireAuctionItem = fireAuctionItem else {
+        guard
+            let fireAuctionItem = fireAuctionItem else {
             vc.viewModel = SellDetailsViewModel(viewType: .forCreate)
             return vc
         }
         if viewType == SellDetailsViewType.forCreate {
             vc.viewModel = SellDetailsViewModel(viewType: viewType)
         } else {
-            vc.viewModel = SellDetailsViewModel(viewType: viewType, fireAuctionItem: fireAuctionItem)
+            vc.viewModel = SellDetailsViewModel(
+                viewType: viewType,
+                imageUrlCoupleList: imageUrlCoupleList,
+                fireAuctionItem: fireAuctionItem
+            )
         }
         return vc
     }
@@ -109,8 +118,14 @@ class SellDetailsViewController: UIViewController {
     }
 
     @objc private func imageSelectionAction(_ notification: NSNotification) {
-        if let imageUrl = notification.userInfo?[Notification.Name.imgSelectedNotifi] as? URL {
-            viewModel.imageUrlList.append(imageUrl)
+        if
+            let imageUrl = notification.userInfo?[Notification.Name.imgSelectedNotifi] as? URL,
+            let data = try? Data(contentsOf: imageUrl),
+            let image = UIImage(data: data)
+        {
+            viewModel.imageUrlCoupleList.append(
+                ImageUrlCouple(image: image, url: imageUrl, isFromCloud: false)
+            )
         }
         tableView.reloadData()
     }
@@ -128,8 +143,8 @@ class SellDetailsViewController: UIViewController {
     @objc private func imageDeletionAction(_ notification: NSNotification) {
         guard
             let curPageIdx = imageSwiperCustomView?.curImagePage,
-            curPageIdx < viewModel.imageList.count else { return }
-        viewModel.imageUrlList.remove(at: curPageIdx)
+            curPageIdx < viewModel.imageUrlCoupleList.count else { return }
+        viewModel.imageUrlCoupleList.remove(at: curPageIdx)
         tableView.reloadData()
     }
     
@@ -143,10 +158,11 @@ class SellDetailsViewController: UIViewController {
         }
         
         GlobalUITask.showSpinner(viewController: self)
-        viewModel.saveDataToFireStore() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                GlobalUITask.removeSpinner(viewController: self)
-            }
+        viewModel.saveDataToFireStore() { [weak self] resultString in
+            //DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            GlobalUITask.removeSpinner(viewController: self ?? UIViewController())
+            Toast.show(message: resultString, controller: self ?? UIViewController())
+            //}
         }
     }
     
@@ -217,7 +233,7 @@ extension SellDetailsViewController: UITableViewDataSource {
                     origin: .zero,
                     size: CGSize(width: selfWidth, height: imageCellHeight)
                 ),
-                imageList: viewModel.imageList
+                imageList: viewModel.imageUrlCoupleList.map { $0.image }
             )
             cell.addSubview(imageSwiperCustomView ?? UIView())
             cell.selectionStyle = .none
@@ -370,7 +386,7 @@ extension SellDetailsViewController: UITableViewDelegate {
         )
         postButton.backgroundColor = .blue
         postButton.layer.cornerRadius = 10
-        postButton.setTitle("Post", for: .normal)
+        postButton.setTitle(viewModel.buttonTitle, for: .normal)
         postButton.setTitleColor(.gray, for: .highlighted)
         postButton.addTarget(
             self,
@@ -380,7 +396,6 @@ extension SellDetailsViewController: UITableViewDelegate {
         view.addSubview(postButton)
         
         if viewModel.viewType == SellDetailsViewType.forBid {
-            postButton.setTitle("Bid", for: .normal)
             postButton.backgroundColor = .red
         }
         
