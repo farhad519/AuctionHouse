@@ -10,6 +10,12 @@ import CoreData
 import Firebase
 import FirebaseStorage
 
+enum SellDetailsViewType {
+    case forCreate
+    case forModify
+    case forBid
+}
+
 enum SellDetailsEditedEnum {
     case title
     case type
@@ -26,23 +32,37 @@ struct SellDetailsEditedValue {
     var description: String
 }
 
+struct ImageUrlCouple {
+    var image: UIImage
+    var url: URL
+    var isFromCloud: Bool
+}
+
 final class SellDetailsViewModel {
     let descriptionTextViewPlaceHolder = TextViewPlaceHolder("Write description here .....")
     var editedValue: SellDetailsEditedValue
-    var imageList: [UIImage] {
-        imageUrlList.compactMap {
-            guard let data = try? Data(contentsOf: $0) else { return nil }
-            return UIImage(data: data)
-        }
-    }
-    var imageUrlList: [URL] = []
+    var imageUrlCoupleList: [ImageUrlCouple] = []
     var videoList: [URL] = []
     
     private var context: NSManagedObjectContext? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     }
     
-    init() {
+    var buttonTitle: String {
+        switch viewType {
+        case .forCreate:
+            return "Post"
+        case .forBid:
+            return "Bid"
+        default:
+            return "Modify"
+        }
+    }
+    
+    var viewType: SellDetailsViewType
+    var fireAuctionItem: FireAuctionItem?
+    
+    init(viewType: SellDetailsViewType) {
         editedValue = SellDetailsEditedValue(
             title: "",
             type: "",
@@ -50,10 +70,28 @@ final class SellDetailsViewModel {
             negotiable: "",
             description: ""
         )
+        self.viewType = viewType
+    }
+    
+    init(
+        viewType: SellDetailsViewType,
+        imageUrlCoupleList: [ImageUrlCouple],
+        fireAuctionItem: FireAuctionItem
+    ) {
+        self.fireAuctionItem = fireAuctionItem
+        editedValue = SellDetailsEditedValue(
+            title: fireAuctionItem.title,
+            type: fireAuctionItem.type,
+            price: String(fireAuctionItem.price),
+            negotiable: fireAuctionItem.negotiable ? "yes" : "no",
+            description: fireAuctionItem.description
+        )
+        self.viewType = viewType
+        self.imageUrlCoupleList = imageUrlCoupleList
     }
     
     func isAnyFieldEmpty() -> String? {
-        if imageUrlList.isEmpty {
+        if imageUrlCoupleList.isEmpty {
             return "Need at least one image of the product."
         }
         if editedValue.description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -127,19 +165,19 @@ final class SellDetailsViewModel {
         }
     }
     
-    private func coreDataObjectFromImages() -> Data? {
-        let dataArray = NSMutableArray()
-        
-        for image in imageList {
-            if let data = image.pngData() {
-                dataArray.add(data)
-            }
-        }
-        
-        return try? NSKeyedArchiver.archivedData(withRootObject: dataArray, requiringSecureCoding: true)
-    }
+//    private func coreDataObjectFromImages() -> Data? {
+//        let dataArray = NSMutableArray()
+//
+//        for image in imageList {
+//            if let data = image.pngData() {
+//                dataArray.add(data)
+//            }
+//        }
+//
+//        return try? NSKeyedArchiver.archivedData(withRootObject: dataArray, requiringSecureCoding: true)
+//    }
     
-    func saveDataToFireStore(completion: @escaping () -> Void) {
+    func saveDataToFireStore(completion: @escaping (String) -> Void) {
         let workGroup = DispatchGroup()
         var videoUrlString: String = ""
         var imageUrlStringList: [String] = []
@@ -162,27 +200,55 @@ final class SellDetailsViewModel {
         
         workGroup.notify(queue: DispatchQueue.main, execute: { [weak self] in
             guard let editedValue = self?.editedValue else {
-                completion()
+                completion("Error while saving data.")
                 return
             }
             let db = Firestore.firestore()
-            db
-                .collection(MyKeys.AuctionSellItem.rawValue)
-                .addDocument(
-                    data: [
-                        MyKeys.AuctionSellItemField.title.rawValue: editedValue.title,
-                        MyKeys.AuctionSellItemField.sellDescription.rawValue: editedValue.description,
-                        MyKeys.AuctionSellItemField.type.rawValue: editedValue.type,
-                        MyKeys.AuctionSellItemField.negotiable.rawValue: negotiableValue,
-                        MyKeys.AuctionSellItemField.price.rawValue: priceValue,
-                        MyKeys.AuctionSellItemField.ownerId.rawValue: ownerId,
-                        MyKeys.AuctionSellItemField.video.rawValue: videoUrlString,
-                        MyKeys.AuctionSellItemField.images.rawValue: imageUrlStringList,
-                    ]
-                ) { error in
-                    completion()
-                    guard error == nil else { return }
-                }
+            switch self?.viewType {
+            case .forCreate:
+                db
+                    .collection(MyKeys.AuctionSellItem.rawValue)
+                    .addDocument(
+                        data: [
+                            MyKeys.AuctionSellItemField.title.rawValue: editedValue.title,
+                            MyKeys.AuctionSellItemField.sellDescription.rawValue: editedValue.description,
+                            MyKeys.AuctionSellItemField.type.rawValue: editedValue.type,
+                            MyKeys.AuctionSellItemField.negotiable.rawValue: negotiableValue,
+                            MyKeys.AuctionSellItemField.price.rawValue: priceValue,
+                            MyKeys.AuctionSellItemField.ownerId.rawValue: ownerId,
+                            MyKeys.AuctionSellItemField.video.rawValue: videoUrlString,
+                            MyKeys.AuctionSellItemField.images.rawValue: imageUrlStringList,
+                        ]
+                    ) { error in
+                        if let error = error {
+                            completion("Error with \(error)")
+                        } else {
+                            completion("Data saved successfully.")
+                        }
+                    }
+            default:
+                db
+                    .collection(MyKeys.AuctionSellItem.rawValue)
+                    .document(self?.fireAuctionItem?.id ?? "")
+                    .setData(
+                        [
+                            MyKeys.AuctionSellItemField.title.rawValue: editedValue.title,
+                            MyKeys.AuctionSellItemField.sellDescription.rawValue: editedValue.description,
+                            MyKeys.AuctionSellItemField.type.rawValue: editedValue.type,
+                            MyKeys.AuctionSellItemField.negotiable.rawValue: negotiableValue,
+                            MyKeys.AuctionSellItemField.price.rawValue: priceValue,
+                            MyKeys.AuctionSellItemField.ownerId.rawValue: ownerId,
+                            MyKeys.AuctionSellItemField.video.rawValue: videoUrlString,
+                            MyKeys.AuctionSellItemField.images.rawValue: imageUrlStringList,
+                        ]
+                    ){ error in
+                        if let error = error {
+                            completion("Error with \(error)")
+                        } else {
+                            completion("Data modified successfully.")
+                        }
+                    }
+            }
         })
         
     }
@@ -191,13 +257,17 @@ final class SellDetailsViewModel {
         let workGroup = DispatchGroup()
         var urlList: [URL] = []
         let storage = Storage.storage()
-        imageUrlList.forEach {
+        imageUrlCoupleList.forEach {
+            guard $0.isFromCloud == false else {
+                urlList.append($0.url)
+                return
+            }
             let imageUID = UUID().uuidString
             let storageRef = storage.reference()
                 .child(MyKeys.imagesFolder.rawValue)
                 .child(imageUID)
             workGroup.enter()
-            storageRef.putFile(from: $0, metadata: nil) { (metadata, error) in
+            storageRef.putFile(from: $0.url, metadata: nil) { (metadata, error) in
                 guard error == nil else {
                     workGroup.leave()
                     return

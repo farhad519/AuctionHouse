@@ -12,6 +12,7 @@ enum DataCollectorError: Error {
     case noUserId
     case invalidUrl
     case failedToConvertDataToImage
+    case noDataFound
 }
 
 struct FireAuctionItem {

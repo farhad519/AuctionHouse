@@ -20,11 +20,13 @@ enum AuctionListViewType {
 }
 
 struct AuctionListCellStruct {
+    var title: String
     var imageUrlString: String
     var upperString: String
     var lowerString: String
     var sellDescription: String
     init() {
+        title = ""
         imageUrlString = ""
         upperString = "0.0$"
         lowerString = "Fixed"
@@ -36,7 +38,7 @@ class AuctionListViewModel {
     var auctionListViewType = AuctionListViewType.auctionListView
     var auctionSellItemList: [FireAuctionItem] = []
     var delegate: AuctionListViewControllerDelegate?
-    private let dataCollector: DataCollector
+    let dataCollector: DataCollector
     
     private var context: NSManagedObjectContext? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
@@ -105,14 +107,20 @@ class AuctionListViewModel {
 //        })
 //    }
     
-    func getItem(at index: Int) -> AuctionListCellStruct {
+    func getCellItem(at index: Int) -> AuctionListCellStruct {
         guard index < auctionSellItemList.count else { return AuctionListCellStruct() }
         var cellItem = AuctionListCellStruct()
+        cellItem.title = auctionSellItemList[index].title
         cellItem.upperString = "\(auctionSellItemList[index].price)$"
         cellItem.lowerString = auctionSellItemList[index].negotiable == false ? "Fixed" : "Negotiable"
         cellItem.sellDescription = auctionSellItemList[index].description
         cellItem.imageUrlString = auctionSellItemList[index].imagesUrlStringList.first ?? ""
         return cellItem
+    }
+    
+    func getFireAuctionItem(at index: Int) -> FireAuctionItem? {
+        guard index < auctionSellItemList.count else { return nil }
+        return auctionSellItemList[index]
     }
 
 //    func loadDataFromStore() {

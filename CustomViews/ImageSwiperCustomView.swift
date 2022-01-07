@@ -13,9 +13,7 @@ class ImageSwiperCustomView: UIView {
     
     private var lastPage = 0
     
-    var curImagePage: Int {
-        pageController.currentPage
-    }
+    var curImagePage: Int { pageController.currentPage }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
