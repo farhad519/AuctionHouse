@@ -8,6 +8,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestore
+import ReactiveSwift
 
 class DataCollector {
     func getMySellList(completion: @escaping (Result<[FireAuctionItem], Error>) -> Void) {
@@ -96,5 +97,109 @@ class DataCollector {
             }
             completion(.success(image))
         }.resume()
+    }
+    
+    func observeMessages() {
+//        let userMessagesRef = Storage.storage().reference()
+//            .child("user-messages")
+//            .child("from")
+//            .child("to")
+        let userMessagesObserver = Firestore.firestore()
+            .collection("user-messages")
+            .document("fromId")
+        userMessagesObserver.addSnapshotListener { (documentSnapshot, error) in
+            
+            print("listener found ...... \(error)")
+        }
+        
+        let userMessagesRef = Firestore.firestore()
+            .collection("user-messages")
+            .document("fromId")
+            .collection("toId2")
+        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+        let values: [String : Any] = [
+            "id2": "id1234",
+            "timestamp": timestamp
+        ]
+        userMessagesRef.addDocument(data: values)
+        userMessagesRef.addDocument(data: values)
+    }
+    
+    func postRecentMessages(message: String, iconUrl: String, toId: String) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][postRecentMessages] can not find self uid")
+            return
+        }
+        guard let email = Auth.auth().currentUser?.email else {
+            print("[DataCollector][postRecentMessages] can not find email")
+            return
+        }
+        
+        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+        let data: [String: Any] = [
+            MyKeys.ContactItemField.message.rawValue: message,
+            MyKeys.ContactItemField.iconUrl.rawValue: iconUrl,
+            MyKeys.ContactItemField.timeStamp.rawValue: timestamp,
+            MyKeys.ContactItemField.email.rawValue: email
+        ]
+        let recentMessagesRef = Firestore.firestore()
+            .collection(MyKeys.recentMessages.rawValue)
+            .document(toId)
+            .collection(MyKeys.messages.rawValue)
+            .document(fromId)
+        recentMessagesRef.setData(data)
+    }
+    
+    func getRecentMessages() -> SignalProducer<[FireContactItem], Error> {
+        SignalProducer { [weak self] (observer, disposable) in
+            guard let self = self else {
+                observer.sendCompleted()
+                return
+            }
+            self.getRecentMessages() { result in
+                switch result {
+                case .success(let fireContactItemList):
+                    observer.send(value: fireContactItemList)
+                    observer.sendCompleted()
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            }
+        }
+    }
+    
+    func getRecentMessages(completion: @escaping (Result<[FireContactItem], Error>) -> Void) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][postRecentMessages] can not find self uid")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        let recentMessagesRef = Firestore.firestore()
+            .collection(MyKeys.recentMessages.rawValue)
+            .document(fromId)
+            .collection(MyKeys.messages.rawValue)
+            .order(by: MyKeys.ContactItemField.timeStamp.rawValue)
+            .limit(to: 10)
+        recentMessagesRef.getDocuments { (snapShot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            let contactItemDatas = snapShot.documents.compactMap { document in
+                FireContactItem(
+                    id: document.documentID,
+                    message: document[MyKeys.ContactItemField.message.rawValue] as? String ?? "",
+                    iconUrl: document[MyKeys.ContactItemField.iconUrl.rawValue] as? String ?? "",
+                    timeStamp: document[MyKeys.ContactItemField.timeStamp.rawValue] as? NSNumber ?? NSNumber(value: 0),
+                    email: document[MyKeys.ContactItemField.email.rawValue] as? String ?? ""
+                )
+            }
+            print("[DataCollector][postRecentMessages] received contact data \(contactItemDatas.count)")
+            completion(.success(contactItemDatas))
+        }
     }
 }

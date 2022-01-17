@@ -48,6 +48,7 @@
 		5AC3BBF9274D014500166B0A /* AuctionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */; };
 		5AC3BBFB274D014C00166B0A /* AuctionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */; };
 		5AC3BBFD274D015600166B0A /* AuctionListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3BBFC274D015600166B0A /* AuctionListCell.xib */; };
+		5AF61D1A2791B033001E2D24 /* ContactListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF61D192791B033001E2D24 /* ContactListViewModel.swift */; };
 		D02A3665E2453CF0E2808169 /* Pods_AuctionHouse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32942F238A5D113EEEE0F9E6 /* Pods_AuctionHouse.framework */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +97,7 @@
 		5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionListViewController.swift; sourceTree = "<group>"; };
 		5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionListCell.swift; sourceTree = "<group>"; };
 		5AC3BBFC274D015600166B0A /* AuctionListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuctionListCell.xib; sourceTree = "<group>"; };
+		5AF61D192791B033001E2D24 /* ContactListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactListViewModel.swift; sourceTree = "<group>"; };
 		A151F7DEA71E32661A4599F8 /* Pods-AuctionHouse.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuctionHouse.debug.xcconfig"; path = "Target Support Files/Pods-AuctionHouse/Pods-AuctionHouse.debug.xcconfig"; sourceTree = "<group>"; };
 		BF0ED8770F9E9C12102B2184 /* Pods-AuctionHouse.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AuctionHouse.release.xcconfig"; path = "Target Support Files/Pods-AuctionHouse/Pods-AuctionHouse.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -252,6 +254,7 @@
 				5AC3BBEE274D00CB00166B0A /* ContactCell.xib */,
 				5AC3BBF0274D00D300166B0A /* ContactCell.swift */,
 				5AC3BBF2274D00D900166B0A /* ContactListViewController.swift */,
+				5AF61D192791B033001E2D24 /* ContactListViewModel.swift */,
 			);
 			path = Contact;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */,
 				5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */,
 				5A01CE4227694BF800F3BDF2 /* MyKeys.swift in Sources */,
+				5AF61D1A2791B033001E2D24 /* ContactListViewModel.swift in Sources */,
 				5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */,
 				5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */,
 				5AC3BBDA274CFF2500166B0A /* VideoManager.swift in Sources */,

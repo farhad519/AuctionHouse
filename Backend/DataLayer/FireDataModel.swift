@@ -26,3 +26,11 @@ struct FireAuctionItem {
     var videoUrlString: String
     var imagesUrlStringList: [String]
 }
+
+struct FireContactItem {
+    var id: String
+    var message: String
+    var iconUrl: String
+    var timeStamp: NSNumber
+    var email: String
+}

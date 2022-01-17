@@ -11,6 +11,8 @@ enum MyKeys: String {
     case imagesFolder = "AuctionHouse/Images"
     case videoFolder = "AuctionHouse/Videos"
     case AuctionSellItem = "AuctionSellItem"
+    case recentMessages = "recent-messages"
+    case messages = "messages"
     enum AuctionSellItemField: String {
         case title = "title"
         case sellDescription = "sellDescription"
@@ -20,5 +22,11 @@ enum MyKeys: String {
         case ownerId = "ownerId"
         case video = "video"
         case images = "images"
+    }
+    enum ContactItemField: String {
+        case message = "message"
+        case iconUrl = "iconUrl"
+        case timeStamp = "timeStamp"
+        case email = "email"
     }
 }
