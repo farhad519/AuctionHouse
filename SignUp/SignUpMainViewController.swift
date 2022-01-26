@@ -27,6 +27,7 @@ class SignUpMainViewController: UIViewController {
         //DataCollector().postRecentMessages(message: "hi there ee", iconUrl: "", toId: "DDdd@gmail.com")
         //let vm = ContactListViewModel()
         //vm.fetchData()
+        navigationController?.pushViewController(ChatViewController.makeViewController(), animated: true)
         
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false

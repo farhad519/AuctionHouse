@@ -12,6 +12,7 @@ enum MyKeys: String {
     case videoFolder = "AuctionHouse/Videos"
     case AuctionSellItem = "AuctionSellItem"
     case recentMessages = "recent-messages"
+    case userMessages = "user-messages"
     case messages = "messages"
     enum AuctionSellItemField: String {
         case title = "title"

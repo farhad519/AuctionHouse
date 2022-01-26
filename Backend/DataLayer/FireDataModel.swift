@@ -34,3 +34,8 @@ struct FireContactItem {
     var timeStamp: NSNumber
     var email: String
 }
+
+struct FireMessageItem {
+    var message: String
+    var timeStamp: NSNumber
+}

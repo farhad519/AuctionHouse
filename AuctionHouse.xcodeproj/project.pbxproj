@@ -10,12 +10,18 @@
 		5A01CE4227694BF800F3BDF2 /* MyKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A01CE4127694BF800F3BDF2 /* MyKeys.swift */; };
 		5A06AB982756C0D400E858A4 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A06AB972756C0D400E858A4 /* SignUp.storyboard */; };
 		5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */; };
+		5A0BFD152797579600E138BD /* ChatMessangerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0BFD142797579600E138BD /* ChatMessangerViewModel.swift */; };
 		5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */; };
 		5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */; };
 		5A2384062758A87500443734 /* SignUpMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384052758A87500443734 /* SignUpMainViewController.swift */; };
 		5A2384082758A88700443734 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384072758A88700443734 /* SignUpViewController.swift */; };
 		5A23840A2758A89600443734 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384092758A89600443734 /* SignInViewController.swift */; };
 		5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A356AC627539B3D00A5F3DC /* HelperViews.swift */; };
+		5A4154FB279C3FE8004E3290 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4154FA279C3FE8004E3290 /* ChatViewController.swift */; };
+		5A4154FE279CD3A3004E3290 /* MyMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4154FC279CD3A3004E3290 /* MyMessageCollectionViewCell.swift */; };
+		5A4154FF279CD3A3004E3290 /* MyMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A4154FD279CD3A3004E3290 /* MyMessageCollectionViewCell.xib */; };
+		5A415502279CD3BA004E3290 /* OtherMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A415500279CD3BA004E3290 /* OtherMessageCollectionViewCell.swift */; };
+		5A415503279CD3BA004E3290 /* OtherMessageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A415501279CD3BA004E3290 /* OtherMessageCollectionViewCell.xib */; };
 		5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */; };
 		5A5343F9274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 5A5343F7274D6B2D00912DC1 /* AuctionHouse.xcdatamodeld */; };
 		5A565FC2276E89E3007758C2 /* DataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A565FC1276E89E3007758C2 /* DataCollector.swift */; };
@@ -57,12 +63,18 @@
 		5A01CE4127694BF800F3BDF2 /* MyKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyKeys.swift; sourceTree = "<group>"; };
 		5A06AB972756C0D400E858A4 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
 		5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMainViewModel.swift; sourceTree = "<group>"; };
+		5A0BFD142797579600E138BD /* ChatMessangerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessangerViewModel.swift; sourceTree = "<group>"; };
 		5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		5A2384052758A87500443734 /* SignUpMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMainViewController.swift; sourceTree = "<group>"; };
 		5A2384072758A88700443734 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		5A2384092758A89600443734 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		5A356AC627539B3D00A5F3DC /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
+		5A4154FA279C3FE8004E3290 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		5A4154FC279CD3A3004E3290 /* MyMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCollectionViewCell.swift; sourceTree = "<group>"; };
+		5A4154FD279CD3A3004E3290 /* MyMessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyMessageCollectionViewCell.xib; sourceTree = "<group>"; };
+		5A415500279CD3BA004E3290 /* OtherMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherMessageCollectionViewCell.swift; sourceTree = "<group>"; };
+		5A415501279CD3BA004E3290 /* OtherMessageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherMessageCollectionViewCell.xib; sourceTree = "<group>"; };
 		5A45F9EE27527EE700006C7E /* AuctionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuctionListViewModel.swift; sourceTree = "<group>"; };
 		5A5343F8274D6B2D00912DC1 /* AuctionHouse.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AuctionHouse.xcdatamodel; sourceTree = "<group>"; };
 		5A565FC1276E89E3007758C2 /* DataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollector.swift; sourceTree = "<group>"; };
@@ -263,6 +275,12 @@
 			isa = PBXGroup;
 			children = (
 				5AC3BBF5274D010D00166B0A /* ChatMesengerViewController.swift */,
+				5A0BFD142797579600E138BD /* ChatMessangerViewModel.swift */,
+				5A4154FA279C3FE8004E3290 /* ChatViewController.swift */,
+				5A4154FC279CD3A3004E3290 /* MyMessageCollectionViewCell.swift */,
+				5A4154FD279CD3A3004E3290 /* MyMessageCollectionViewCell.xib */,
+				5A415500279CD3BA004E3290 /* OtherMessageCollectionViewCell.swift */,
+				5A415501279CD3BA004E3290 /* OtherMessageCollectionViewCell.xib */,
 			);
 			path = ChatMessenger;
 			sourceTree = "<group>";
@@ -358,7 +376,9 @@
 				5AC3BBEF274D00CB00166B0A /* ContactCell.xib in Resources */,
 				5A9A8370274BD8E500F80CB9 /* LaunchScreen.storyboard in Resources */,
 				5A97F26A275B844D0045DCEC /* GoogleService-Info.plist in Resources */,
+				5A415503279CD3BA004E3290 /* OtherMessageCollectionViewCell.xib in Resources */,
 				5AC3BBEC274D008C00166B0A /* TextViewCell.xib in Resources */,
+				5A4154FF279CD3A3004E3290 /* MyMessageCollectionViewCell.xib in Resources */,
 				5AC3BBFD274D015600166B0A /* AuctionListCell.xib in Resources */,
 				5A9A836D274BD8E500F80CB9 /* Assets.xcassets in Resources */,
 				5A06AB982756C0D400E858A4 /* SignUp.storyboard in Resources */,
@@ -419,6 +439,7 @@
 				5AC3BBE6274D006500166B0A /* SellDetailsViewController.swift in Sources */,
 				5AC3BBD6274CFF1800166B0A /* ImageSwiperCustomView.swift in Sources */,
 				5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */,
+				5A4154FB279C3FE8004E3290 /* ChatViewController.swift in Sources */,
 				5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */,
 				5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */,
 				5A01CE4227694BF800F3BDF2 /* MyKeys.swift in Sources */,
@@ -437,11 +458,14 @@
 				5AC3BBD2274CFF0700166B0A /* DropDownCustomView.swift in Sources */,
 				5A23840A2758A89600443734 /* SignInViewController.swift in Sources */,
 				5A9A8363274BD8E400F80CB9 /* SceneDelegate.swift in Sources */,
+				5A415502279CD3BA004E3290 /* OtherMessageCollectionViewCell.swift in Sources */,
+				5A4154FE279CD3A3004E3290 /* MyMessageCollectionViewCell.swift in Sources */,
 				5AC3BBDF274D001D00166B0A /* DashboardViewController.swift in Sources */,
 				5AC3BBD8274CFF1E00166B0A /* PriceDetailsCustomView.swift in Sources */,
 				5A565FC4276E8B54007758C2 /* FireDataModel.swift in Sources */,
 				5AC3BBF6274D010D00166B0A /* ChatMesengerViewController.swift in Sources */,
 				5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */,
+				5A0BFD152797579600E138BD /* ChatMessangerViewModel.swift in Sources */,
 				5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */,
 				5AC3BBD4274CFF0F00166B0A /* ImagePickerManager.swift in Sources */,
 				5AC3BBE8274D008100166B0A /* SellDetailsViewModel.swift in Sources */,
