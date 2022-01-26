@@ -23,9 +23,9 @@ class ChatViewController: UIViewController {
     private let myMessageCellId = "MyMessageCollectionViewCell"
     private let otherMessageCellId = "OtherMessageCollectionViewCell"
     
-    static func makeViewController() -> ChatViewController {
+    static func makeViewController(toId: String) -> ChatViewController {
         let vc = ChatViewController()
-        vc.viewModel = ChatMessangerViewModel(toId: "")
+        vc.viewModel = ChatMessangerViewModel(toId: toId)
         return vc
     }
 

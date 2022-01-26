@@ -121,6 +121,11 @@ class ChatMessangerViewModel {
             timeStamp: messageModel.timeStamp,
             toId: toId
         )
+        dataCollector.postRecentMessages(
+            message: message,
+            iconUrl: "",
+            toId: toId
+        )
         myMessageList.append(messageModel)
     }
     

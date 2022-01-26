@@ -134,6 +134,10 @@ class DataCollector {
             print("[DataCollector][postRecentMessages] can not find email")
             return
         }
+        guard toId.isEmpty == false else {
+            print("[DataCollector][postRecentMessages] toId is empty")
+            return
+        }
         
         let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
         let data: [String: Any] = [

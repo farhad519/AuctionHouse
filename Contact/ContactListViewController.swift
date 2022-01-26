@@ -129,7 +129,11 @@ extension ContactListViewController: UITableViewDataSource {
 extension ContactListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let vc = ChatMesengerViewController.makeViewController()
+        guard indexPath.item < viewModel.contactList.count else {
+            return
+        }
+        let toId = viewModel.contactList[indexPath.item].id
+        let vc = ChatViewController.makeViewController(toId: toId)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
