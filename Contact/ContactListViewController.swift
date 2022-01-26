@@ -6,16 +6,21 @@
 //
 
 import UIKit
+import ReactiveSwift
 
 class ContactListViewController: UIViewController {
     private var selfWidth: CGFloat = 0.0
     private var selfHeight: CGFloat = 0.0
-    private var tableView = UITableView(frame: .zero, style: .grouped)
+    var tableView = UITableView(frame: .zero, style: .grouped)
+    
+    private var disposables = CompositeDisposable()
+    private var viewModel: ContactListViewModel!
     
     private let tableViewCellId = "ContactCell"
     
     static func makeViewController() -> ContactListViewController {
         let vc = ContactListViewController()
+        vc.viewModel = ContactListViewModel(vc: vc)
         return vc
     }
     
@@ -24,6 +29,19 @@ class ContactListViewController: UIViewController {
         selfWidth = self.view.frame.width
         selfHeight = self.view.frame.height
         configureTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        disposables += viewModel.fetchData()
+        disposables += viewModel.observeForUpdate.startWithValues { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        disposables.dispose()
     }
     
     private func configureTableView() {
@@ -62,32 +80,35 @@ class ContactListViewController: UIViewController {
 }
 
 extension ContactListViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        1
-    }
+    func numberOfSections(in tableView: UITableView) -> Int { 1 }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
+        viewModel.contactList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellId, for: indexPath) as! ContactCell
+        
+        guard indexPath.item < viewModel.contactList.count else {
+            return cell
+        }
+        let contactItem = viewModel.contactList[indexPath.item]
         
         cell.contactCellImageView.image = UIImage(named: "img1")
         cell.contactCellImageView?.backgroundColor = .black
         cell.contactCellImageView?.layer.cornerRadius = 10
         
         cell.titleLabel.font = UIFont(name: "Helvetica", size: 20)!
-        cell.titleLabel.text = "Eren eager"
+        cell.titleLabel.text = contactItem.email
         
         cell.subtitleLabel.font = UIFont(name: "Helvetica", size: 12)!
         cell.subtitleLabel.numberOfLines = 0
-        cell.subtitleLabel.text = "Eren eager ist as ans dm und ich mochte brauchen money.\n\n\n\n\n\naa"
+        cell.subtitleLabel.text = contactItem.message
         
         cell.upperLabel.font = UIFont(name: "Helvetica", size: 10)!
         cell.upperLabel.text = "Last message"
         
-        let date = Date()
+        let date = Date(timeIntervalSince1970: TimeInterval(truncating: contactItem.timeStamp))
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         cell.lowerLabel.font = UIFont(name: "Helvetica", size: 10)!
@@ -108,7 +129,11 @@ extension ContactListViewController: UITableViewDataSource {
 extension ContactListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let vc = ChatMesengerViewController.makeViewController()
+        guard indexPath.item < viewModel.contactList.count else {
+            return
+        }
+        let toId = viewModel.contactList[indexPath.item].id
+        let vc = ChatViewController.makeViewController(toId: toId)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

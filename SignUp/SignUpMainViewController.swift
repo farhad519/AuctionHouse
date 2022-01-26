@@ -24,6 +24,11 @@ class SignUpMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //DataCollector().postRecentMessages(message: "hi there ee", iconUrl: "", toId: "jZyx5PCCtDV95lFExJQ4RtYHjIR2")
+        //let vm = ContactListViewModel()
+        //vm.fetchData()
+        //navigationController?.pushViewController(ChatViewController.makeViewController(toId: ""), animated: true)
+        
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
         navigationItem.backButtonTitle = "back"
