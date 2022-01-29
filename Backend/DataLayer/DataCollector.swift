@@ -282,4 +282,41 @@ class DataCollector {
             completion(.success(messageItemDatas))
         }
     }
+    
+    func getMyDirectMessages(toId: String, completion: @escaping (Result<[FireMessageItem], Error>) -> Void) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][getMyDirectMessages] can not find self uid")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        guard toId.isEmpty == false else {
+            print("[DataCollector][getMyDirectMessages] toId is empty.")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        let directMessagesRef = Firestore.firestore()
+            .collection(MyKeys.userMessages.rawValue)
+            .document(toId)
+            .collection(fromId)
+            .order(by: MyKeys.ContactItemField.timeStamp.rawValue)
+            .limit(to: 100)
+        directMessagesRef.getDocuments { (snapShot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            let messageItemDatas = snapShot.documents.compactMap { document in
+                FireMessageItem(
+                    message: document[MyKeys.ContactItemField.message.rawValue] as? String ?? "",
+                    timeStamp: document[MyKeys.ContactItemField.timeStamp.rawValue] as? NSNumber ?? NSNumber(value: 0)
+                )
+            }
+            print("[DataCollector][getMyDirectMessages] received message data \(messageItemDatas.count)")
+            completion(.success(messageItemDatas))
+        }
+    }
 }
