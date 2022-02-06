@@ -39,6 +39,7 @@ class AuctionListViewModel {
     var auctionSellItemList: [FireAuctionItem] = []
     var delegate: AuctionListViewControllerDelegate?
     let dataCollector: DataCollector
+    var pageNum: Int = 1
     
     private var context: NSManagedObjectContext? {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
@@ -51,17 +52,47 @@ class AuctionListViewModel {
     }
     
     private func setupMyAuctionListDataSource() {
+        switch auctionListViewType {
+        case .auctionListView:
+            getAllSellList()
+        case .bidListView:
+            getMyBidList()
+        case .createdView:
+            getMySellList()
+        }
+    }
+    
+    private func getAllSellList() {
+        auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
+            offset: 0,
+            blockCount: 2,
+            minV: 0,
+            maxV: 200000000,
+            searchKey: []
+        )
+        print("[AuctionListViewModel][getAllSellList] item count from core data \(auctionSellItemList.count)")
+    }
+    
+    private func getMyBidList() {
         dataCollector.getMySellList { [weak self] result in
             switch result {
             case .success(let auctionList):
                 self?.auctionSellItemList = auctionList
                 self?.delegate?.reloadViewController()
-//                self?.getImageFromServer(auctionList: auctionList) { cellItemList in
-//                    self?.auctionSellItemList = cellItemList
-//                    self?.delegate?.reloadViewController()
-//                }
             case .failure(let error):
-                print("[AuctionListViewModel][setupMyAuctionListDataSource] error at retrieving data with \(error)")
+                print("[AuctionListViewModel][getMySellList] error at retrieving data with \(error)")
+            }
+        }
+    }
+    
+    private func getMySellList() {
+        dataCollector.getMySellList { [weak self] result in
+            switch result {
+            case .success(let auctionList):
+                self?.auctionSellItemList = auctionList
+                self?.delegate?.reloadViewController()
+            case .failure(let error):
+                print("[AuctionListViewModel][getMySellList] error at retrieving data with \(error)")
             }
         }
     }
@@ -148,4 +179,32 @@ class AuctionListViewModel {
 //
 //        return retrievedImages
 //    }
+    
+    func searchSellItems(minimumValue: String, maximumValue: String, searchKeyStr: String, serachKeyTextColor: UIColor) {
+        let trimmedString = String(
+            searchKeyStr.filter { !" \n\t\r".contains($0) }
+        )
+        var keyArrs: [String] = []
+        if serachKeyTextColor != .lightGray && trimmedString.isEmpty == false {
+            keyArrs = trimmedString.components(separatedBy: ",")
+        }
+        
+        var minV = 0
+        var maxV = 2000000000
+        if let value = Int(minimumValue) {
+            minV = max(0, value)
+        }
+        if let value = Int(maximumValue) {
+            maxV = min(maxV, value)
+        }
+
+        auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
+            offset: (pageNum - 1) * 2,
+            blockCount: 2,
+            minV: minV,
+            maxV: maxV,
+            searchKey: keyArrs
+        )
+        print("[AuctionListViewModel][getAllSellList] item count from core data \(auctionSellItemList.count)")
+    }
 }

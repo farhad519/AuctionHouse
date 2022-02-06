@@ -8,6 +8,27 @@
 import Foundation
 
 class SignUpMainViewModel {
+    private let emailKey = "SignUpEmailKey"
+    private let passKey = "SignUpPassKey"
+    
+    var email: String? {
+        get {
+            UserDefaults.standard.string(forKey: emailKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: emailKey)
+        }
+    }
+    
+    var passward: String? {
+        get {
+            UserDefaults.standard.string(forKey: passKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: passKey)
+        }
+    }
+    
     func validateFields(userName: String?, gmail: String?, password: String?) -> String? {
         let isAnyFieldEmpty = [
             userName?.trimmingCharacters(in: .whitespacesAndNewlines),

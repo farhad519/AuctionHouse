@@ -34,6 +34,8 @@ class AuctionListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //tableView.estimatedSectionHeaderHeight = headerHeight
+        //tableView.sectionHeaderHeight = UITableView.automaticDimension
         selfWidth = self.view.frame.width
         selfHeight = self.view.frame.height
         configureTableView()
@@ -282,7 +284,7 @@ extension AuctionListViewController {
         headerView.addSubview(rightButton)
         
         // page number label
-        pageNumLabel.text = "1"
+        pageNumLabel.text = "\(viewModel.pageNum)"
         pageNumLabel.frame = CGRect(
             x: (selfWidth / 2) - (buttonSize / 2),
             y: headerHeight - buttonSize - buttonInset,
@@ -384,42 +386,42 @@ extension AuctionListViewController {
     }
     
     @objc private func searchButtonAction() {
-        var minCost: Double = 0
-        var maxCost: Double = 99999999
-        var trimmedString = String(
-            searchView.text.filter { !" \n\t\r".contains($0) }
+        viewModel.pageNum = 1
+        viewModel.searchSellItems(
+            minimumValue: leftSearchView.text,
+            maximumValue: rightSearchView.text,
+            searchKeyStr: searchView.text,
+            serachKeyTextColor: searchView.textColor ?? .lightGray
         )
-        if searchView.textColor == .lightGray {
-            trimmedString = ""
-        }
-        let keyArrs = trimmedString.components(separatedBy: ",")
-        
-        if let value = Double(leftSearchView.text) {
-            minCost = value
-        }
-        if let value = Double(rightSearchView.text) {
-            maxCost = value
-        }
-        
-        print(minCost)
-        print(maxCost)
-        print(keyArrs)
+        tableView.reloadData()
     }
     
     @objc private func leftArrowButtonAction() {
-        var curNum = Int(pageNumLabel.text ?? "1") ?? 1
+        var curNum = viewModel.pageNum
         if curNum > 1 {
             curNum = curNum - 1
         }
-        pageNumLabel.text = "\(curNum)"
+        viewModel.pageNum = curNum
+        viewModel.searchSellItems(
+            minimumValue: leftSearchView.text,
+            maximumValue: rightSearchView.text,
+            searchKeyStr: searchView.text,
+            serachKeyTextColor: searchView.textColor ?? .lightGray
+        )
+        tableView.reloadData()
     }
     
     @objc private func rightArrowButtonAction() {
-        var curNum = Int(pageNumLabel.text ?? "1") ?? 1
-        if curNum < 10 {
-            curNum = curNum + 1
-        }
-        pageNumLabel.text = "\(curNum)"
+        var curNum = viewModel.pageNum
+        curNum = curNum + 1
+        viewModel.pageNum = curNum
+        viewModel.searchSellItems(
+            minimumValue: leftSearchView.text,
+            maximumValue: rightSearchView.text,
+            searchKeyStr: searchView.text,
+            serachKeyTextColor: searchView.textColor ?? .lightGray
+        )
+        tableView.reloadData()
     }
 }
 
@@ -472,7 +474,7 @@ extension TextViewPlaceHolder: UITextViewDelegate {
             textView.textColor = UIColor.black
         }
     }
-    
+
     func textViewDidEndEditing(_ textView: UITextView) {
         if isEmpty(string: textView.text) {
             textView.text = placeHolderString

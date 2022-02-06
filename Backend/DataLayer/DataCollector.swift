@@ -46,6 +46,36 @@ class DataCollector {
         }
     }
     
+    func getAllSellList() {
+        let query = Firestore.firestore().collection(MyKeys.AuctionSellItem.rawValue)
+
+        query.getDocuments { (snapShot, error) in
+            print("[DataCollector][getAllSellList] auction item recieved \(String(describing: error)).")
+            if let _ = error {
+                return
+            }
+            guard let snapShot = snapShot else {
+                print("[DataCollector][getAllSellList] snapshot found nil.")
+                return
+            }
+            let auctionItemDatas = snapShot.documents.compactMap { document in
+                FireAuctionItem(
+                    id: document.documentID,
+                    title: document[MyKeys.AuctionSellItemField.title.rawValue] as? String ?? "",
+                    type: document[MyKeys.AuctionSellItemField.type.rawValue] as? String ?? "",
+                    description: document[MyKeys.AuctionSellItemField.sellDescription.rawValue] as? String ?? "",
+                    price: document[MyKeys.AuctionSellItemField.price.rawValue] as? Double ?? 0.0,
+                    negotiable: document[MyKeys.AuctionSellItemField.negotiable.rawValue] as? Bool ?? false,
+                    ownerId: document[MyKeys.AuctionSellItemField.ownerId.rawValue] as? String ?? "",
+                    videoUrlString: document[MyKeys.AuctionSellItemField.video.rawValue] as? String ?? "",
+                    imagesUrlStringList: document[MyKeys.AuctionSellItemField.images.rawValue] as? [String] ?? []
+                )
+            }
+            print("[DataCollector][getAllSellList] retrieved from cloud all sell item = \(auctionItemDatas.count)")
+            CoreDataManager.shared.saveDataToStore(auctionItemDatas: auctionItemDatas)
+        }
+    }
+    
     func getAuctionSellItem(by auctionItemid: String, completion: @escaping (Result<FireAuctionItem, Error>) -> Void) {
         let query = Firestore.firestore().collection(MyKeys.AuctionSellItem.rawValue)
             .whereField("id", isEqualTo: auctionItemid)
