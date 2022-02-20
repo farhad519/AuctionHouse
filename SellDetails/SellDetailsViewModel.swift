@@ -262,12 +262,18 @@ final class SellDetailsViewModel {
                 urlList.append($0.url)
                 return
             }
+            guard let imageData = try? Data(contentsOf: $0.url), let compressedImageData = UIImage(data: imageData)?.jpegData(compressionQuality: 0) else {
+                print("[SellDetailsViewModel][getSavedUrlForImages] can not convert to data for \($0.url).")
+                return
+            }
+            
             let imageUID = UUID().uuidString
             let storageRef = storage.reference()
                 .child(MyKeys.imagesFolder.rawValue)
                 .child(imageUID)
             workGroup.enter()
-            storageRef.putFile(from: $0.url, metadata: nil) { (metadata, error) in
+            //storageRef.putFile(from: $0.url, metadata: nil) { (metadata, error) in
+            storageRef.putData(compressedImageData, metadata: nil) { (metadata, error) in
                 guard error == nil else {
                     workGroup.leave()
                     return

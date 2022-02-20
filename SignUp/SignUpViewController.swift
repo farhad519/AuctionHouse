@@ -30,6 +30,7 @@ class SignUpViewController: UIViewController {
         signUpButton.setTitleColor(.white, for: .normal)
         signUpButton.backgroundColor = UIColor(hex: "097969")
         signUpButton.layer.cornerRadius = 20
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

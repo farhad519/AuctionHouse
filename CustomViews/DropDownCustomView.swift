@@ -9,8 +9,9 @@ class DropDownCustomView: UIView {
     private var selfWidth: CGFloat = 0.0
     private var selfHeight: CGFloat = 0.0
     private let videoInternalSpace: CGFloat = 10
-    private var mainButton = UIButton()
+    private var mainButton = UIButton(type: .system)
     private var dropDownView: UIView = UIView()
+    private var groundLevelColor = UIColor.gray
     
     var isEnabled: Bool = true
     
@@ -25,11 +26,12 @@ class DropDownCustomView: UIView {
         self.parentViewController = viewController
     }
 
-    convenience init(dropDownList: [String], dropDownAction: [() -> Void] = [], viewController: UIViewController) {
+    convenience init(dropDownList: [String], color: UIColor, dropDownAction: [() -> Void] = [], viewController: UIViewController) {
         self.init(frame: .zero)
         self.dropDownList = dropDownList
         self.dropDownAction = dropDownAction
         self.parentViewController = viewController
+        self.groundLevelColor = color
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -40,8 +42,6 @@ class DropDownCustomView: UIView {
         selfWidth = rect.width
         selfHeight = rect.height
 
-        //self.backgroundColor = .blue
-        
         configureTDropDownView()
     }
     
@@ -54,19 +54,18 @@ class DropDownCustomView: UIView {
         self.addSubview(containerView)
         
         mainButton.frame = containerView.bounds
-        if dropDownList.count >= 1 {
-            curSelected = dropDownList.remove(at: 0)
-        }
-        mainButton.setTitle(curSelected, for: .normal)
+//        if dropDownList.count >= 1 {
+//            curSelected = dropDownList.remove(at: 0)
+//        }
+        mainButton.setTitle("Menu", for: .normal)
         mainButton.setTitleColor(.white, for: .normal)
-        mainButton.setTitleColor(.black, for: .highlighted)
-        mainButton.backgroundColor = .blue
         mainButton.addTarget(self, action: #selector(tappedOnMenuLabel), for: .touchUpInside)
         containerView.addSubview(mainButton)
     }
     
     @objc private func tappedOnMenuLabel() {
         guard isEnabled else { return }
+        print("RRRRRRRR - \(dropDownList.count)")
         showDropDownList()
     }
     
@@ -89,7 +88,7 @@ class DropDownCustomView: UIView {
         
         var y: CGFloat = 0
         for i in 0..<dropDownList.count {
-            let button = UIButton()
+            let button = UIButton(type: .system)
             button.frame = CGRect(
                 x: 0,
                 y: y,
@@ -97,10 +96,8 @@ class DropDownCustomView: UIView {
                 height: itemHeight
             )
             button.setTitle(dropDownList[i], for: .normal)
-            button.backgroundColor = .blue
+            button.backgroundColor = groundLevelColor
             button.setTitleColor(.white, for: .normal)
-            button.setTitleColor(.black, for: .highlighted)
-            //button.layer.borderWidth = 1
             dropDownView.addSubview(button)
             button.addTarget(self, action: #selector(tappedOnDropDownLabel), for: .touchUpInside)
             y = y + itemHeight

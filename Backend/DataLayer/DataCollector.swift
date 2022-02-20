@@ -11,6 +11,7 @@ import FirebaseFirestore
 import ReactiveSwift
 
 class DataCollector {
+    static var imageCache = NSCache<NSString, UIImage>()
     func getMySellList(completion: @escaping (Result<[FireAuctionItem], Error>) -> Void) {
         guard let idValue = Auth.auth().currentUser?.uid else {
             print("[DataCollector][getMySellList] can not find uid")
@@ -115,6 +116,10 @@ class DataCollector {
             completion(.failure(DataCollectorError.invalidUrl))
             return
         }
+        if let cachedImage = DataCollector.imageCache.object(forKey: urlString as NSString) {
+            completion(.success(cachedImage))
+            return
+        }
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
@@ -125,35 +130,32 @@ class DataCollector {
                 completion(.failure(DataCollectorError.failedToConvertDataToImage))
                 return
             }
+            DataCollector.imageCache.setObject(image, forKey: urlString as NSString)
             completion(.success(image))
         }.resume()
     }
     
-    func observeMessages() {
-//        let userMessagesRef = Storage.storage().reference()
-//            .child("user-messages")
-//            .child("from")
-//            .child("to")
-        let userMessagesObserver = Firestore.firestore()
-            .collection("user-messages")
-            .document("fromId")
-        userMessagesObserver.addSnapshotListener { (documentSnapshot, error) in
-            
-            print("listener found ...... \(error)")
-        }
-        
-        let userMessagesRef = Firestore.firestore()
-            .collection("user-messages")
-            .document("fromId")
-            .collection("toId2")
-        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
-        let values: [String : Any] = [
-            "id2": "id1234",
-            "timestamp": timestamp
-        ]
-        userMessagesRef.addDocument(data: values)
-        userMessagesRef.addDocument(data: values)
-    }
+//    func observeMessages() {
+//        let userMessagesObserver = Firestore.firestore()
+//            .collection("user-messages")
+//            .document("fromId")
+//        userMessagesObserver.addSnapshotListener { (documentSnapshot, error) in
+//            
+//            print("listener found ...... \(error)")
+//        }
+//
+//        let userMessagesRef = Firestore.firestore()
+//            .collection("user-messages")
+//            .document("fromId")
+//            .collection("toId2")
+//        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+//        let values: [String : Any] = [
+//            "id2": "id1234",
+//            "timestamp": timestamp
+//        ]
+//        userMessagesRef.addDocument(data: values)
+//        userMessagesRef.addDocument(data: values)
+//    }
     
     func postRecentMessages(message: String, iconUrl: String, toId: String) {
         guard let fromId = Auth.auth().currentUser?.uid else {

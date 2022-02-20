@@ -9,6 +9,9 @@ class DashboardViewController: UIViewController {
     let swipeViewHeight: CGFloat = 200
     let referenceHeight: CGFloat = 150
     
+    let groundLevelColor = UIColor(hex: "03396c")
+    let firstLevelColor = UIColor(hex: "005b96")
+    
     let containerView = UIView()
     let swipeView = UIView()
 
@@ -17,9 +20,14 @@ class DashboardViewController: UIViewController {
         selfWidth = self.view.frame.width
         selfHight = self.view.frame.height
         setupMainView()
-        navigationController?.navigationBar.backgroundColor = .white
+        self.view.backgroundColor = groundLevelColor
+        navigationController?.navigationBar.backgroundColor = groundLevelColor
         navigationController?.isNavigationBarHidden = false
-        navigationItem.backButtonTitle = "back"
+        navigationController?.navigationItem.backButtonDisplayMode = .minimal
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,29 +43,27 @@ class DashboardViewController: UIViewController {
     }
     
     private func setupContainerView() {
-        guard let navBarFrame = navigationController?.navigationBar.frame else {
-            return
-        }
-        containerView.frame = CGRect(
-            x: 0,
-            y: navBarFrame.height,
-            width: selfWidth,
-            height: selfHight - navBarFrame.height
-        )
-        containerView.backgroundColor = .black
         self.view.addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        containerView.backgroundColor = groundLevelColor
     }
     
     private func setupMenuView() {
         let menuView = DropDownCustomView(
             dropDownList: [
-                "Menu",
                 "Sell",
                 "Buy",
                 "Messages",
                 "My Sell List",
                 "My Bid List"
             ],
+            color: firstLevelColor,
             dropDownAction: [
                 {
                     self.navigationController?.pushViewController(
@@ -95,12 +101,12 @@ class DashboardViewController: UIViewController {
         menuView.translatesAutoresizingMaskIntoConstraints = false
         menuView.frame = CGRect(
             x: selfWidth - menuViewSize.width - 10,
-            y: 40,
+            y: 10,
             width: menuViewSize.width,
             height: menuViewSize.height
         )
         menuView.layer.cornerRadius = 10
-        menuView.backgroundColor = .blue
+        menuView.backgroundColor = firstLevelColor
         menuView.clipsToBounds = true
         containerView.addSubview(menuView)
     }
@@ -125,7 +131,7 @@ class DashboardViewController: UIViewController {
     }
     
     private func setupSellAndBuyButton() {
-        let sellButton = UIButton()
+        let sellButton = UIButton(type: .system)
         containerView.addSubview(sellButton)
         sellButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -134,12 +140,13 @@ class DashboardViewController: UIViewController {
             sellButton.heightAnchor.constraint(equalToConstant: sellButtonSize.height),
             sellButton.widthAnchor.constraint(equalToConstant: sellButtonSize.width)
         ])
+        sellButton.setTitleColor(.white, for: .normal)
         sellButton.layer.cornerRadius = 10
-        sellButton.backgroundColor = .blue
+        sellButton.backgroundColor = firstLevelColor
         sellButton.setTitle("Sell", for: .normal)
         sellButton.addTarget(self, action: #selector(sellButtonAction), for: .touchUpInside)
         
-        let buyButton = UIButton()
+        let buyButton = UIButton(type: .system)
         containerView.addSubview(buyButton)
         buyButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -148,18 +155,24 @@ class DashboardViewController: UIViewController {
             buyButton.heightAnchor.constraint(equalToConstant: buyButtonSize.height),
             buyButton.widthAnchor.constraint(equalToConstant: buyButtonSize.width)
         ])
+        buyButton.setTitleColor(.white, for: .normal)
         buyButton.layer.cornerRadius = 10
-        buyButton.backgroundColor = .blue
+        buyButton.backgroundColor = firstLevelColor
         buyButton.setTitle("Buy", for: .normal)
         buyButton.addTarget(self, action: #selector(buyButtonAction), for: .touchUpInside)
     }
     
     @objc private func sellButtonAction() {
-        let vc = SellDetailsViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        self.navigationController?.pushViewController(
+            SellDetailsViewController.makeViewController(viewType: .forCreate),
+            animated: true
+        )
     }
     
     @objc private func buyButtonAction() {
-        
+        self.navigationController?.pushViewController(
+            AuctionListViewController.makeViewController(auctionListViewType: .auctionListView),
+            animated: true
+        )
     }
 }

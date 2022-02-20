@@ -98,18 +98,19 @@ class AuctionListViewModel {
     }
     
     func fetchImageSignal(urlString: String) -> SignalProducer<UIImage, NSError> {
-      return SignalProducer { [weak self] observer, disposable in
-          self?.dataCollector.getImage(urlString: urlString) { result in
-              switch result {
-              case .success(let image):
-                  observer.send(value: image)
-                  observer.sendCompleted()
-              case .failure(let error):
-                  print("[AuctionListViewModel][fetchImageSignal] error at retrieving image with \(error)")
-                  observer.sendCompleted()
-              }
-          }
-      }
+        //print("maddmadd = \(urlString)")
+        return SignalProducer { [weak self] observer, disposable in
+            self?.dataCollector.getImage(urlString: urlString) { result in
+                switch result {
+                case .success(let image):
+                    observer.send(value: image)
+                    observer.sendCompleted()
+                case .failure(let error):
+                    print("[AuctionListViewModel][fetchImageSignal] error at retrieving image with \(error)")
+                    observer.sendCompleted()
+                }
+            }
+        }
     }
     
 //    private func getImageFromServer(auctionList: [FireAuctionItem], completion: @escaping ([AuctionListCellStruct]) -> Void) {

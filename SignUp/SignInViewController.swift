@@ -28,6 +28,7 @@ class SignInViewController: UIViewController {
 
         signInButton.backgroundColor = UIColor(hex: "097969")
         signInButton.layer.cornerRadius = 20
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

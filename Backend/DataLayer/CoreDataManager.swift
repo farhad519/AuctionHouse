@@ -69,8 +69,9 @@ class CoreDataManager {
             format: "\(MyKeys.AuctionSellItemField.price) <= %@", "\(maxV)"
         )
         
+        let allLoweredCase = searchKey.map { $0.lowercased() }
         let typePredicate = NSPredicate(
-            format: "\(MyKeys.AuctionSellItemField.type.rawValue) in (%@)", searchKey
+            format: "\(MyKeys.AuctionSellItemField.type.rawValue) in[c] (%@)", allLoweredCase
         )
         
         if searchKey.isEmpty == false {

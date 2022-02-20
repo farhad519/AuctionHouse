@@ -254,7 +254,7 @@ extension SellDetailsViewController: UITableViewDataSource {
             return cell
         } else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: textViewCellId, for: indexPath) as! TextViewCell
-            //cell.descriptionTextView.delegate = viewModel.descriptionTextViewPlaceHolder
+            cell.descriptionTextView.delegate = viewModel.descriptionTextViewPlaceHolder
             cell.descriptionTextView.text = viewModel.descriptionTextViewPlaceHolder.placeHolderString
             cell.descriptionTextView.textColor = .lightGray
             cell.selectionStyle = .none
