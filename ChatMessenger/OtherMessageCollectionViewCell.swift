@@ -13,6 +13,7 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var otherImageViewWidth: NSLayoutConstraint!
     @IBOutlet weak var otherImageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var rightExtraSpace: NSLayoutConstraint!
+    @IBOutlet weak var otherMessageCellLeftInset: NSLayoutConstraint!
     
     func setupCell(
         message: String,
@@ -20,12 +21,14 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
         font: UIFont,
         imageSize: CGFloat,
         insetSize: CGFloat,
-        rightSpace: CGFloat
+        rightSpace: CGFloat,
+        leadingInset: CGFloat
     ) {
         otherMessageTextView.text = message
         otherImageView.image = image
         
         rightExtraSpace.constant = rightSpace
+        otherMessageCellLeftInset.constant = leadingInset
         
         otherMessageTextView.font = font
         otherMessageTextView.backgroundColor = UIColor(hex: "6600FF")

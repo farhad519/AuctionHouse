@@ -28,6 +28,7 @@ class SignInViewController: UIViewController {
 
         signInButton.backgroundColor = UIColor(hex: "097969")
         signInButton.layer.cornerRadius = 20
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,6 +36,8 @@ class SignInViewController: UIViewController {
         navigationController?.navigationBar.backgroundColor = .clear
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.tintColor = .black
+        email.text = viewModel.email
+        password.text = viewModel.passward
     }
     
     @IBAction func signInButtonAction(_ sender: UIButton) {
@@ -45,6 +48,8 @@ class SignInViewController: UIViewController {
                 errorLabel.text = "Reload the page"
                 return
             }
+        viewModel.email = email
+        viewModel.passward = password
         GlobalUITask.showSpinner(viewController: self)
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
             GlobalUITask.removeSpinner(viewController: self ?? UIViewController())

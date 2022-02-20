@@ -23,7 +23,7 @@ class SignUpMainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        DataCollector().getAllSellList()
         //DataCollector().postRecentMessages(message: "hi there ee", iconUrl: "", toId: "jZyx5PCCtDV95lFExJQ4RtYHjIR2")
         //let vm = ContactListViewModel()
         //vm.fetchData()
@@ -31,7 +31,7 @@ class SignUpMainViewController: UIViewController {
         
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.isNavigationBarHidden = false
-        navigationItem.backButtonTitle = "back"
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
         signInButton.backgroundColor = UIColor(hex: "097969")
         signUpButton.backgroundColor = UIColor(hex: "097969")

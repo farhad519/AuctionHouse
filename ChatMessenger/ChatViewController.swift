@@ -17,11 +17,14 @@ class ChatViewController: UIViewController {
     private var containerView = UIView()
     private let myTextView = UITextView()
     private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private let downButton = UIButton(type: .system)
     private var viewModel: ChatMessangerViewModel!
     private let disposables = CompositeDisposable()
+    private var shouldScrollToLast = true
     
     private let myMessageCellId = "MyMessageCollectionViewCell"
     private let otherMessageCellId = "OtherMessageCollectionViewCell"
+    private let dateCellId = "DateCollectionViewCell"
     
     static func makeViewController(toId: String) -> ChatViewController {
         let vc = ChatViewController()
@@ -49,9 +52,17 @@ class ChatViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         disposables += viewModel.observeOutputSignal.startWithValues { [weak self] _ in
-            self?.collectionView.reloadData()
+            guard let self = self else { return }
+            self.collectionView.reloadData()
+            if self.shouldScrollToLast {
+                let item = self.collectionView(self.collectionView, numberOfItemsInSection: 0) - 1
+                let lastItemIndex = IndexPath(item: item, section: 0)
+                self.collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: true)
+            }
+            self.shouldScrollToLast = false
         }
         disposables += viewModel.fetchData()
+        shouldScrollToLast = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -94,6 +105,10 @@ class ChatViewController: UIViewController {
             UINib(nibName: otherMessageCellId, bundle: bundle),
             forCellWithReuseIdentifier: otherMessageCellId
         )
+        collectionView.register(
+            UINib(nibName: dateCellId, bundle: bundle),
+            forCellWithReuseIdentifier: dateCellId
+        )
     }
     
     private func setupContainerView() {
@@ -104,6 +119,7 @@ class ChatViewController: UIViewController {
     
     @objc func keyboardWillAppear(_ notification: Notification) {
         print("keyboard will appear.")
+        downButton.isHidden = false
         guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
             print("[ChatViewController][keyboardWillAppear] no height for keyboard")
             return
@@ -115,6 +131,7 @@ class ChatViewController: UIViewController {
 
     @objc func keyboardWillDisappear(_ notification: Notification) {
         print("keyboard will disappear.")
+        downButton.isHidden = true
         containerView.frame = CGRect(x: 0, y: 0, width: selfWidth, height: selfHeight)
         collectionView.contentInset.top = 0
     }
@@ -123,10 +140,11 @@ class ChatViewController: UIViewController {
         guard viewModel.isOnlySpaceAndNewLine(text: myTextView.text) == false else { return }
         
         viewModel.saveMyMessage(message: myTextView.text)
-        
-        let item = collectionView(collectionView, numberOfItemsInSection: 0) - 1
-        let lastItemIndex = IndexPath(item: item, section: 0)
-        collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: true)
+        shouldScrollToLast = true
+    }
+    
+    @objc private func downButtonAction(sender: UIButton) {
+        view.endEditing(true)
     }
     
     private func setupTypingView() {
@@ -175,7 +193,6 @@ class ChatViewController: UIViewController {
         
         
         let downButtonWidth: CGFloat = 20
-        let downButton = UIButton(type: .system)
         downButton.frame = CGRect(
             x: itemInsetSpace,
             y: itemInsetSpace,
@@ -184,6 +201,12 @@ class ChatViewController: UIViewController {
         )
         downButton.backgroundColor = .clear
         downButton.setTitle("V", for: .normal)
+        downButton.isHidden = true
+        downButton.addTarget(
+            self,
+            action: #selector(downButtonAction),
+            for: .touchUpInside
+        )
         typingContainer.addSubview(downButton)
         
         
@@ -193,7 +216,9 @@ class ChatViewController: UIViewController {
             width: selfWidth - (itemInsetSpace * 4) - (sendButtonWidth + downButtonWidth),
             height: typingViewContainerHeight - (itemInsetSpace * 2)
         )
-        myTextView.backgroundColor = .lightGray
+        myTextView.backgroundColor = UIColor(hex: "D3D3D3")
+        myTextView.layer.cornerRadius = 5
+        myTextView.font = .systemFont(ofSize: 19)
         typingContainer.addSubview(myTextView)
     }
     
@@ -205,16 +230,30 @@ extension ChatViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.messageList.count
+        return viewModel.messageList.count * 2
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard indexPath.item < viewModel.messageList.count else {
+        guard indexPath.item < viewModel.messageList.count * 2 else {
             print("[ChatViewController][cellForItemAt] no data for indexPath = \(indexPath)")
             return UICollectionViewCell()
         }
         
-        let messageData = viewModel.messageList[indexPath.item]
+        let newIndexItem: Int = indexPath.item  / 2
+        let messageData = viewModel.messageList[newIndexItem]
+        
+        guard indexPath.item % 2 == 1 else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: dateCellId, for: indexPath) as? DateCollectionViewCell else {
+                return UICollectionViewCell()
+            }
+            let date = Date(timeIntervalSince1970: TimeInterval(truncating: messageData.timeStamp))
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            cell.dateLabel.font = .systemFont(ofSize: 8)
+            //cell.dateLabel.text = dateFormatter.string(from: date as Date)
+            cell.dateLabel.text = ""
+            return cell
+        }
         
         if messageData.isMyMessage {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: myMessageCellId, for: indexPath) as? MyMessageCollectionViewCell else {
@@ -243,7 +282,7 @@ extension ChatViewController: UICollectionViewDataSource {
             }
             
             let textViewWidth = viewModel.getTextWidth(text: messageData.message, font: viewModel.font)
-            var rightSpace = selfWidth - (viewModel.oneLineHeight() + 1 + textViewWidth + (viewModel.textViewInsetSpace * 2))
+            var rightSpace = selfWidth - (viewModel.oneLineHeight() + 1 + textViewWidth + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             if viewModel.otherMessageCellLeftSpace > rightSpace {
                 rightSpace = viewModel.otherMessageCellLeftSpace
             }
@@ -254,7 +293,8 @@ extension ChatViewController: UICollectionViewDataSource {
                 font: viewModel.font,
                 imageSize: viewModel.oneLineHeight(),
                 insetSize: viewModel.textViewInsetSpace,
-                rightSpace: rightSpace
+                rightSpace: rightSpace,
+                leadingInset: viewModel.myMessageCellRightInset
             )
 
             return cell
@@ -264,12 +304,17 @@ extension ChatViewController: UICollectionViewDataSource {
 
 extension ChatViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        guard indexPath.item < viewModel.messageList.count else {
+        guard indexPath.item < viewModel.messageList.count * 2 else {
             print("[ChatViewController][sizeForItemAt] no data for indexPath = \(indexPath)")
             return .zero
         }
         
-        let messageData = viewModel.messageList[indexPath.item]
+        let newIndexItem: Int = indexPath.item / 2
+        let messageData = viewModel.messageList[newIndexItem]
+        
+        guard indexPath.item % 2 == 1 else {
+            return CGSize(width: selfWidth, height: 12)
+        }
         
         if messageData.isMyMessage {
             let height = viewModel.getTextHeight(
@@ -281,7 +326,7 @@ extension ChatViewController: UICollectionViewDelegateFlowLayout {
         } else {
             let height = viewModel.getTextHeight(
                 stringVal: messageData.message,
-                width: selfWidth - (viewModel.otherMessageCellLeftSpace + viewModel.oneLineHeight() + 1 + (viewModel.textViewInsetSpace * 2))
+                width: selfWidth - (viewModel.otherMessageCellLeftSpace + viewModel.oneLineHeight() + 1 + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             ) + (viewModel.textViewInsetSpace * 2)
             
             return CGSize(width: selfWidth, height: height)

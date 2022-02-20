@@ -9,9 +9,10 @@ import UIKit
 import ReactiveSwift
 
 class AuctionListViewController: UIViewController {
-    private let headerHeight: CGFloat = 200
+    private let headerHeight: CGFloat = 210
     private var selfWidth: CGFloat = 0.0
     private var selfHeight: CGFloat = 0.0
+    private var upperExtraHeight: CGFloat = 0.0
     private var tableView = UITableView(frame: .zero, style: .grouped)
     
     private let tableViewCellId = "AuctionListCell"
@@ -34,17 +35,24 @@ class AuctionListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //navigationController?.navigationBar.barStyle = .black
+        //tableView.estimatedSectionHeaderHeight = headerHeight
+        //tableView.sectionHeaderHeight = UITableView.automaticDimension
         selfWidth = self.view.frame.width
         selfHeight = self.view.frame.height
+        upperExtraHeight = (navigationController?.navigationBar.frame.height ?? 0) + (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0)
         configureTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.tintColor = .black
+        self.view.backgroundColor = .white
+    }
+    
     private func configureTableView() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.frame = CGRect(
-            origin: .zero,
-            size: self.view.frame.size
-        )
         tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
@@ -53,6 +61,15 @@ class AuctionListViewController: UIViewController {
         let nib = UINib(nibName: "AuctionListCell", bundle: bundle)
         tableView.register(nib, forCellReuseIdentifier: tableViewCellId)
         self.view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: headerHeight),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+
+        prepareHeaderView()
     }
     
     @objc private func detailsButtonAction(sender: UIButton) {
@@ -92,8 +109,11 @@ extension AuctionListViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellId, for: indexPath) as! AuctionListCell
         let item = viewModel.getCellItem(at: indexPath.item)
         
+        //print("dammamamamam = \(item.imageUrlString)")
+        cell.buyImageView.image = nil
         viewModel.fetchImageSignal(urlString: item.imageUrlString)
             .startWithResult { [weak cell] result in
+                print("EEEEE = \(cell == nil)")
                 switch result {
                 case .success(let image):
                     DispatchQueue.main.async {
@@ -103,7 +123,7 @@ extension AuctionListViewController: UITableViewDataSource {
                     print("[AuctionListViewController][cellForRowAt] error at fetching image \(error)")
                 }
             }
-        cell.buyImageView.backgroundColor = .black
+        cell.buyImageView.backgroundColor = .lightGray
         cell.buyImageView?.layer.cornerRadius = 10
         cell.buyImageView.contentMode = .scaleAspectFill
         
@@ -190,7 +210,7 @@ extension AuctionListViewController: UITableViewDelegate {
         case .createdView:
             return 30
         case .auctionListView:
-            return headerHeight
+            return CGFloat.leastNormalMagnitude
         }
     }
 
@@ -205,7 +225,7 @@ extension AuctionListViewController: UITableViewDelegate {
             view.backgroundColor = .white
             return view
         case .auctionListView:
-            let view = prepareHeaderView()
+            let view = UIView()
             view.backgroundColor = UIColor(hex: "#ededed", alpha: 1)
             return view
         }
@@ -223,7 +243,7 @@ extension AuctionListViewController: UITableViewDelegate {
 }
 
 extension AuctionListViewController {
-    private func prepareHeaderView() -> UIView {
+    private func prepareHeaderView() {
         let searchButtonHeight: CGFloat = 35
         let searchViewHeight: CGFloat = 35
         let buttonSize: CGFloat = 35
@@ -233,12 +253,16 @@ extension AuctionListViewController {
         let maxMinSearchViewWidth: CGFloat = (selfWidth - (3 * buttonInset)) / 2
         
         let headerView = UIView()
-        headerView.frame = CGRect(
-            x: 0,
-            y: 0,
-            width: selfWidth,
-            height: headerHeight
-        )
+        headerView.backgroundColor = .lightGray
+        self.view.addSubview(headerView)
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            headerView.heightAnchor.constraint(equalToConstant: headerHeight),
+            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        
         
         // Left right page button
         let leftButton = UIButton()
@@ -282,7 +306,7 @@ extension AuctionListViewController {
         headerView.addSubview(rightButton)
         
         // page number label
-        pageNumLabel.text = "1"
+        pageNumLabel.text = "\(viewModel.pageNum)"
         pageNumLabel.frame = CGRect(
             x: (selfWidth / 2) - (buttonSize / 2),
             y: headerHeight - buttonSize - buttonInset,
@@ -379,47 +403,48 @@ extension AuctionListViewController {
         rightSearchView.text = rightSearchViewPlaceHolder.placeHolderString
         rightSearchView.textColor = .lightGray
         headerView.addSubview(rightSearchView)
-        
-        return headerView
     }
     
     @objc private func searchButtonAction() {
-        var minCost: Double = 0
-        var maxCost: Double = 99999999
-        var trimmedString = String(
-            searchView.text.filter { !" \n\t\r".contains($0) }
+        viewModel.pageNum = 1
+        pageNumLabel.text = "\(viewModel.pageNum)"
+        viewModel.searchSellItems(
+            minimumValue: leftSearchView.text,
+            maximumValue: rightSearchView.text,
+            searchKeyStr: searchView.text,
+            serachKeyTextColor: searchView.textColor ?? .lightGray
         )
-        if searchView.textColor == .lightGray {
-            trimmedString = ""
-        }
-        let keyArrs = trimmedString.components(separatedBy: ",")
-        
-        if let value = Double(leftSearchView.text) {
-            minCost = value
-        }
-        if let value = Double(rightSearchView.text) {
-            maxCost = value
-        }
-        
-        print(minCost)
-        print(maxCost)
-        print(keyArrs)
+        tableView.reloadData()
     }
     
     @objc private func leftArrowButtonAction() {
-        var curNum = Int(pageNumLabel.text ?? "1") ?? 1
+        var curNum = viewModel.pageNum
         if curNum > 1 {
             curNum = curNum - 1
         }
-        pageNumLabel.text = "\(curNum)"
+        viewModel.pageNum = curNum
+        pageNumLabel.text = "\(viewModel.pageNum)"
+        viewModel.searchSellItems(
+            minimumValue: leftSearchView.text,
+            maximumValue: rightSearchView.text,
+            searchKeyStr: searchView.text,
+            serachKeyTextColor: searchView.textColor ?? .lightGray
+        )
+        tableView.reloadData()
     }
     
     @objc private func rightArrowButtonAction() {
-        var curNum = Int(pageNumLabel.text ?? "1") ?? 1
-        if curNum < 10 {
-            curNum = curNum + 1
-        }
-        pageNumLabel.text = "\(curNum)"
+        var curNum = viewModel.pageNum
+        curNum = curNum + 1
+        viewModel.pageNum = curNum
+        pageNumLabel.text = "\(viewModel.pageNum)"
+        viewModel.searchSellItems(
+            minimumValue: leftSearchView.text,
+            maximumValue: rightSearchView.text,
+            searchKeyStr: searchView.text,
+            serachKeyTextColor: searchView.textColor ?? .lightGray
+        )
+        tableView.reloadData()
     }
 }
 
@@ -472,7 +497,7 @@ extension TextViewPlaceHolder: UITextViewDelegate {
             textView.textColor = UIColor.black
         }
     }
-    
+
     func textViewDidEndEditing(_ textView: UITextView) {
         if isEmpty(string: textView.text) {
             textView.text = placeHolderString

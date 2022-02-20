@@ -11,11 +11,14 @@
 		5A06AB982756C0D400E858A4 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A06AB972756C0D400E858A4 /* SignUp.storyboard */; };
 		5A0ABE62275A3C5400AE1C7D /* SignUpMainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */; };
 		5A0BFD152797579600E138BD /* ChatMessangerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0BFD142797579600E138BD /* ChatMessangerViewModel.swift */; };
+		5A0F3F8C27AA46EC00A171A2 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0F3F8B27AA46EC00A171A2 /* CoreDataManager.swift */; };
 		5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */; };
 		5A181FD8274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */; };
 		5A2384062758A87500443734 /* SignUpMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384052758A87500443734 /* SignUpMainViewController.swift */; };
 		5A2384082758A88700443734 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384072758A88700443734 /* SignUpViewController.swift */; };
 		5A23840A2758A89600443734 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A2384092758A89600443734 /* SignInViewController.swift */; };
+		5A32E06D27A50A64001103B9 /* DateCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A32E06B27A50A64001103B9 /* DateCollectionViewCell.swift */; };
+		5A32E06E27A50A64001103B9 /* DateCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5A32E06C27A50A64001103B9 /* DateCollectionViewCell.xib */; };
 		5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A356AC627539B3D00A5F3DC /* HelperViews.swift */; };
 		5A4154FB279C3FE8004E3290 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4154FA279C3FE8004E3290 /* ChatViewController.swift */; };
 		5A4154FE279CD3A3004E3290 /* MyMessageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A4154FC279CD3A3004E3290 /* MyMessageCollectionViewCell.swift */; };
@@ -64,11 +67,14 @@
 		5A06AB972756C0D400E858A4 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
 		5A0ABE61275A3C5400AE1C7D /* SignUpMainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMainViewModel.swift; sourceTree = "<group>"; };
 		5A0BFD142797579600E138BD /* ChatMessangerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessangerViewModel.swift; sourceTree = "<group>"; };
+		5A0F3F8B27AA46EC00A171A2 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 		5A181FD5274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		5A181FD6274E5CB700E9D874 /* AuctionSellItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuctionSellItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		5A2384052758A87500443734 /* SignUpMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpMainViewController.swift; sourceTree = "<group>"; };
 		5A2384072758A88700443734 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		5A2384092758A89600443734 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		5A32E06B27A50A64001103B9 /* DateCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCollectionViewCell.swift; sourceTree = "<group>"; };
+		5A32E06C27A50A64001103B9 /* DateCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateCollectionViewCell.xib; sourceTree = "<group>"; };
 		5A356AC627539B3D00A5F3DC /* HelperViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperViews.swift; sourceTree = "<group>"; };
 		5A4154FA279C3FE8004E3290 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		5A4154FC279CD3A3004E3290 /* MyMessageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -180,6 +186,7 @@
 			children = (
 				5A565FC1276E89E3007758C2 /* DataCollector.swift */,
 				5A565FC3276E8B54007758C2 /* FireDataModel.swift */,
+				5A0F3F8B27AA46EC00A171A2 /* CoreDataManager.swift */,
 			);
 			path = DataLayer;
 			sourceTree = "<group>";
@@ -281,6 +288,8 @@
 				5A4154FD279CD3A3004E3290 /* MyMessageCollectionViewCell.xib */,
 				5A415500279CD3BA004E3290 /* OtherMessageCollectionViewCell.swift */,
 				5A415501279CD3BA004E3290 /* OtherMessageCollectionViewCell.xib */,
+				5A32E06B27A50A64001103B9 /* DateCollectionViewCell.swift */,
+				5A32E06C27A50A64001103B9 /* DateCollectionViewCell.xib */,
 			);
 			path = ChatMessenger;
 			sourceTree = "<group>";
@@ -373,6 +382,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A32E06E27A50A64001103B9 /* DateCollectionViewCell.xib in Resources */,
 				5AC3BBEF274D00CB00166B0A /* ContactCell.xib in Resources */,
 				5A9A8370274BD8E500F80CB9 /* LaunchScreen.storyboard in Resources */,
 				5A97F26A275B844D0045DCEC /* GoogleService-Info.plist in Resources */,
@@ -468,6 +478,8 @@
 				5A0BFD152797579600E138BD /* ChatMessangerViewModel.swift in Sources */,
 				5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */,
 				5AC3BBD4274CFF0F00166B0A /* ImagePickerManager.swift in Sources */,
+				5A32E06D27A50A64001103B9 /* DateCollectionViewCell.swift in Sources */,
+				5A0F3F8C27AA46EC00A171A2 /* CoreDataManager.swift in Sources */,
 				5AC3BBE8274D008100166B0A /* SellDetailsViewModel.swift in Sources */,
 				5A181FD7274E5CB700E9D874 /* AuctionSellItem+CoreDataClass.swift in Sources */,
 				5AC3BBFB274D014C00166B0A /* AuctionListCell.swift in Sources */,

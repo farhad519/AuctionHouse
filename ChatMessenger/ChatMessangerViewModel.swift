@@ -38,6 +38,7 @@ class ChatMessangerViewModel {
     
     init(toId: String) {
         self.toId = toId
+        fetchMyMessageFromFire()
     }
     
     func prepareDummyData() {
@@ -91,6 +92,23 @@ class ChatMessangerViewModel {
                     print("[ChatMessangerViewModel][fetchData] error at fetching contact data \(error)")
                 }
                 self.shouldFetchAgain = true
+            }
+        }
+    }
+    
+    func fetchMyMessageFromFire() {
+        dataCollector.getMyDirectMessages(toId: toId) { [weak self] result in
+            switch result {
+            case .success(let messageItemList):
+                self?.myMessageList = messageItemList.map {
+                    MessageModel(
+                        message: $0.message,
+                        timeStamp: $0.timeStamp,
+                        isMyMessage: true
+                    )
+                }
+            case .failure(let error):
+                print("[ChatMessangerViewModel][fetchMyMessageFromFire] error at fetching contact data \(error)")
             }
         }
     }

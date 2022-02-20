@@ -11,6 +11,7 @@ import FirebaseFirestore
 import ReactiveSwift
 
 class DataCollector {
+    static var imageCache = NSCache<NSString, UIImage>()
     func getMySellList(completion: @escaping (Result<[FireAuctionItem], Error>) -> Void) {
         guard let idValue = Auth.auth().currentUser?.uid else {
             print("[DataCollector][getMySellList] can not find uid")
@@ -43,6 +44,36 @@ class DataCollector {
                 )
             }
             completion(.success(auctionItemDatas))
+        }
+    }
+    
+    func getAllSellList() {
+        let query = Firestore.firestore().collection(MyKeys.AuctionSellItem.rawValue)
+
+        query.getDocuments { (snapShot, error) in
+            print("[DataCollector][getAllSellList] auction item recieved \(String(describing: error)).")
+            if let _ = error {
+                return
+            }
+            guard let snapShot = snapShot else {
+                print("[DataCollector][getAllSellList] snapshot found nil.")
+                return
+            }
+            let auctionItemDatas = snapShot.documents.compactMap { document in
+                FireAuctionItem(
+                    id: document.documentID,
+                    title: document[MyKeys.AuctionSellItemField.title.rawValue] as? String ?? "",
+                    type: document[MyKeys.AuctionSellItemField.type.rawValue] as? String ?? "",
+                    description: document[MyKeys.AuctionSellItemField.sellDescription.rawValue] as? String ?? "",
+                    price: document[MyKeys.AuctionSellItemField.price.rawValue] as? Double ?? 0.0,
+                    negotiable: document[MyKeys.AuctionSellItemField.negotiable.rawValue] as? Bool ?? false,
+                    ownerId: document[MyKeys.AuctionSellItemField.ownerId.rawValue] as? String ?? "",
+                    videoUrlString: document[MyKeys.AuctionSellItemField.video.rawValue] as? String ?? "",
+                    imagesUrlStringList: document[MyKeys.AuctionSellItemField.images.rawValue] as? [String] ?? []
+                )
+            }
+            print("[DataCollector][getAllSellList] retrieved from cloud all sell item = \(auctionItemDatas.count)")
+            CoreDataManager.shared.saveDataToStore(auctionItemDatas: auctionItemDatas)
         }
     }
     
@@ -85,6 +116,10 @@ class DataCollector {
             completion(.failure(DataCollectorError.invalidUrl))
             return
         }
+        if let cachedImage = DataCollector.imageCache.object(forKey: urlString as NSString) {
+            completion(.success(cachedImage))
+            return
+        }
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let error = error {
                 completion(.failure(error))
@@ -95,35 +130,32 @@ class DataCollector {
                 completion(.failure(DataCollectorError.failedToConvertDataToImage))
                 return
             }
+            DataCollector.imageCache.setObject(image, forKey: urlString as NSString)
             completion(.success(image))
         }.resume()
     }
     
-    func observeMessages() {
-//        let userMessagesRef = Storage.storage().reference()
-//            .child("user-messages")
-//            .child("from")
-//            .child("to")
-        let userMessagesObserver = Firestore.firestore()
-            .collection("user-messages")
-            .document("fromId")
-        userMessagesObserver.addSnapshotListener { (documentSnapshot, error) in
-            
-            print("listener found ...... \(error)")
-        }
-        
-        let userMessagesRef = Firestore.firestore()
-            .collection("user-messages")
-            .document("fromId")
-            .collection("toId2")
-        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
-        let values: [String : Any] = [
-            "id2": "id1234",
-            "timestamp": timestamp
-        ]
-        userMessagesRef.addDocument(data: values)
-        userMessagesRef.addDocument(data: values)
-    }
+//    func observeMessages() {
+//        let userMessagesObserver = Firestore.firestore()
+//            .collection("user-messages")
+//            .document("fromId")
+//        userMessagesObserver.addSnapshotListener { (documentSnapshot, error) in
+//            
+//            print("listener found ...... \(error)")
+//        }
+//
+//        let userMessagesRef = Firestore.firestore()
+//            .collection("user-messages")
+//            .document("fromId")
+//            .collection("toId2")
+//        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+//        let values: [String : Any] = [
+//            "id2": "id1234",
+//            "timestamp": timestamp
+//        ]
+//        userMessagesRef.addDocument(data: values)
+//        userMessagesRef.addDocument(data: values)
+//    }
     
     func postRecentMessages(message: String, iconUrl: String, toId: String) {
         guard let fromId = Auth.auth().currentUser?.uid else {
@@ -279,6 +311,43 @@ class DataCollector {
                 )
             }
             print("[DataCollector][getDirectMessages] received message data \(messageItemDatas.count)")
+            completion(.success(messageItemDatas))
+        }
+    }
+    
+    func getMyDirectMessages(toId: String, completion: @escaping (Result<[FireMessageItem], Error>) -> Void) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][getMyDirectMessages] can not find self uid")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        guard toId.isEmpty == false else {
+            print("[DataCollector][getMyDirectMessages] toId is empty.")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        let directMessagesRef = Firestore.firestore()
+            .collection(MyKeys.userMessages.rawValue)
+            .document(toId)
+            .collection(fromId)
+            .order(by: MyKeys.ContactItemField.timeStamp.rawValue)
+            .limit(to: 100)
+        directMessagesRef.getDocuments { (snapShot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            let messageItemDatas = snapShot.documents.compactMap { document in
+                FireMessageItem(
+                    message: document[MyKeys.ContactItemField.message.rawValue] as? String ?? "",
+                    timeStamp: document[MyKeys.ContactItemField.timeStamp.rawValue] as? NSNumber ?? NSNumber(value: 0)
+                )
+            }
+            print("[DataCollector][getMyDirectMessages] received message data \(messageItemDatas.count)")
             completion(.success(messageItemDatas))
         }
     }
