@@ -19,20 +19,22 @@ class DashboardViewController: UIViewController {
         super.viewDidLoad()
         selfWidth = self.view.frame.width
         selfHight = self.view.frame.height
+        setupNavigationBar()
         setupMainView()
-        self.view.backgroundColor = groundLevelColor
-        navigationController?.navigationBar.backgroundColor = groundLevelColor
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationItem.backButtonDisplayMode = .minimal
-        navigationController?.navigationBar.tintColor = .white
-        navigationController?.navigationBar.barStyle = .black
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "asd asd asd"
+    }
+    
+    private func setupNavigationBar() {
+        self.view.backgroundColor = groundLevelColor
+        navigationController?.navigationBar.backgroundColor = groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     private func setupMainView() {
@@ -123,7 +125,10 @@ class DashboardViewController: UIViewController {
                 origin: .zero,
                 size: CGSize(width: selfWidth, height: swipeViewHeight)
             ),
-            imageList: [UIImage(named: "img1")!, UIImage(named: "img2")!, UIImage(named: "img3")!]
+            imageList: [UIImage(named: "img1")!, UIImage(named: "img2")!, UIImage(named: "img3")!],
+            groundLevelColor: .white,
+            firstLevelColor: .white,
+            secondLevelColor: .white
         )
         swipeView.addSubview(imageSwiperCustomView)
         //swipeView.backgroundColor = .cyan

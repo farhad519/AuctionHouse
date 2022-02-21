@@ -18,6 +18,10 @@ class SellDetailsViewController: UIViewController {
     private let priceDetailsTableViewCellId = "PriceDetailsCell"
     private let textViewCellId = "TextViewCell"
     
+    let groundLevelColor = UIColor(hex: "03396c")
+    let firstLevelColor = UIColor(hex: "005b96")
+    let secondLevelColor = UIColor(hex: "6497b1")
+    
     private var videoManager: VideoManager?
     private var imagePickerManager: ImagePickerManager?
     
@@ -70,6 +74,8 @@ class SellDetailsViewController: UIViewController {
         selfWidth = self.view.frame.width
         selfHeight = self.view.frame.height
         
+        setupNavigationBar()
+        
         //navigationItem.title = "Sell details"
         if viewModel.viewType != SellDetailsViewType.forBid {
             navigationItem.rightBarButtonItem = editButton
@@ -100,9 +106,15 @@ class SellDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = .clear
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.tintColor = .black
+    }
+    
+    private func setupNavigationBar() {
+        self.view.backgroundColor = groundLevelColor
+        navigationController?.navigationBar.backgroundColor = groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     @objc private func editTapped() {
@@ -186,7 +198,7 @@ class SellDetailsViewController: UIViewController {
     
     private func collectEditedInfo() {
         let textViewCell = tableView.cellForRow(at: IndexPath(item: 0, section: 2)) as? TextViewCell
-        viewModel.editedValue.description = textViewCell?.descriptionTextView.textColor == .black
+        viewModel.editedValue.description = textViewCell?.descriptionTextView.textColor != UIColor.lightGray
         ? (textViewCell?.descriptionTextView.text ?? "")
         : ""
         let priceDetailsCell = tableView.cellForRow(at: IndexPath(item: 0, section: 3)) as? PriceDetailsCell
@@ -197,12 +209,13 @@ class SellDetailsViewController: UIViewController {
     }
 
     private func configureTableView() {
+        //tableView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.frame = CGRect(
             origin: .zero,
             size: self.view.frame.size
         )
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = groundLevelColor
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -233,10 +246,17 @@ extension SellDetailsViewController: UITableViewDataSource {
                     origin: .zero,
                     size: CGSize(width: selfWidth, height: imageCellHeight)
                 ),
-                imageList: viewModel.imageUrlCoupleList.map { $0.image }
+                imageList: viewModel.imageUrlCoupleList.map { $0.image },
+                groundLevelColor: groundLevelColor,
+                firstLevelColor: firstLevelColor,
+                secondLevelColor: secondLevelColor
             )
             cell.addSubview(imageSwiperCustomView ?? UIView())
             cell.selectionStyle = .none
+
+            //cell.clipsToBounds = true
+            //cell.layer.cornerRadius = 50
+            //cell.backgroundColor = firstLevelColor
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: imageCellId, for: indexPath)
@@ -247,9 +267,13 @@ extension SellDetailsViewController: UITableViewDataSource {
                     size: CGSize(width: selfWidth, height: imageCellHeight)
                 ),
                 videoList: viewModel.videoList,
-                viewController: self
+                viewController: self,
+                groundLevelColor: groundLevelColor,
+                firstLevelColor: firstLevelColor,
+                secondLevelColor: secondLevelColor
             )
             cell.addSubview(videoPlayerCustomView ?? UIView())
+            cell.backgroundColor = groundLevelColor
             cell.selectionStyle = .none
             return cell
         } else if indexPath.section == 2 {
@@ -259,9 +283,16 @@ extension SellDetailsViewController: UITableViewDataSource {
             cell.descriptionTextView.textColor = .lightGray
             cell.selectionStyle = .none
             
+            //cell.clipsToBounds = true
+            //cell.layer.cornerRadius = 10
+            cell.backgroundColor = groundLevelColor
+            cell.descriptionTextView.clipsToBounds = true
+            cell.descriptionTextView.layer.cornerRadius = 10
+            cell.descriptionTextView.backgroundColor = firstLevelColor
+            
             if viewModel.getEditedText(for: .description) != "" {
                 cell.descriptionTextView.text = viewModel.getEditedText(for: .description)
-                cell.descriptionTextView.textColor = .black
+                cell.descriptionTextView.textColor = .white
             }
             
             if editOption {
@@ -331,6 +362,7 @@ extension SellDetailsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard editOption == true else {
             let headerView = UIView()
+            headerView.backgroundColor = groundLevelColor
             return headerView
         }
         if section == 1 {
@@ -356,7 +388,7 @@ extension SellDetailsViewController: UITableViewDelegate {
         } else {
             let view = UIView()
             //view.backgroundColor = UIColor(hex: "#67aebe", alpha: 1)
-            view.backgroundColor = .white
+            view.backgroundColor = groundLevelColor
             return view
         }
     }
@@ -371,7 +403,7 @@ extension SellDetailsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = groundLevelColor
         
         guard section == 3 else {
             return view
