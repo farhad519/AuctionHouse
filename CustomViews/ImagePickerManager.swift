@@ -16,7 +16,7 @@ class ImagePickerManager: NSObject {
     
     func getView() -> UIView {
         let insetSize: CGFloat = 10
-        let labelSize: CGFloat = 50
+        let labelSize: CGFloat = 45
         
         let view = UIView()
         view.frame = frame
@@ -25,16 +25,18 @@ class ImagePickerManager: NSObject {
         let addLabel = UILabel()
         addLabel.frame = CGRect(
             x: insetSize,
-            y: insetSize,
+            y: selfHeight - labelSize - insetSize,
             width: labelSize,
             height: labelSize
         )
         addLabel.clipsToBounds = true
-        addLabel.layer.cornerRadius = labelSize / 2
+        //addLabel.layer.cornerRadius = labelSize / 2
+        addLabel.layer.cornerRadius = 10
         addLabel.text = "ADD"
-        addLabel.textColor = .green
+        //addLabel.font = .systemFont(ofSize: 20)
+        addLabel.textColor = .white
         addLabel.textAlignment = .center
-        addLabel.backgroundColor = .gray
+        addLabel.backgroundColor = UIColor(hex: "4a7c59")
         view.addSubview(addLabel)
         
         let tapForAddLabel = UITapGestureRecognizer(target: self, action: #selector(tappedOnAddLabel(_ :)))
@@ -44,16 +46,18 @@ class ImagePickerManager: NSObject {
         let removeLabel = UILabel()
         removeLabel.frame = CGRect(
             x: insetSize + insetSize + labelSize,
-            y: insetSize,
+            y: selfHeight - labelSize - insetSize,
             width: labelSize,
             height: labelSize
         )
         removeLabel.clipsToBounds = true
         removeLabel.layer.cornerRadius = labelSize / 2
+        removeLabel.layer.cornerRadius = 10
         removeLabel.text = "REM"
-        removeLabel.textColor = .red
+        //removeLabel.font = .systemFont(ofSize: 40)
+        removeLabel.textColor = .white
         removeLabel.textAlignment = .center
-        removeLabel.backgroundColor = .gray
+        removeLabel.backgroundColor = UIColor(hex: "8c2f39")
         view.addSubview(removeLabel)
         
         let tapForRemoveLabel = UITapGestureRecognizer(target: self, action: #selector(tappedOnRemoveLabel(_ :)))

@@ -306,6 +306,21 @@ extension SellDetailsViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: priceDetailsTableViewCellId, for: indexPath) as! PriceDetailsCell
             
             cell.selectionStyle = .none
+            cell.backgroundColor = groundLevelColor
+            cell.containerView.backgroundColor = firstLevelColor
+            cell.containerView.clipsToBounds = true
+            cell.containerView.layer.cornerRadius = 10
+            cell.labelsContainer.backgroundColor = firstLevelColor
+            cell.textFieldsContainer.backgroundColor = firstLevelColor
+            
+//            cell.titleLabel.backgroundColor = firstLevelColor
+//            cell.typeLabel.backgroundColor = firstLevelColor
+//            cell.priceLabel.backgroundColor = firstLevelColor
+//            cell.negotiableLabel.backgroundColor = firstLevelColor
+            cell.titleField.backgroundColor = secondLevelColor
+            cell.typeField.backgroundColor = secondLevelColor
+            cell.priceField.backgroundColor = secondLevelColor
+            cell.negotiableField.backgroundColor = secondLevelColor
             
             cell.titleLabel.text = "title"
             cell.typeLabel.text = "type"
@@ -374,7 +389,9 @@ extension SellDetailsViewController: UITableViewDelegate {
                 viewController: self
             )
             self.videoManager = videoManager
-            return videoManager.getView()
+            let view = videoManager.getView()
+            view.backgroundColor = groundLevelColor
+            return view
         } else if section == 0 {
             let imagePickerManager = ImagePickerManager(
                 rect: CGRect(
@@ -384,7 +401,9 @@ extension SellDetailsViewController: UITableViewDelegate {
                 viewController: self
             )
             self.imagePickerManager = imagePickerManager
-            return imagePickerManager.getView()
+            let view = imagePickerManager.getView()
+            view.backgroundColor = groundLevelColor
+            return view
         } else {
             let view = UIView()
             //view.backgroundColor = UIColor(hex: "#67aebe", alpha: 1)
