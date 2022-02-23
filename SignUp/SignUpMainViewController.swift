@@ -11,6 +11,9 @@ import ReactiveSwift
 class SignUpMainViewController: UIViewController {
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var stackViewContainer: UIStackView!
+    
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
     
     var viewModel: SignUpMainViewModel!
     
@@ -29,15 +32,27 @@ class SignUpMainViewController: UIViewController {
         //vm.fetchData()
         //navigationController?.pushViewController(ChatViewController.makeViewController(toId: ""), animated: true)
         
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.isNavigationBarHidden = false
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-
-        signInButton.backgroundColor = UIColor(hex: "097969")
-        signUpButton.backgroundColor = UIColor(hex: "097969")
+        stackViewContainer.backgroundColor = color.groundLevelColor
+        signInButton.backgroundColor = color.firstLevelColor
+        signUpButton.backgroundColor = color.firstLevelColor
         signInButton.layer.cornerRadius = 23
         signUpButton.layer.cornerRadius = 23
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
     @IBAction func moveToSignInPage(_ sender: Any) {
         let vc = SignInViewController.makeViewController(viewModel: viewModel)
         navigationController?.pushViewController(vc, animated: true)

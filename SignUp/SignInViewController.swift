@@ -13,6 +13,9 @@ class SignInViewController: UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var stackViewContainer: UIStackView!
+    
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
     
     var viewModel: SignUpMainViewModel!
     
@@ -26,18 +29,27 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        signInButton.backgroundColor = UIColor(hex: "097969")
+        stackViewContainer.backgroundColor = color.groundLevelColor
+        signInButton.backgroundColor = color.firstLevelColor
         signInButton.layer.cornerRadius = 20
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        email.backgroundColor = color.secondLevelColor
+        password.backgroundColor = color.secondLevelColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = .clear
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.tintColor = .black
         email.text = viewModel.email
         password.text = viewModel.passward
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     @IBAction func signInButtonAction(_ sender: UIButton) {

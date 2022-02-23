@@ -9,8 +9,7 @@ class DashboardViewController: UIViewController {
     let swipeViewHeight: CGFloat = 200
     let referenceHeight: CGFloat = 150
     
-    let groundLevelColor = UIColor(hex: "03396c")
-    let firstLevelColor = UIColor(hex: "005b96")
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
     
     let containerView = UIView()
     let swipeView = UIView()
@@ -19,18 +18,17 @@ class DashboardViewController: UIViewController {
         super.viewDidLoad()
         selfWidth = self.view.frame.width
         selfHight = self.view.frame.height
-        setupNavigationBar()
         setupMainView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "asd asd asd"
+        setupNavigationBar()
     }
     
     private func setupNavigationBar() {
-        self.view.backgroundColor = groundLevelColor
-        navigationController?.navigationBar.backgroundColor = groundLevelColor
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -53,7 +51,7 @@ class DashboardViewController: UIViewController {
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-        containerView.backgroundColor = groundLevelColor
+        containerView.backgroundColor = color.groundLevelColor
     }
     
     private func setupMenuView() {
@@ -65,7 +63,7 @@ class DashboardViewController: UIViewController {
                 "My Sell List",
                 "My Bid List"
             ],
-            color: firstLevelColor,
+            color: color.firstLevelColor,
             dropDownAction: [
                 {
                     self.navigationController?.pushViewController(
@@ -108,7 +106,7 @@ class DashboardViewController: UIViewController {
             height: menuViewSize.height
         )
         menuView.layer.cornerRadius = 10
-        menuView.backgroundColor = firstLevelColor
+        menuView.backgroundColor = color.firstLevelColor
         menuView.clipsToBounds = true
         containerView.addSubview(menuView)
     }
@@ -147,7 +145,7 @@ class DashboardViewController: UIViewController {
         ])
         sellButton.setTitleColor(.white, for: .normal)
         sellButton.layer.cornerRadius = 10
-        sellButton.backgroundColor = firstLevelColor
+        sellButton.backgroundColor = color.firstLevelColor
         sellButton.setTitle("Sell", for: .normal)
         sellButton.addTarget(self, action: #selector(sellButtonAction), for: .touchUpInside)
         
@@ -162,7 +160,7 @@ class DashboardViewController: UIViewController {
         ])
         buyButton.setTitleColor(.white, for: .normal)
         buyButton.layer.cornerRadius = 10
-        buyButton.backgroundColor = firstLevelColor
+        buyButton.backgroundColor = color.firstLevelColor
         buyButton.setTitle("Buy", for: .normal)
         buyButton.addTarget(self, action: #selector(buyButtonAction), for: .touchUpInside)
     }

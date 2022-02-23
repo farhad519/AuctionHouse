@@ -58,6 +58,7 @@
                     <connections>
                         <outlet property="signInButton" destination="r17-4h-jpj" id="e0f-qX-NTV"/>
                         <outlet property="signUpButton" destination="2Lg-FE-HMJ" id="WJD-om-6vh"/>
+                        <outlet property="stackViewContainer" destination="5nj-0H-3h3" id="cQZ-Ls-Drd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -123,6 +124,7 @@
                         <outlet property="errorLabel" destination="1SU-gN-SfE" id="lsq-kJ-2VO"/>
                         <outlet property="password" destination="mCq-Ae-ykL" id="pDV-pm-75N"/>
                         <outlet property="signInButton" destination="mGe-S3-fak" id="9cz-hS-z0W"/>
+                        <outlet property="stackViewContainer" destination="het-Z4-hyI" id="0uE-0l-yuo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="buk-hR-ICi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -194,6 +196,7 @@
                         <outlet property="gmail" destination="lrS-lV-fUW" id="gYf-2W-KOb"/>
                         <outlet property="password" destination="miv-Dj-hZE" id="w6R-M2-i3b"/>
                         <outlet property="signUpButton" destination="hbb-qu-xeu" id="Bob-Yn-2wS"/>
+                        <outlet property="stackViewContainer" destination="Hel-cb-dUW" id="KzJ-LY-Nd1"/>
                         <outlet property="userName" destination="bCB-tu-qGq" id="vD1-Nr-cyp"/>
                     </connections>
                 </viewController>
