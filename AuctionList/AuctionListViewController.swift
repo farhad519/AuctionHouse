@@ -257,7 +257,7 @@ extension AuctionListViewController {
         let searchViewHeight: CGFloat = 35
         let buttonSize: CGFloat = 35
         let buttonInset: CGFloat = 10
-        let textViewEdgeInset: CGFloat = 5
+        let textViewEdgeInset: CGFloat = 7.5
         let maxMinSearchViewHeight: CGFloat = 35
         let maxMinSearchViewWidth: CGFloat = (selfWidth - (3 * buttonInset)) / 2
         

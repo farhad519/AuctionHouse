@@ -11,6 +11,9 @@ import ReactiveSwift
 class ContactListViewController: UIViewController {
     private var selfWidth: CGFloat = 0.0
     private var selfHeight: CGFloat = 0.0
+    
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
+    
     var tableView = UITableView(frame: .zero, style: .grouped)
     
     private var disposables = CompositeDisposable()
@@ -33,6 +36,7 @@ class ContactListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationBar()
         disposables += viewModel.fetchData()
         disposables += viewModel.observeForUpdate.startWithValues { [weak self] in
             self?.tableView.reloadData()
@@ -44,13 +48,23 @@ class ContactListViewController: UIViewController {
         disposables.dispose()
     }
     
+    private func setupNavigationBar() {
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
     private func configureTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.frame = CGRect(
             origin: .zero,
             size: self.view.frame.size
         )
-        tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = color.groundLevelColor
         tableView.dataSource = self
         tableView.delegate = self
         //tableView.register(BuyDetailsCell.self, forCellReuseIdentifier: tableViewCellId)
@@ -88,6 +102,8 @@ extension ContactListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellId, for: indexPath) as! ContactCell
+        cell.backgroundColor = color.groundLevelColor
+        cell.selectionStyle = .none
         
         guard indexPath.item < viewModel.contactList.count else {
             return cell
@@ -95,32 +111,29 @@ extension ContactListViewController: UITableViewDataSource {
         let contactItem = viewModel.contactList[indexPath.item]
         
         cell.contactCellImageView.image = UIImage(named: "img1")
-        cell.contactCellImageView?.backgroundColor = .black
-        cell.contactCellImageView?.layer.cornerRadius = 10
+        cell.contactCellImageView.clipsToBounds = true
+        cell.contactCellImageView.layer.cornerRadius = 30
+        cell.contactCellImageView.contentMode = .scaleAspectFill
         
-        cell.titleLabel.font = UIFont(name: "Helvetica", size: 20)!
+        cell.titleLabel.font = UIFont(name: "Helvetica", size: 16)!
         cell.titleLabel.text = contactItem.email
+        cell.titleLabel.textColor = .white
         
-        cell.subtitleLabel.font = UIFont(name: "Helvetica", size: 12)!
+        cell.subtitleLabel.font = UIFont(name: "Helvetica", size: 14)!
         cell.subtitleLabel.numberOfLines = 0
         cell.subtitleLabel.text = contactItem.message
-        
-        cell.upperLabel.font = UIFont(name: "Helvetica", size: 10)!
-        cell.upperLabel.text = "Last message"
+        cell.subtitleLabel.textColor = .white
         
         let date = Date(timeIntervalSince1970: TimeInterval(truncating: contactItem.timeStamp))
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        cell.lowerLabel.font = UIFont(name: "Helvetica", size: 10)!
-        cell.lowerLabel.text = dateFormatter.string(from: date)
-        
-        //cell.newLabel.layer.borderWidth = 0.1
-        cell.newLabel.layer.cornerRadius = 10
-        cell.newLabel.clipsToBounds = true
-        cell.newLabel.backgroundColor = .orange
-        cell.newLabel.font = UIFont(name: "Helvetica", size: 15)!
-        cell.newLabel.textColor = .white
-        cell.newLabel.text = "N"
+        dateFormatter.dateFormat = "dd-MM-yy"
+        cell.dateLabel.font = UIFont(name: "Helvetica", size: 14)!
+        cell.dateLabel.text = dateFormatter.string(from: date)
+        cell.dateLabel.textColor = .white
+
+        cell.containerView.backgroundColor = color.firstLevelColor
+        cell.containerView.clipsToBounds = true
+        cell.containerView.layer.cornerRadius = 14
         
         return cell
     }
@@ -138,7 +151,7 @@ extension ContactListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        90
+        100
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -147,7 +160,7 @@ extension ContactListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(hex: "#ededed", alpha: 1)
+        view.backgroundColor = color.groundLevelColor
         return view
     }
 
@@ -157,7 +170,7 @@ extension ContactListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = UIColor(hex: "#ededed", alpha: 1)
+        view.backgroundColor = color.groundLevelColor
         return view
     }
 }
