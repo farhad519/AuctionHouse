@@ -62,6 +62,8 @@ final class SellDetailsViewModel {
     var viewType: SellDetailsViewType
     var fireAuctionItem: FireAuctionItem?
     
+    var getToId: String? { fireAuctionItem?.ownerId }
+    
     init(viewType: SellDetailsViewType) {
         editedValue = SellDetailsEditedValue(
             title: "",

@@ -87,6 +87,7 @@ class ChatMessangerViewModel {
             self.dataCollector.getDirectMessages(toId: self.toId).startWithResult { result in
                 switch result {
                 case .success(let messageItemList):
+                    self.dataCollector.postRecentMessagesLastReadTime(toId: self.toId)
                     self.prepareData(messageItemList: messageItemList)
                 case .failure(let error):
                     print("[ChatMessangerViewModel][fetchData] error at fetching contact data \(error)")

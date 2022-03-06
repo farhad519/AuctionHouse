@@ -30,6 +30,7 @@ class CoreDataManager {
         auctionItemDatas.forEach {
             let auctionSellItem = AuctionSellItem(context: context)
             auctionSellItem.id = $0.id
+            auctionSellItem.ownerId = $0.ownerId
             auctionSellItem.title = $0.title
             auctionSellItem.type = $0.type
             auctionSellItem.price = $0.price

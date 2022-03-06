@@ -200,6 +200,18 @@ class SellDetailsViewController: UIViewController {
         print("post button tapped.")
         guard editOption == false else { return }
         
+        guard viewModel.viewType != .forBid else {
+            guard let toId = viewModel.getToId else {
+                showFieldEmptyAlert(errorString: "This item has problem. Please try again later.")
+                return
+            }
+            navigationController?.pushViewController(
+                ChatViewController.makeViewController(toId: toId),
+                animated: true
+            )
+            return
+        }
+        
         if let errorString = viewModel.isAnyFieldEmpty() {
             showFieldEmptyAlert(errorString: errorString)
             return

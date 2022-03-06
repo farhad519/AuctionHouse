@@ -198,7 +198,7 @@ extension AuctionListViewController: UITableViewDelegate {
         workGroup.notify(queue: DispatchQueue.main, execute: { [weak self] in
             DispatchQueue.main.async {
                 let vc = SellDetailsViewController.makeViewController(
-                    viewType: .forModify,
+                    viewType: .forBid,
                     imageUrlCoupleList: imageUrlCoupleList,
                     fireAuctionItem: fireAuctionItem
                 )

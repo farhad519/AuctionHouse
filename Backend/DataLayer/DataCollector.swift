@@ -157,6 +157,76 @@ class DataCollector {
 //        userMessagesRef.addDocument(data: values)
 //    }
     
+    func postRecentMessagesLastReadTime(toId: String) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][postRecentMessagesLastReadTime] can not find self uid")
+            return
+        }
+
+        guard toId.isEmpty == false else {
+            print("[DataCollector][postRecentMessagesLastReadTime] toId is empty")
+            return
+        }
+        
+        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+        let data: [String: Any] = [
+            MyKeys.RecentMessagesLastRead.timeStamp.rawValue: timestamp,
+            MyKeys.RecentMessagesLastRead.contactedId.rawValue: toId
+        ]
+        let recentMessagesRef = Firestore.firestore()
+            .collection(MyKeys.recentMessagesLastRead.rawValue)
+            .document(fromId)
+            .collection(MyKeys.RecentMessagesLastRead.lastRead.rawValue)
+            .document(toId)
+        recentMessagesRef.setData(data)
+    }
+    
+    func getRecentMessagesLastReadTime() -> SignalProducer<[String: NSNumber], Error> {
+        SignalProducer { [weak self] (observer, disposable) in
+            guard let self = self else {
+                observer.send(error: DataCollectorError.referenceFailure)
+                return
+            }
+            self.getRecentMessagesLastReadTime() { result in
+                switch result {
+                case .success(let idVStimeDic):
+                    observer.send(value: idVStimeDic)
+                    observer.sendCompleted()
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            }
+        }
+    }
+    
+    func getRecentMessagesLastReadTime(completion: @escaping (Result<[String: NSNumber], Error>) -> Void) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][getRecentMessagesLastReadTime] can not find self uid")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        let recentMessagesRef = Firestore.firestore()
+            .collection(MyKeys.recentMessagesLastRead.rawValue)
+            .document(fromId)
+            .collection(MyKeys.RecentMessagesLastRead.lastRead.rawValue)
+        recentMessagesRef.getDocuments { (snapShot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            var idVStimeDic: [String: NSNumber] = [:]
+            snapShot.documents.forEach {
+                idVStimeDic[$0.documentID] = $0[MyKeys.RecentMessagesLastRead.timeStamp.rawValue] as? NSNumber ?? NSNumber(value: 0)
+            }
+            print("[DataCollector][getRecentMessagesLastReadTime] received contact data \(idVStimeDic.count)")
+            completion(.success(idVStimeDic))
+        }
+    }
+    
     func postRecentMessages(message: String, iconUrl: String, toId: String) {
         guard let fromId = Auth.auth().currentUser?.uid else {
             print("[DataCollector][postRecentMessages] can not find self uid")

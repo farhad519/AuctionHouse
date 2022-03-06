@@ -9,20 +9,33 @@ import Foundation
 import ReactiveSwift
 
 class ContactListViewModel {
-    let vc: ContactListViewController
-    var contactList: [FireContactItem] = [] {
-        didSet {
-            //inputSignal.send(value: ())
-            vc.tableView.reloadData()
-        }
+    enum EventUI {
+        case reloadData
     }
+    private let (observeOutput, sendInput) = Signal<EventUI, Never>.pipe()
+    var observeForUpdate: SignalProducer<ContactListViewModel.EventUI, Never> {
+        observeOutput.producer
+    }
+    
+    var contactList: [FireContactItem] = []
     private var shouldFetchAgain: Bool = true
     private let dataCollector = DataCollector()
-    private let (outputSignal, inputSignal) = Signal<Void, Never>.pipe()
-    var observeForUpdate: SignalProducer<Void, Never> { outputSignal.producer }
+    var idVStimeDic: [String: NSNumber] = [:]
     
-    init(vc: ContactListViewController) {
-        self.vc = vc
+    init() {
+        getLastReadMessages()
+    }
+    
+    func getLastReadMessages() {
+        dataCollector.getRecentMessagesLastReadTime().startWithResult { result in
+            switch result {
+            case .success(let idVStimeDic):
+                self.idVStimeDic = idVStimeDic
+                self.sendInput.send(value: .reloadData)
+            case .failure(let error):
+                print("[ContactListViewModel][getLastReadMessages] error at fetching contact data \(error)")
+            }
+        }
     }
     
     func fetchData() -> Disposable {
@@ -34,11 +47,26 @@ class ContactListViewModel {
                 switch result {
                 case .success(let contactItemList):
                     self.contactList = contactItemList
+                    self.sendInput.send(value: .reloadData)
                 case .failure(let error):
                     print("[ContactListViewModel][fetchData] error at fetching contact data \(error)")
                 }
                 self.shouldFetchAgain = true
             }
+        }
+    }
+    
+    func isRead(for indexPath: IndexPath) -> Bool {
+        guard indexPath.item < contactList.count else {
+            print("[ContactListViewModel][isRead] isRead out of indexPath at \(indexPath)")
+            return false
+        }
+        let id = contactList[indexPath.item].id
+        let time = contactList[indexPath.item].timeStamp
+        if let lastTime = idVStimeDic[id] {
+            return lastTime.compare(time) == .orderedDescending
+        } else {
+            return false
         }
     }
 }

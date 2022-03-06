@@ -14,6 +14,7 @@ enum MyKeys: String {
     case recentMessages = "recent-messages"
     case userMessages = "user-messages"
     case messages = "messages"
+    case recentMessagesLastRead = "recent-messages-last-read"
     enum AuctionSellItemField: String {
         case title = "title"
         case sellDescription = "sellDescription"
@@ -29,5 +30,10 @@ enum MyKeys: String {
         case iconUrl = "iconUrl"
         case timeStamp = "timeStamp"
         case email = "email"
+    }
+    enum RecentMessagesLastRead: String {
+        case timeStamp = "timeStamp"
+        case lastRead = "lastRead"
+        case contactedId = "contactedId"
     }
 }

@@ -85,7 +85,6 @@ class ChatViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
-        
         let cellSize = CGSize(width: 0, height: 0)
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical

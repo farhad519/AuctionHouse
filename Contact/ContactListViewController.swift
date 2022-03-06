@@ -23,7 +23,7 @@ class ContactListViewController: UIViewController {
     
     static func makeViewController() -> ContactListViewController {
         let vc = ContactListViewController()
-        vc.viewModel = ContactListViewModel(vc: vc)
+        vc.viewModel = ContactListViewModel()
         return vc
     }
     
@@ -38,7 +38,7 @@ class ContactListViewController: UIViewController {
         super.viewWillAppear(animated)
         setupNavigationBar()
         disposables += viewModel.fetchData()
-        disposables += viewModel.observeForUpdate.startWithValues { [weak self] in
+        disposables += viewModel.observeForUpdate.startWithValues { [weak self] _ in
             self?.tableView.reloadData()
         }
     }
@@ -110,6 +110,11 @@ extension ContactListViewController: UITableViewDataSource {
         }
         let contactItem = viewModel.contactList[indexPath.item]
         
+        var textColorForLastRead: UIColor = .white
+        if viewModel.isRead(for: indexPath) {
+            textColorForLastRead = .lightGray
+        }
+        
         cell.contactCellImageView.image = UIImage(named: "img1")
         cell.contactCellImageView.clipsToBounds = true
         cell.contactCellImageView.layer.cornerRadius = 30
@@ -117,19 +122,19 @@ extension ContactListViewController: UITableViewDataSource {
         
         cell.titleLabel.font = UIFont(name: "Helvetica", size: 16)!
         cell.titleLabel.text = contactItem.email
-        cell.titleLabel.textColor = .white
+        cell.titleLabel.textColor = textColorForLastRead
         
         cell.subtitleLabel.font = UIFont(name: "Helvetica", size: 14)!
         cell.subtitleLabel.numberOfLines = 0
         cell.subtitleLabel.text = contactItem.message
-        cell.subtitleLabel.textColor = .white
+        cell.subtitleLabel.textColor = textColorForLastRead
         
         let date = Date(timeIntervalSince1970: TimeInterval(truncating: contactItem.timeStamp))
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd-MM-yy"
         cell.dateLabel.font = UIFont(name: "Helvetica", size: 14)!
         cell.dateLabel.text = dateFormatter.string(from: date)
-        cell.dateLabel.textColor = .white
+        cell.dateLabel.textColor = textColorForLastRead
 
         cell.containerView.backgroundColor = color.firstLevelColor
         cell.containerView.clipsToBounds = true
