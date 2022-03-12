@@ -20,7 +20,6 @@ class ChatViewController: UIViewController {
     private let downButton = UIButton(type: .system)
     private var viewModel: ChatMessangerViewModel!
     private let disposables = CompositeDisposable()
-    private var shouldScrollToLast = true
     
     private let myMessageCellId = "MyMessageCollectionViewCell"
     private let otherMessageCellId = "OtherMessageCollectionViewCell"
@@ -54,15 +53,14 @@ class ChatViewController: UIViewController {
         disposables += viewModel.observeOutputSignal.startWithValues { [weak self] _ in
             guard let self = self else { return }
             self.collectionView.reloadData()
-            if self.shouldScrollToLast {
+            if self.viewModel.shouldScrollToFirst {
+                self.viewModel.setLastScrollTime()
                 let item = self.collectionView(self.collectionView, numberOfItemsInSection: 0) - 1
                 let lastItemIndex = IndexPath(item: item, section: 0)
                 self.collectionView.scrollToItem(at: lastItemIndex, at: .top, animated: true)
             }
-            self.shouldScrollToLast = false
         }
         disposables += viewModel.fetchData()
-        shouldScrollToLast = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -139,7 +137,6 @@ class ChatViewController: UIViewController {
         guard viewModel.isOnlySpaceAndNewLine(text: myTextView.text) == false else { return }
         
         viewModel.saveMyMessage(message: myTextView.text)
-        shouldScrollToLast = true
     }
     
     @objc private func downButtonAction(sender: UIButton) {
