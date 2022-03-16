@@ -421,4 +421,72 @@ class DataCollector {
             completion(.success(messageItemDatas))
         }
     }
+    
+    func postBidItem(auctionId: String) {
+        guard let id = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][postBidItem] can not find self uid")
+            return
+        }
+        
+        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+        let data: [String: Any] = [
+            MyKeys.MyBidList.auctionId.rawValue: auctionId,
+            MyKeys.MyBidList.timeStamp.rawValue: timestamp
+        ]
+        let ref = Firestore.firestore()
+            .collection(MyKeys.myBidList.rawValue)
+            .document(id)
+            .collection(MyKeys.myBidList.rawValue)
+        ref.addDocument(data: data)
+    }
+    
+    func getBidItemList() -> SignalProducer<[FireBidItem], Error> {
+        SignalProducer { [weak self] (observer, disposable) in
+            guard let self = self else {
+                observer.send(error: DataCollectorError.referenceFailure)
+                return
+            }
+            self.getBidItemList() { result in
+                switch result {
+                case .success(let bidItemList):
+                    observer.send(value: bidItemList)
+                    observer.sendCompleted()
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            }
+        }
+    }
+    
+    func getBidItemList(completion: @escaping (Result<[FireBidItem], Error>) -> Void) {
+        guard let id = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][getBidItemList] can not find self uid")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        let ref = Firestore.firestore()
+            .collection(MyKeys.myBidList.rawValue)
+            .document(id)
+            .collection(MyKeys.myBidList.rawValue)
+            .limit(to: 100)
+        ref.getDocuments { (snapShot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            
+            let bidList = snapShot.documents.map { document in
+                FireBidItem(
+                    id: document[MyKeys.MyBidList.auctionId.rawValue] as? String ?? "",
+                    timeStamp: document[MyKeys.MyBidList.timeStamp.rawValue] as? NSNumber ?? NSNumber(value: 0)
+                )
+            }
+            print("[DataCollector][getBidItemList] received bid data \(bidList.count)")
+            completion(.success(bidList))
+        }
+    }
 }

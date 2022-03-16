@@ -14,6 +14,8 @@ class ChatViewController: UIViewController {
     private var selfWidth: CGFloat = 0
     private var selfHeight: CGFloat = 0
     
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
+    
     private var containerView = UIView()
     private let myTextView = UITextView()
     private var collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
@@ -47,6 +49,8 @@ class ChatViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigationBar()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillDisappear), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
         
@@ -63,6 +67,15 @@ class ChatViewController: UIViewController {
         disposables += viewModel.fetchData()
     }
     
+    private func setupNavigationBar() {
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
@@ -76,7 +89,7 @@ class ChatViewController: UIViewController {
             width: selfWidth,
             height: selfHeight - typingViewContainerHeight - upperExtraHeight
         )
-        //collectionView.backgroundColor = .green
+        collectionView.backgroundColor = color.groundLevelColor
         containerView.addSubview(collectionView)
         
         
@@ -110,7 +123,7 @@ class ChatViewController: UIViewController {
     
     private func setupContainerView() {
         containerView.frame = CGRect(x: 0, y: 0, width: selfWidth, height: selfHeight)
-        containerView.backgroundColor = .white
+        containerView.backgroundColor = color.groundLevelColor
         self.view.addSubview(containerView)
     }
     
@@ -153,7 +166,7 @@ class ChatViewController: UIViewController {
             width: selfWidth,
             height: typingViewContainerHeight
         )
-        typingContainer.backgroundColor = .white
+        typingContainer.backgroundColor = color.groundLevelColor
         containerView.addSubview(typingContainer)
         
         
@@ -165,7 +178,7 @@ class ChatViewController: UIViewController {
             width: selfWidth,
             height: lineViewHeight
         )
-        lineView.backgroundColor = .black
+        lineView.backgroundColor = color.firstLevelColor
         typingContainer.addSubview(lineView)
         
         
@@ -178,8 +191,9 @@ class ChatViewController: UIViewController {
             height: typingViewContainerHeight - (itemInsetSpace * 2)
         )
         sendButton.setTitle("send", for: .normal)
-        sendButton.backgroundColor = .white
-        sendButton.setTitleColor(.blue, for: .normal)
+        sendButton.backgroundColor = color.firstLevelColor
+        sendButton.setTitleColor(.white, for: .normal)
+        sendButton.layer.cornerRadius = 5
         sendButton.addTarget(
             self,
             action: #selector(sendButtonAction),
@@ -195,8 +209,10 @@ class ChatViewController: UIViewController {
             width: downButtonWidth,
             height: typingViewContainerHeight - (itemInsetSpace * 2)
         )
-        downButton.backgroundColor = .clear
+        downButton.backgroundColor = color.firstLevelColor
         downButton.setTitle("V", for: .normal)
+        downButton.setTitleColor(.white, for: .normal)
+        downButton.layer.cornerRadius = 5
         downButton.isHidden = true
         downButton.addTarget(
             self,
@@ -212,7 +228,8 @@ class ChatViewController: UIViewController {
             width: selfWidth - (itemInsetSpace * 4) - (sendButtonWidth + downButtonWidth),
             height: typingViewContainerHeight - (itemInsetSpace * 2)
         )
-        myTextView.backgroundColor = UIColor(hex: "D3D3D3")
+        myTextView.backgroundColor = color.firstLevelColor
+        myTextView.textColor = .white
         myTextView.layer.cornerRadius = 5
         myTextView.font = .systemFont(ofSize: 19)
         typingContainer.addSubview(myTextView)
@@ -242,12 +259,20 @@ extension ChatViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: dateCellId, for: indexPath) as? DateCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            
             let date = Date(timeIntervalSince1970: TimeInterval(truncating: messageData.timeStamp))
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            if Calendar.current.isDateInToday(date) {
+                dateFormatter.dateFormat = "hh:mm a"
+            } else {
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+            }
+            
             cell.dateLabel.font = .systemFont(ofSize: 8)
-            //cell.dateLabel.text = dateFormatter.string(from: date as Date)
-            cell.dateLabel.text = ""
+            cell.dateLabel.text = dateFormatter.string(from: date as Date)
+            cell.dateLabel.textColor = .white
+            //cell.dateLabel.text = ""
             return cell
         }
         
@@ -265,6 +290,7 @@ extension ChatViewController: UICollectionViewDataSource {
             cell.setupCell(
                 message: messageData.message,
                 font: viewModel.font,
+                color: color.firstLevelColor,
                 insetSize: viewModel.textViewInsetSpace,
                 leftSpace: leftSpace,
                 oneLineSize: viewModel.oneLineHeight(),
@@ -278,7 +304,7 @@ extension ChatViewController: UICollectionViewDataSource {
             }
             
             let textViewWidth = viewModel.getTextWidth(text: messageData.message, font: viewModel.font)
-            var rightSpace = selfWidth - (viewModel.oneLineHeight() + 1 + textViewWidth + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
+            var rightSpace = selfWidth - (viewModel.oneLineHeight() + 5 + textViewWidth + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             if viewModel.otherMessageCellLeftSpace > rightSpace {
                 rightSpace = viewModel.otherMessageCellLeftSpace
             }
@@ -287,6 +313,7 @@ extension ChatViewController: UICollectionViewDataSource {
                 message: messageData.message,
                 image: UIImage(named: "img1") ?? UIImage(),
                 font: viewModel.font,
+                color: color.secondLevelColor,
                 imageSize: viewModel.oneLineHeight(),
                 insetSize: viewModel.textViewInsetSpace,
                 rightSpace: rightSpace,
@@ -322,7 +349,7 @@ extension ChatViewController: UICollectionViewDelegateFlowLayout {
         } else {
             let height = viewModel.getTextHeight(
                 stringVal: messageData.message,
-                width: selfWidth - (viewModel.otherMessageCellLeftSpace + viewModel.oneLineHeight() + 1 + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
+                width: selfWidth - (viewModel.otherMessageCellLeftSpace + viewModel.oneLineHeight() + 5 + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             ) + (viewModel.textViewInsetSpace * 2)
             
             return CGSize(width: selfWidth, height: height)

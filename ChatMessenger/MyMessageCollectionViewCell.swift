@@ -15,6 +15,7 @@ class MyMessageCollectionViewCell: UICollectionViewCell {
     func setupCell(
         message: String,
         font: UIFont,
+        color: UIColor,
         insetSize: CGFloat,
         leftSpace: CGFloat,
         oneLineSize: CGFloat,
@@ -26,7 +27,8 @@ class MyMessageCollectionViewCell: UICollectionViewCell {
         myMessageCellRightInset.constant = trailingInset
         
         myMessageTextView.font = font
-        myMessageTextView.backgroundColor = UIColor(hex: "C4C4C4")
+        myMessageTextView.backgroundColor = color
+        myMessageTextView.textColor = .white
         myMessageTextView.textAlignment = .right
         myMessageTextView.layer.cornerRadius = oneLineSize / 2
         myMessageTextView.layer.masksToBounds = true

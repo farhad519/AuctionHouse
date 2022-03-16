@@ -40,3 +40,8 @@ struct FireMessageItem {
     var message: String
     var timeStamp: NSNumber
 }
+
+struct FireBidItem {
+    var id: String
+    var timeStamp: NSNumber
+}

@@ -9,7 +9,7 @@ import UIKit
 import ReactiveSwift
 
 class AuctionListViewController: UIViewController {
-    private let headerHeight: CGFloat = 210
+    private var headerHeight: CGFloat = 210
     private var selfWidth: CGFloat = 0.0
     private var selfHeight: CGFloat = 0.0
     private var upperExtraHeight: CGFloat = 0.0
@@ -37,9 +37,7 @@ class AuctionListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //navigationController?.navigationBar.barStyle = .black
-        //tableView.estimatedSectionHeaderHeight = headerHeight
-        //tableView.sectionHeaderHeight = UITableView.automaticDimension
+
         selfWidth = self.view.frame.width
         selfHeight = self.view.frame.height
         upperExtraHeight = (navigationController?.navigationBar.frame.height ?? 0) + (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0)
@@ -61,6 +59,8 @@ class AuctionListViewController: UIViewController {
     }
     
     private func configureTableView() {
+        prepareHeaderView()
+        
         tableView.backgroundColor = color.groundLevelColor
         tableView.dataSource = self
         tableView.delegate = self
@@ -76,8 +76,6 @@ class AuctionListViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
-        prepareHeaderView()
     }
     
     @objc private func detailsButtonAction(sender: UIButton) {
@@ -253,6 +251,10 @@ extension AuctionListViewController: UITableViewDelegate {
 
 extension AuctionListViewController {
     private func prepareHeaderView() {
+        guard viewModel.shouldShowHeaderView else {
+            headerHeight = 0
+            return
+        }
         let searchButtonHeight: CGFloat = 35
         let searchViewHeight: CGFloat = 35
         let buttonSize: CGFloat = 35

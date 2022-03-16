@@ -19,6 +19,7 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
         message: String,
         image: UIImage,
         font: UIFont,
+        color: UIColor,
         imageSize: CGFloat,
         insetSize: CGFloat,
         rightSpace: CGFloat,
@@ -31,7 +32,8 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
         otherMessageCellLeftInset.constant = leadingInset
         
         otherMessageTextView.font = font
-        otherMessageTextView.backgroundColor = UIColor(hex: "6600FF")
+        otherMessageTextView.backgroundColor = color
+        otherMessageTextView.textColor = .white
         otherMessageTextView.textAlignment = .left
         otherMessageTextView.layer.cornerRadius = imageSize / 2
         otherMessageTextView.layer.masksToBounds = true
