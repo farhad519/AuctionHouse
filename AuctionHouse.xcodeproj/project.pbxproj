@@ -30,6 +30,7 @@
 		5A565FC2276E89E3007758C2 /* DataCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A565FC1276E89E3007758C2 /* DataCollector.swift */; };
 		5A565FC4276E8B54007758C2 /* FireDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A565FC3276E8B54007758C2 /* FireDataModel.swift */; };
 		5A565FC6276ECC1D007758C2 /* CommonCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A565FC5276ECC1D007758C2 /* CommonCode.swift */; };
+		5A5AD62D27E24EDD009063E5 /* CommonDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5AD62C27E24EDD009063E5 /* CommonDataStore.swift */; };
 		5A97F26A275B844D0045DCEC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A97F269275B844D0045DCEC /* GoogleService-Info.plist */; };
 		5A9A8361274BD8E400F80CB9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8360274BD8E400F80CB9 /* AppDelegate.swift */; };
 		5A9A8363274BD8E400F80CB9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9A8362274BD8E400F80CB9 /* SceneDelegate.swift */; };
@@ -86,6 +87,7 @@
 		5A565FC1276E89E3007758C2 /* DataCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollector.swift; sourceTree = "<group>"; };
 		5A565FC3276E8B54007758C2 /* FireDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireDataModel.swift; sourceTree = "<group>"; };
 		5A565FC5276ECC1D007758C2 /* CommonCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonCode.swift; sourceTree = "<group>"; };
+		5A5AD62C27E24EDD009063E5 /* CommonDataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonDataStore.swift; sourceTree = "<group>"; };
 		5A97F269275B844D0045DCEC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A9A835D274BD8E400F80CB9 /* AuctionHouse.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AuctionHouse.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A9A8360274BD8E400F80CB9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				5A565FC1276E89E3007758C2 /* DataCollector.swift */,
 				5A565FC3276E8B54007758C2 /* FireDataModel.swift */,
 				5A0F3F8B27AA46EC00A171A2 /* CoreDataManager.swift */,
+				5A5AD62C27E24EDD009063E5 /* CommonDataStore.swift */,
 			);
 			path = DataLayer;
 			sourceTree = "<group>";
@@ -454,6 +457,7 @@
 				5AC3BBDC274CFF2D00166B0A /* VideoPlayerCustomView.swift in Sources */,
 				5A01CE4227694BF800F3BDF2 /* MyKeys.swift in Sources */,
 				5AF61D1A2791B033001E2D24 /* ContactListViewModel.swift in Sources */,
+				5A5AD62D27E24EDD009063E5 /* CommonDataStore.swift in Sources */,
 				5A45F9EF27527EE700006C7E /* AuctionListViewModel.swift in Sources */,
 				5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */,
 				5AC3BBDA274CFF2500166B0A /* VideoManager.swift in Sources */,

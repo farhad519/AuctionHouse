@@ -90,13 +90,20 @@ class AuctionListViewModel {
     }
     
     private func getMyBidList() {
-        dataCollector.getMySellList { [weak self] result in
+        dataCollector.getBidItemList().startWithResult { [weak self] result in
             switch result {
-            case .success(let auctionList):
-                self?.auctionSellItemList = auctionList
+            case .success(let myBidList):
+                self?.auctionSellItemList = CoreDataManager.shared.getBidAuctionItemDatas(
+                    auctionIds: myBidList.map { $0.id },
+                    offset: 0,
+                    blockCount: myBidList.count,
+                    minV: 0,
+                    maxV: 200000000,
+                    searchKey: []
+                )
                 self?.delegate?.reloadViewController()
             case .failure(let error):
-                print("[AuctionListViewModel][getMySellList] error at retrieving data with \(error)")
+                print("[AuctionListViewModel][getMyBidList] error at fetching bid data data \(error)")
             }
         }
     }

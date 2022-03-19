@@ -193,6 +193,78 @@ class CoreDataManager {
         }
     }
     
+    func getBidAuctionItemDatas(auctionIds: [String], offset: Int, blockCount: Int, minV: Int, maxV: Int, searchKey: [String]) -> [FireAuctionItem] {
+        guard let context = context else { return [] }
+        let fetchRequest: NSFetchRequest<AuctionSellItem>
+        fetchRequest = AuctionSellItem.fetchRequest()
+        fetchRequest.fetchOffset = offset
+        fetchRequest.fetchLimit = blockCount
+        
+        let sectionSortDescriptor = NSSortDescriptor(
+            key: MyKeys.AuctionSellItemField.price.rawValue,
+            ascending: true
+        )
+        fetchRequest.sortDescriptors = [sectionSortDescriptor]
+
+        let minPredicate = NSPredicate (
+            format: "\(MyKeys.AuctionSellItemField.price) >= %@", "\(minV)"
+        )
+
+        let maxPredicate = NSPredicate (
+            format: "\(MyKeys.AuctionSellItemField.price) <= %@", "\(maxV)"
+        )
+        
+        let myAuctionListPredicate = NSPredicate (
+            format: "\(MyKeys.AuctionSellItemField.id) in %@", auctionIds
+        )
+        
+        let allLoweredCase = searchKey.map { $0.lowercased() }
+        let typePredicate = NSPredicate(
+            format: "\(MyKeys.AuctionSellItemField.type.rawValue) in[c] (%@)", allLoweredCase
+        )
+        
+        if searchKey.isEmpty == false {
+            fetchRequest.predicate = NSCompoundPredicate(
+                andPredicateWithSubpredicates: [
+                    minPredicate,
+                    maxPredicate,
+                    myAuctionListPredicate,
+                    typePredicate
+                ]
+            )
+        } else {
+            fetchRequest.predicate = NSCompoundPredicate(
+                andPredicateWithSubpredicates: [
+                    minPredicate,
+                    maxPredicate,
+                    myAuctionListPredicate
+                ]
+            )
+        }
+        
+        var auctionItems: [AuctionSellItem] = []
+        do {
+            try auctionItems = context.fetch(fetchRequest)
+        } catch {
+            print("[CoreDataManager][getAuctionItemDatas] error at fetch")
+        }
+        
+        return auctionItems.compactMap {
+            guard $0.id != nil else { return nil }
+            return FireAuctionItem(
+                id: $0.id ?? "",
+                title: $0.title ?? "",
+                type: $0.type ?? "",
+                description: $0.description,
+                price: $0.price,
+                negotiable: $0.negotiable,
+                ownerId: $0.ownerId ?? "",
+                videoUrlString: dataToStringArray(data: $0.video)?.first ?? "",
+                imagesUrlStringList: dataToStringArray(data: $0.image) ?? []
+            )
+        }
+    }
+    
     func stringArrayToData(stringArray: [String]) -> Data? {
       return try? JSONSerialization.data(withJSONObject: stringArray, options: [])
     }

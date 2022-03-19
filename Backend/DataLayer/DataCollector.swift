@@ -199,7 +199,7 @@ class DataCollector {
         }
     }
     
-    func getRecentMessagesLastReadTime(completion: @escaping (Result<[String: NSNumber], Error>) -> Void) {
+    private func getRecentMessagesLastReadTime(completion: @escaping (Result<[String: NSNumber], Error>) -> Void) {
         guard let fromId = Auth.auth().currentUser?.uid else {
             print("[DataCollector][getRecentMessagesLastReadTime] can not find self uid")
             completion(.failure(DataCollectorError.noUserId))
@@ -274,7 +274,7 @@ class DataCollector {
         }
     }
     
-    func getRecentMessages(completion: @escaping (Result<[FireContactItem], Error>) -> Void) {
+    private func getRecentMessages(completion: @escaping (Result<[FireContactItem], Error>) -> Void) {
         guard let fromId = Auth.auth().currentUser?.uid else {
             print("[DataCollector][postRecentMessages] can not find self uid")
             completion(.failure(DataCollectorError.noUserId))
@@ -348,7 +348,7 @@ class DataCollector {
         }
     }
     
-    func getDirectMessages(toId: String, completion: @escaping (Result<[FireMessageItem], Error>) -> Void) {
+    private func getDirectMessages(toId: String, completion: @escaping (Result<[FireMessageItem], Error>) -> Void) {
         guard let fromId = Auth.auth().currentUser?.uid else {
             print("[DataCollector][getDirectMessages] can not find self uid")
             completion(.failure(DataCollectorError.noUserId))
@@ -458,7 +458,7 @@ class DataCollector {
         }
     }
     
-    func getBidItemList(completion: @escaping (Result<[FireBidItem], Error>) -> Void) {
+    private func getBidItemList(completion: @escaping (Result<[FireBidItem], Error>) -> Void) {
         guard let id = Auth.auth().currentUser?.uid else {
             print("[DataCollector][getBidItemList] can not find self uid")
             completion(.failure(DataCollectorError.noUserId))

@@ -17,6 +17,7 @@ enum MyKeys: String {
     case recentMessagesLastRead = "recent-messages-last-read"
     case myBidList = "my-bid-list"
     enum AuctionSellItemField: String {
+        case id = "id"
         case title = "title"
         case sellDescription = "sellDescription"
         case type = "type"

@@ -53,7 +53,8 @@ final class SellDetailsViewModel {
         case .forCreate:
             return "Post"
         case .forBid:
-            return "Bid"
+            if isAlreadyBid { return "Already Bid." }
+            else { return "Bid" }
         default:
             return "Modify"
         }
@@ -63,6 +64,14 @@ final class SellDetailsViewModel {
     var fireAuctionItem: FireAuctionItem?
     
     var getToId: String? { fireAuctionItem?.ownerId }
+    var auctionId: String? { fireAuctionItem?.id }
+    var isAlreadyBid: Bool {
+        guard let auctionId = auctionId else { return false }
+        for item in CommonData.shared.myBidList {
+            if item.id == auctionId { return true }
+        }
+        return getIsBidItemToUserDefault(itemId: auctionId)
+    }
     
     init(viewType: SellDetailsViewType) {
         editedValue = SellDetailsEditedValue(
@@ -313,6 +322,18 @@ final class SellDetailsViewModel {
                 completion(url)
             }
         }
+    }
+    
+    func setBidItemToUserDefault(itemId: String) {
+        UserDefaults.standard.set(itemId, forKey: itemId)
+        UserDefaults.standard.synchronize()
+    }
+    
+    func getIsBidItemToUserDefault(itemId: String) -> Bool {
+        guard let value = UserDefaults.standard.value(forKey: itemId) as? String else {
+            return false
+        }
+        return itemId == value
     }
 
 //    private func imagesFromCoreData(object: Data?) -> [UIImage]? {

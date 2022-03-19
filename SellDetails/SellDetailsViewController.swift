@@ -205,6 +205,15 @@ class SellDetailsViewController: UIViewController {
                 showFieldEmptyAlert(errorString: "This item has problem. Please try again later.")
                 return
             }
+            guard let auctionId = viewModel.auctionId else {
+                showFieldEmptyAlert(errorString: "This item has problem. Please try again later.")
+                return
+            }
+            if viewModel.isAlreadyBid == false {
+                DataCollector().postBidItem(auctionId: auctionId)
+                viewModel.setBidItemToUserDefault(itemId: auctionId)
+            }
+            
             navigationController?.pushViewController(
                 ChatViewController.makeViewController(toId: toId),
                 animated: true
