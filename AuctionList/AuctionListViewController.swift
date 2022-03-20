@@ -9,11 +9,13 @@ import UIKit
 import ReactiveSwift
 
 class AuctionListViewController: UIViewController {
-    private let headerHeight: CGFloat = 210
+    private var headerHeight: CGFloat = 210
     private var selfWidth: CGFloat = 0.0
     private var selfHeight: CGFloat = 0.0
     private var upperExtraHeight: CGFloat = 0.0
     private var tableView = UITableView(frame: .zero, style: .grouped)
+    
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
     
     private let tableViewCellId = "AuctionListCell"
     
@@ -35,9 +37,7 @@ class AuctionListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //navigationController?.navigationBar.barStyle = .black
-        //tableView.estimatedSectionHeaderHeight = headerHeight
-        //tableView.sectionHeaderHeight = UITableView.automaticDimension
+
         selfWidth = self.view.frame.width
         selfHeight = self.view.frame.height
         upperExtraHeight = (navigationController?.navigationBar.frame.height ?? 0) + (view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0)
@@ -46,14 +46,22 @@ class AuctionListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.tintColor = .black
-        self.view.backgroundColor = .white
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     private func configureTableView() {
-        tableView.backgroundColor = .white
+        prepareHeaderView()
+        
+        tableView.backgroundColor = color.groundLevelColor
         tableView.dataSource = self
         tableView.delegate = self
         //tableView.register(BuyDetailsCell.self, forCellReuseIdentifier: tableViewCellId)
@@ -68,8 +76,6 @@ class AuctionListViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
-
-        prepareHeaderView()
     }
     
     @objc private func detailsButtonAction(sender: UIButton) {
@@ -107,8 +113,8 @@ extension AuctionListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellId, for: indexPath) as! AuctionListCell
+        cell.backgroundColor = color.firstLevelColor
         let item = viewModel.getCellItem(at: indexPath.item)
-        
         //print("dammamamamam = \(item.imageUrlString)")
         cell.buyImageView.image = nil
         viewModel.fetchImageSignal(urlString: item.imageUrlString)
@@ -140,13 +146,14 @@ extension AuctionListViewController: UITableViewDataSource {
         cell.titleLabel.font = UIFont(name: "Helvetica", size: 15)!
         
         cell.arrowLabel.text = ">"
+        cell.arrowLabel.textColor = .white
         cell.arrowLabel.backgroundColor = .clear
         
         cell.detailsButton.titleLabel?.font = UIFont(name: "Helvetica", size: 30)!
         cell.detailsButton.setTitle("?", for: .normal)
         cell.detailsButton.layer.cornerRadius = 20
-        cell.detailsButton.backgroundColor = UIColor(hex: "#c6c6c6", alpha: 1)
-        cell.detailsButton.setTitleColor(.white, for: .highlighted)
+        cell.detailsButton.backgroundColor = .clear
+        cell.detailsButton.setTitleColor(.white, for: .normal)
         cell.detailsButton.addTarget(
             self,
             action: #selector(detailsButtonAction),
@@ -189,7 +196,7 @@ extension AuctionListViewController: UITableViewDelegate {
         workGroup.notify(queue: DispatchQueue.main, execute: { [weak self] in
             DispatchQueue.main.async {
                 let vc = SellDetailsViewController.makeViewController(
-                    viewType: .forModify,
+                    viewType: .forBid,
                     imageUrlCoupleList: imageUrlCoupleList,
                     fireAuctionItem: fireAuctionItem
                 )
@@ -218,15 +225,15 @@ extension AuctionListViewController: UITableViewDelegate {
         switch viewModel.auctionListViewType {
         case .bidListView:
             let view = UIView()
-            view.backgroundColor = .white
+            view.backgroundColor = color.groundLevelColor
             return view
         case .createdView:
             let view = UIView()
-            view.backgroundColor = .white
+            view.backgroundColor = color.groundLevelColor
             return view
         case .auctionListView:
             let view = UIView()
-            view.backgroundColor = UIColor(hex: "#ededed", alpha: 1)
+            view.backgroundColor = color.groundLevelColor
             return view
         }
     }
@@ -237,23 +244,27 @@ extension AuctionListViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = color.groundLevelColor
         return view
     }
 }
 
 extension AuctionListViewController {
     private func prepareHeaderView() {
+        guard viewModel.shouldShowHeaderView else {
+            headerHeight = 0
+            return
+        }
         let searchButtonHeight: CGFloat = 35
         let searchViewHeight: CGFloat = 35
         let buttonSize: CGFloat = 35
         let buttonInset: CGFloat = 10
-        let textViewEdgeInset: CGFloat = 5
+        let textViewEdgeInset: CGFloat = 7.5
         let maxMinSearchViewHeight: CGFloat = 35
         let maxMinSearchViewWidth: CGFloat = (selfWidth - (3 * buttonInset)) / 2
         
         let headerView = UIView()
-        headerView.backgroundColor = .lightGray
+        headerView.backgroundColor = color.groundLevelColor
         self.view.addSubview(headerView)
         headerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -265,8 +276,7 @@ extension AuctionListViewController {
         
         
         // Left right page button
-        let leftButton = UIButton()
-        leftButton.backgroundColor = .blue
+        let leftButton = UIButton(type: .system)
         leftButton.frame = CGRect(
             x: buttonInset,
             y: headerHeight - buttonSize - buttonInset,
@@ -276,8 +286,7 @@ extension AuctionListViewController {
         leftButton.titleLabel?.font = UIFont(name: "Helvetica", size: 30)!
         leftButton.setTitle("<", for: .normal)
         leftButton.backgroundColor = .clear
-        leftButton.setTitleColor(.black, for: .normal)
-        leftButton.setTitleColor(.white, for: .highlighted)
+        leftButton.setTitleColor(.white, for: .normal)
         leftButton.addTarget(
             self,
             action: #selector(leftArrowButtonAction),
@@ -285,8 +294,7 @@ extension AuctionListViewController {
         )
         headerView.addSubview(leftButton)
         
-        let rightButton = UIButton()
-        rightButton.backgroundColor = .blue
+        let rightButton = UIButton(type: .system)
         rightButton.frame = CGRect(
             x: selfWidth - buttonSize - buttonInset,
             y: headerHeight - buttonSize - buttonInset,
@@ -296,8 +304,7 @@ extension AuctionListViewController {
         rightButton.titleLabel?.font = UIFont(name: "Helvetica", size: 30)!
         rightButton.setTitle(">", for: .normal)
         rightButton.backgroundColor = .clear
-        rightButton.setTitleColor(.black, for: .normal)
-        rightButton.setTitleColor(.white, for: .highlighted)
+        rightButton.setTitleColor(.white, for: .normal)
         rightButton.addTarget(
             self,
             action: #selector(rightArrowButtonAction),
@@ -306,6 +313,8 @@ extension AuctionListViewController {
         headerView.addSubview(rightButton)
         
         // page number label
+        pageNumLabel.backgroundColor = .clear
+        pageNumLabel.textColor = .white
         pageNumLabel.text = "\(viewModel.pageNum)"
         pageNumLabel.frame = CGRect(
             x: (selfWidth / 2) - (buttonSize / 2),
@@ -324,7 +333,7 @@ extension AuctionListViewController {
             height: searchButtonHeight
         )
         searchButton.layer.cornerRadius = 10
-        searchButton.backgroundColor = .blue
+        searchButton.backgroundColor = color.firstLevelColor
         searchButton.setTitle("Search", for: .normal)
         searchButton.setTitleColor(.lightGray, for: .highlighted)
         searchButton.addTarget(
@@ -355,6 +364,7 @@ extension AuctionListViewController {
         searchView.delegate = searchViewPlaceHolder
         searchView.text = searchViewPlaceHolder.placeHolderString
         searchView.textColor = .lightGray
+        searchView.backgroundColor = color.secondLevelColor
         headerView.addSubview(searchView)
         
         
@@ -378,6 +388,7 @@ extension AuctionListViewController {
         leftSearchView.delegate = leftSearchViewPlaceHolder
         leftSearchView.text = leftSearchViewPlaceHolder.placeHolderString
         leftSearchView.textColor = .lightGray
+        leftSearchView.backgroundColor = color.secondLevelColor
         headerView.addSubview(leftSearchView)
         
         
@@ -402,6 +413,7 @@ extension AuctionListViewController {
         rightSearchView.delegate = rightSearchViewPlaceHolder
         rightSearchView.text = rightSearchViewPlaceHolder.placeHolderString
         rightSearchView.textColor = .lightGray
+        rightSearchView.backgroundColor = color.secondLevelColor
         headerView.addSubview(rightSearchView)
     }
     
@@ -494,7 +506,7 @@ extension TextViewPlaceHolder: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
-            textView.textColor = UIColor.black
+            textView.textColor = UIColor.white
         }
     }
 

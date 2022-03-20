@@ -13,6 +13,7 @@ enum DataCollectorError: Error {
     case invalidUrl
     case failedToConvertDataToImage
     case noDataFound
+    case referenceFailure
 }
 
 struct FireAuctionItem {
@@ -37,5 +38,10 @@ struct FireContactItem {
 
 struct FireMessageItem {
     var message: String
+    var timeStamp: NSNumber
+}
+
+struct FireBidItem {
+    var id: String
     var timeStamp: NSNumber
 }

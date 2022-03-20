@@ -21,9 +21,7 @@ class ChatMessangerViewModel {
     //private var messageItemList: [FireMessageItem] = []
     private let (observeOutput, sendInput) = Signal<EventUI, Never>.pipe()
     private var shouldFetchAgain: Bool = true
-    var messageList: [MessageModel] = [] {
-        didSet{ sendInput.send(value: .reloadData) }
-    }
+    var messageList: [MessageModel] = []
     private var myMessageList: [MessageModel] = []
     private var otherMessageList: [MessageModel] = []
     private let dataCollector = DataCollector()
@@ -35,48 +33,15 @@ class ChatMessangerViewModel {
     var observeOutputSignal: SignalProducer<ChatMessangerViewModel.EventUI, Never> {
         observeOutput.producer
     }
+    private var lastScrollTime: NSNumber = NSNumber(value: 0)
+    var shouldScrollToFirst: Bool {
+        guard let lastElement = messageList.last else { return false }
+        return lastElement.timeStamp.compare(lastScrollTime) == .orderedDescending
+    }
     
     init(toId: String) {
         self.toId = toId
         fetchMyMessageFromFire()
-    }
-    
-    func prepareDummyData() {
-        messageList.append(
-            MessageModel(
-                message: "asdasd",
-                timeStamp: NSNumber(value: 12),
-                isMyMessage: true
-            )
-        )
-        messageList.append(
-            MessageModel(
-                message: "asdasd",
-                timeStamp: NSNumber(value: 12),
-                isMyMessage: true
-            )
-        )
-        messageList.append(
-            MessageModel(
-                message: "asdasd",
-                timeStamp: NSNumber(value: 12),
-                isMyMessage: false
-            )
-        )
-        messageList.append(
-            MessageModel(
-                message: "asdasd",
-                timeStamp: NSNumber(value: 12),
-                isMyMessage: true
-            )
-        )
-        messageList.append(
-            MessageModel(
-                message: "asdasd",
-                timeStamp: NSNumber(value: 12),
-                isMyMessage: false
-            )
-        )
     }
     
     func fetchData() -> Disposable {
@@ -87,7 +52,9 @@ class ChatMessangerViewModel {
             self.dataCollector.getDirectMessages(toId: self.toId).startWithResult { result in
                 switch result {
                 case .success(let messageItemList):
+                    self.dataCollector.postRecentMessagesLastReadTime(toId: self.toId)
                     self.prepareData(messageItemList: messageItemList)
+                    self.sendInput.send(value: .reloadData)
                 case .failure(let error):
                     print("[ChatMessangerViewModel][fetchData] error at fetching contact data \(error)")
                 }
@@ -200,5 +167,9 @@ class ChatMessangerViewModel {
             }
         }
         return true
+    }
+    
+    func setLastScrollTime() {
+        lastScrollTime = messageList.last?.timeStamp ?? NSNumber(value: 0)
     }
 }

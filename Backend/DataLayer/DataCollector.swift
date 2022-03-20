@@ -157,6 +157,76 @@ class DataCollector {
 //        userMessagesRef.addDocument(data: values)
 //    }
     
+    func postRecentMessagesLastReadTime(toId: String) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][postRecentMessagesLastReadTime] can not find self uid")
+            return
+        }
+
+        guard toId.isEmpty == false else {
+            print("[DataCollector][postRecentMessagesLastReadTime] toId is empty")
+            return
+        }
+        
+        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+        let data: [String: Any] = [
+            MyKeys.RecentMessagesLastRead.timeStamp.rawValue: timestamp,
+            MyKeys.RecentMessagesLastRead.contactedId.rawValue: toId
+        ]
+        let recentMessagesRef = Firestore.firestore()
+            .collection(MyKeys.recentMessagesLastRead.rawValue)
+            .document(fromId)
+            .collection(MyKeys.RecentMessagesLastRead.lastRead.rawValue)
+            .document(toId)
+        recentMessagesRef.setData(data)
+    }
+    
+    func getRecentMessagesLastReadTime() -> SignalProducer<[String: NSNumber], Error> {
+        SignalProducer { [weak self] (observer, disposable) in
+            guard let self = self else {
+                observer.send(error: DataCollectorError.referenceFailure)
+                return
+            }
+            self.getRecentMessagesLastReadTime() { result in
+                switch result {
+                case .success(let idVStimeDic):
+                    observer.send(value: idVStimeDic)
+                    observer.sendCompleted()
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            }
+        }
+    }
+    
+    private func getRecentMessagesLastReadTime(completion: @escaping (Result<[String: NSNumber], Error>) -> Void) {
+        guard let fromId = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][getRecentMessagesLastReadTime] can not find self uid")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        let recentMessagesRef = Firestore.firestore()
+            .collection(MyKeys.recentMessagesLastRead.rawValue)
+            .document(fromId)
+            .collection(MyKeys.RecentMessagesLastRead.lastRead.rawValue)
+        recentMessagesRef.getDocuments { (snapShot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            var idVStimeDic: [String: NSNumber] = [:]
+            snapShot.documents.forEach {
+                idVStimeDic[$0.documentID] = $0[MyKeys.RecentMessagesLastRead.timeStamp.rawValue] as? NSNumber ?? NSNumber(value: 0)
+            }
+            print("[DataCollector][getRecentMessagesLastReadTime] received contact data \(idVStimeDic.count)")
+            completion(.success(idVStimeDic))
+        }
+    }
+    
     func postRecentMessages(message: String, iconUrl: String, toId: String) {
         guard let fromId = Auth.auth().currentUser?.uid else {
             print("[DataCollector][postRecentMessages] can not find self uid")
@@ -204,7 +274,7 @@ class DataCollector {
         }
     }
     
-    func getRecentMessages(completion: @escaping (Result<[FireContactItem], Error>) -> Void) {
+    private func getRecentMessages(completion: @escaping (Result<[FireContactItem], Error>) -> Void) {
         guard let fromId = Auth.auth().currentUser?.uid else {
             print("[DataCollector][postRecentMessages] can not find self uid")
             completion(.failure(DataCollectorError.noUserId))
@@ -278,7 +348,7 @@ class DataCollector {
         }
     }
     
-    func getDirectMessages(toId: String, completion: @escaping (Result<[FireMessageItem], Error>) -> Void) {
+    private func getDirectMessages(toId: String, completion: @escaping (Result<[FireMessageItem], Error>) -> Void) {
         guard let fromId = Auth.auth().currentUser?.uid else {
             print("[DataCollector][getDirectMessages] can not find self uid")
             completion(.failure(DataCollectorError.noUserId))
@@ -349,6 +419,74 @@ class DataCollector {
             }
             print("[DataCollector][getMyDirectMessages] received message data \(messageItemDatas.count)")
             completion(.success(messageItemDatas))
+        }
+    }
+    
+    func postBidItem(auctionId: String) {
+        guard let id = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][postBidItem] can not find self uid")
+            return
+        }
+        
+        let timestamp: NSNumber = NSNumber(value: Int(NSDate().timeIntervalSince1970))
+        let data: [String: Any] = [
+            MyKeys.MyBidList.auctionId.rawValue: auctionId,
+            MyKeys.MyBidList.timeStamp.rawValue: timestamp
+        ]
+        let ref = Firestore.firestore()
+            .collection(MyKeys.myBidList.rawValue)
+            .document(id)
+            .collection(MyKeys.myBidList.rawValue)
+        ref.addDocument(data: data)
+    }
+    
+    func getBidItemList() -> SignalProducer<[FireBidItem], Error> {
+        SignalProducer { [weak self] (observer, disposable) in
+            guard let self = self else {
+                observer.send(error: DataCollectorError.referenceFailure)
+                return
+            }
+            self.getBidItemList() { result in
+                switch result {
+                case .success(let bidItemList):
+                    observer.send(value: bidItemList)
+                    observer.sendCompleted()
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            }
+        }
+    }
+    
+    private func getBidItemList(completion: @escaping (Result<[FireBidItem], Error>) -> Void) {
+        guard let id = Auth.auth().currentUser?.uid else {
+            print("[DataCollector][getBidItemList] can not find self uid")
+            completion(.failure(DataCollectorError.noUserId))
+            return
+        }
+        let ref = Firestore.firestore()
+            .collection(MyKeys.myBidList.rawValue)
+            .document(id)
+            .collection(MyKeys.myBidList.rawValue)
+            .limit(to: 100)
+        ref.getDocuments { (snapShot, error) in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            
+            let bidList = snapShot.documents.map { document in
+                FireBidItem(
+                    id: document[MyKeys.MyBidList.auctionId.rawValue] as? String ?? "",
+                    timeStamp: document[MyKeys.MyBidList.timeStamp.rawValue] as? NSNumber ?? NSNumber(value: 0)
+                )
+            }
+            print("[DataCollector][getBidItemList] received bid data \(bidList.count)")
+            completion(.success(bidList))
         }
     }
 }

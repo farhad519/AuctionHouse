@@ -8,6 +8,8 @@
 import CoreData
 import UIKit
 import ReactiveSwift
+import Firebase
+import FirebaseStorage
 
 protocol AuctionListViewControllerDelegate {
     func reloadViewController()
@@ -45,6 +47,15 @@ class AuctionListViewModel {
         (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
     }
     
+    var shouldShowHeaderView: Bool {
+        switch auctionListViewType {
+        case .auctionListView:
+            return true
+        default:
+            return false
+        }
+    }
+    
     init(auctionListViewType: AuctionListViewType) {
         self.auctionListViewType = auctionListViewType
         self.dataCollector = DataCollector()
@@ -63,7 +74,12 @@ class AuctionListViewModel {
     }
     
     private func getAllSellList() {
+        guard let ownerId = Auth.auth().currentUser?.uid else {
+            print("[AuctionListViewModel][getAllSellList] no auth id.")
+            return
+        }
         auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
+            myId: ownerId,
             offset: 0,
             blockCount: 2,
             minV: 0,
@@ -74,13 +90,20 @@ class AuctionListViewModel {
     }
     
     private func getMyBidList() {
-        dataCollector.getMySellList { [weak self] result in
+        dataCollector.getBidItemList().startWithResult { [weak self] result in
             switch result {
-            case .success(let auctionList):
-                self?.auctionSellItemList = auctionList
+            case .success(let myBidList):
+                self?.auctionSellItemList = CoreDataManager.shared.getBidAuctionItemDatas(
+                    auctionIds: myBidList.map { $0.id },
+                    offset: 0,
+                    blockCount: myBidList.count,
+                    minV: 0,
+                    maxV: 200000000,
+                    searchKey: []
+                )
                 self?.delegate?.reloadViewController()
             case .failure(let error):
-                print("[AuctionListViewModel][getMySellList] error at retrieving data with \(error)")
+                print("[AuctionListViewModel][getMyBidList] error at fetching bid data data \(error)")
             }
         }
     }
@@ -182,6 +205,11 @@ class AuctionListViewModel {
 //    }
     
     func searchSellItems(minimumValue: String, maximumValue: String, searchKeyStr: String, serachKeyTextColor: UIColor) {
+        guard let ownerId = Auth.auth().currentUser?.uid else {
+            print("[AuctionListViewModel][searchSellItems] no auth id.")
+            return
+        }
+        
         let trimmedString = String(
             searchKeyStr.filter { !" \n\t\r".contains($0) }
         )
@@ -200,6 +228,7 @@ class AuctionListViewModel {
         }
 
         auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
+            myId: ownerId,
             offset: (pageNum - 1) * 2,
             blockCount: 2,
             minV: minV,

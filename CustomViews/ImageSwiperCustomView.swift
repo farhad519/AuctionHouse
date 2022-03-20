@@ -10,6 +10,9 @@ class ImageSwiperCustomView: UIView {
     
     private var pageController: UIPageControl = UIPageControl()
     private let pageControllerHeight: CGFloat = 20
+    private var groundLevelColor = UIColor.white
+    private var firstLevelColor = UIColor.white
+    private var secondLevelColor = UIColor.white
     
     private var lastPage = 0
     
@@ -19,14 +22,20 @@ class ImageSwiperCustomView: UIView {
         super.init(frame: frame)
     }
 
-    convenience init(frame: CGRect, imageList: [UIImage]) {
+    convenience init(frame: CGRect, imageList: [UIImage], groundLevelColor: UIColor, firstLevelColor: UIColor, secondLevelColor: UIColor) {
         self.init(frame: frame)
         self.imageList = imageList
+        self.groundLevelColor = groundLevelColor
+        self.firstLevelColor = firstLevelColor
+        self.secondLevelColor = secondLevelColor
     }
 
-    convenience init(imageList: [UIImage]) {
+    convenience init(imageList: [UIImage], groundLevelColor: UIColor, firstLevelColor: UIColor, secondLevelColor: UIColor) {
         self.init(frame: .zero)
         self.imageList = imageList
+        self.groundLevelColor = groundLevelColor
+        self.firstLevelColor = firstLevelColor
+        self.secondLevelColor = secondLevelColor
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -53,7 +62,7 @@ class ImageSwiperCustomView: UIView {
             width: selfWidth,
             height: pageControllerHeight
         )
-        pageController.backgroundColor = .white
+        pageController.backgroundColor = groundLevelColor
         pageController.pageIndicatorTintColor = .gray
         pageController.currentPageIndicatorTintColor = .black
         pageController.addTarget(
@@ -117,7 +126,7 @@ class ImageSwiperCustomView: UIView {
                     height: imageViewHeight
                 )
             )
-            emptyView.backgroundColor = .white
+            emptyView.backgroundColor = firstLevelColor
             emptyView.layer.cornerRadius = selfHeight / 10
             emptyView.clipsToBounds = true
             //emptyView.layer.borderWidth = 0.2
@@ -134,13 +143,13 @@ class ImageSwiperCustomView: UIView {
             )
             label.text = "Image"
             label.textColor = .white
-            label.backgroundColor = .gray
+            label.backgroundColor = secondLevelColor
             label.textAlignment = .center
             label.layer.cornerRadius = 50
             label.clipsToBounds = true
         }
 
-        scrollView.backgroundColor = .white
+        scrollView.backgroundColor = groundLevelColor
         scrollView.isPagingEnabled = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false

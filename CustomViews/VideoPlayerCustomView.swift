@@ -10,22 +10,45 @@ class VideoPlayerCustomView: UIView {
     private var selfHeight: CGFloat = 0.0
     private let videoInternalSpace: CGFloat = 10
     
+    private var groundLevelColor = UIColor.white
+    private var firstLevelColor = UIColor.white
+    private var secondLevelColor = UIColor.white
+    
     private let upperView = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
 
-    convenience init(frame: CGRect, videoList: [URL], viewController: UIViewController) {
+    convenience init(
+        frame: CGRect,
+        videoList: [URL],
+        viewController: UIViewController,
+        groundLevelColor: UIColor,
+        firstLevelColor: UIColor,
+        secondLevelColor: UIColor
+    ) {
         self.init(frame: frame)
         self.videoList = videoList
         self.parentViewController = viewController
+        self.groundLevelColor = groundLevelColor
+        self.firstLevelColor = firstLevelColor
+        self.secondLevelColor = secondLevelColor
     }
 
-    convenience init(videoList: [URL], viewController: UIViewController) {
+    convenience init(
+        videoList: [URL],
+        viewController: UIViewController,
+        groundLevelColor: UIColor,
+        firstLevelColor: UIColor,
+        secondLevelColor: UIColor
+    ) {
         self.init(frame: .zero)
         self.videoList = videoList
         self.parentViewController = viewController
+        self.groundLevelColor = groundLevelColor
+        self.firstLevelColor = firstLevelColor
+        self.secondLevelColor = secondLevelColor
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -36,7 +59,7 @@ class VideoPlayerCustomView: UIView {
         selfWidth = rect.width
         selfHeight = rect.height
 
-        //self.backgroundColor = .blue
+        self.backgroundColor = groundLevelColor
         
         configureVideoPlayerView()
     }
@@ -67,6 +90,7 @@ class VideoPlayerCustomView: UIView {
             )
             view.layer.cornerRadius = selfHeight / 10
             //view.layer.borderWidth = 0.2
+            view.backgroundColor = firstLevelColor
             self.addSubview(view)
             
             let label = UILabel()
@@ -80,7 +104,7 @@ class VideoPlayerCustomView: UIView {
             ])
             label.text = "Video"
             label.textColor = .white
-            label.backgroundColor = .gray
+            label.backgroundColor = secondLevelColor
             label.textAlignment = .center
             label.layer.cornerRadius = 50
             label.clipsToBounds = true
@@ -95,7 +119,7 @@ class VideoPlayerCustomView: UIView {
             height: selfHeight - (2 * videoInternalSpace)
         )
         playerLayer.videoGravity = .resizeAspect
-        playerLayer.backgroundColor = UIColor.black.cgColor
+        playerLayer.backgroundColor = firstLevelColor.cgColor
         playerLayer.cornerRadius = selfHeight / 10
         //playerLayer.borderWidth = 1
         //playerLayer.borderColor = UIColor.black.cgColor

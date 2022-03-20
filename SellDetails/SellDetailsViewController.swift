@@ -17,6 +17,47 @@ class SellDetailsViewController: UIViewController {
     private let imageCellId = "ImageCellForCollectionView"
     private let priceDetailsTableViewCellId = "PriceDetailsCell"
     private let textViewCellId = "TextViewCell"
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
+    
+//    let groundLevelColor = UIColor(hex: "03396c")
+//    let firstLevelColor = UIColor(hex: "005b96")
+//    let secondLevelColor = UIColor(hex: "6497b1")
+//
+//    let groundLevelColor = UIColor(hex: "009688")
+//    let firstLevelColor = UIColor(hex: "35a79c")
+//    let secondLevelColor = UIColor(hex: "65c3ba")
+//
+//    let groundLevelColor = UIColor(hex: "c99789")
+//    let firstLevelColor = UIColor(hex: "dfa290")
+//    let secondLevelColor = UIColor(hex: "e0a899")
+//
+//    let groundLevelColor = UIColor(hex: "ff3377")
+//    let firstLevelColor = UIColor(hex: "ff5588")
+//    let secondLevelColor = UIColor(hex: "ff77aa")
+//
+//    let groundLevelColor = UIColor(hex: "8d5524")
+//    let firstLevelColor = UIColor(hex: "c68642")
+//    let secondLevelColor = UIColor(hex: "e0ac69")
+//
+//    let groundLevelColor = UIColor(hex: "343d46")
+//    let firstLevelColor = UIColor(hex: "4f5b66")
+//    let secondLevelColor = UIColor(hex: "65737e")
+//
+//    let groundLevelColor = UIColor(hex: "3b7dd8")
+//    let firstLevelColor = UIColor(hex: "4a91f2")
+//    let secondLevelColor = UIColor(hex: "64a1f4")
+//
+//    let groundLevelColor = UIColor(hex: "3b5998")
+//    let firstLevelColor = UIColor(hex: "8b9dc3")
+//    let secondLevelColor = UIColor(hex: "dfe3ee")
+//
+//    let groundLevelColor = UIColor(hex: "011f4b")
+//    let firstLevelColor = UIColor(hex: "03396c")
+//    let secondLevelColor = UIColor(hex: "005b96")
+//
+//    let groundLevelColor = UIColor(hex: "1A4314")
+//    let firstLevelColor = UIColor(hex: "2C5E1A")
+//    let secondLevelColor = UIColor(hex: "59981A")
     
     private var videoManager: VideoManager?
     private var imagePickerManager: ImagePickerManager?
@@ -100,9 +141,16 @@ class SellDetailsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = .clear
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.tintColor = .black
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     @objc private func editTapped() {
@@ -152,6 +200,27 @@ class SellDetailsViewController: UIViewController {
         print("post button tapped.")
         guard editOption == false else { return }
         
+        guard viewModel.viewType != .forBid else {
+            guard let toId = viewModel.getToId else {
+                showFieldEmptyAlert(errorString: "This item has problem. Please try again later.")
+                return
+            }
+            guard let auctionId = viewModel.auctionId else {
+                showFieldEmptyAlert(errorString: "This item has problem. Please try again later.")
+                return
+            }
+            if viewModel.isAlreadyBid == false {
+                DataCollector().postBidItem(auctionId: auctionId)
+                viewModel.setBidItemToUserDefault(itemId: auctionId)
+            }
+            
+            navigationController?.pushViewController(
+                ChatViewController.makeViewController(toId: toId),
+                animated: true
+            )
+            return
+        }
+        
         if let errorString = viewModel.isAnyFieldEmpty() {
             showFieldEmptyAlert(errorString: errorString)
             return
@@ -186,7 +255,7 @@ class SellDetailsViewController: UIViewController {
     
     private func collectEditedInfo() {
         let textViewCell = tableView.cellForRow(at: IndexPath(item: 0, section: 2)) as? TextViewCell
-        viewModel.editedValue.description = textViewCell?.descriptionTextView.textColor == .black
+        viewModel.editedValue.description = textViewCell?.descriptionTextView.textColor != UIColor.lightGray
         ? (textViewCell?.descriptionTextView.text ?? "")
         : ""
         let priceDetailsCell = tableView.cellForRow(at: IndexPath(item: 0, section: 3)) as? PriceDetailsCell
@@ -197,12 +266,13 @@ class SellDetailsViewController: UIViewController {
     }
 
     private func configureTableView() {
+        //tableView.contentInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.frame = CGRect(
             origin: .zero,
             size: self.view.frame.size
         )
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = color.groundLevelColor
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -233,10 +303,17 @@ extension SellDetailsViewController: UITableViewDataSource {
                     origin: .zero,
                     size: CGSize(width: selfWidth, height: imageCellHeight)
                 ),
-                imageList: viewModel.imageUrlCoupleList.map { $0.image }
+                imageList: viewModel.imageUrlCoupleList.map { $0.image },
+                groundLevelColor: color.groundLevelColor,
+                firstLevelColor: color.firstLevelColor,
+                secondLevelColor: color.secondLevelColor
             )
             cell.addSubview(imageSwiperCustomView ?? UIView())
             cell.selectionStyle = .none
+
+            //cell.clipsToBounds = true
+            //cell.layer.cornerRadius = 50
+            //cell.backgroundColor = firstLevelColor
             return cell
         } else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: imageCellId, for: indexPath)
@@ -247,9 +324,13 @@ extension SellDetailsViewController: UITableViewDataSource {
                     size: CGSize(width: selfWidth, height: imageCellHeight)
                 ),
                 videoList: viewModel.videoList,
-                viewController: self
+                viewController: self,
+                groundLevelColor: color.groundLevelColor,
+                firstLevelColor: color.firstLevelColor,
+                secondLevelColor: color.secondLevelColor
             )
             cell.addSubview(videoPlayerCustomView ?? UIView())
+            cell.backgroundColor = color.groundLevelColor
             cell.selectionStyle = .none
             return cell
         } else if indexPath.section == 2 {
@@ -259,9 +340,16 @@ extension SellDetailsViewController: UITableViewDataSource {
             cell.descriptionTextView.textColor = .lightGray
             cell.selectionStyle = .none
             
+            //cell.clipsToBounds = true
+            //cell.layer.cornerRadius = 10
+            cell.backgroundColor = color.groundLevelColor
+            cell.descriptionTextView.clipsToBounds = true
+            cell.descriptionTextView.layer.cornerRadius = 10
+            cell.descriptionTextView.backgroundColor = color.firstLevelColor
+            
             if viewModel.getEditedText(for: .description) != "" {
                 cell.descriptionTextView.text = viewModel.getEditedText(for: .description)
-                cell.descriptionTextView.textColor = .black
+                cell.descriptionTextView.textColor = .white
             }
             
             if editOption {
@@ -275,16 +363,57 @@ extension SellDetailsViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: priceDetailsTableViewCellId, for: indexPath) as! PriceDetailsCell
             
             cell.selectionStyle = .none
+            cell.backgroundColor = color.groundLevelColor
+            cell.containerView.backgroundColor = color.firstLevelColor
+            cell.containerView.clipsToBounds = true
+            cell.containerView.layer.cornerRadius = 10
+            cell.labelsContainer.backgroundColor = color.firstLevelColor
+            cell.textFieldsContainer.backgroundColor = color.firstLevelColor
+            
+//            cell.titleLabel.backgroundColor = firstLevelColor
+//            cell.typeLabel.backgroundColor = firstLevelColor
+//            cell.priceLabel.backgroundColor = firstLevelColor
+//            cell.negotiableLabel.backgroundColor = firstLevelColor
+            cell.titleField.backgroundColor = color.secondLevelColor
+            cell.typeField.backgroundColor = color.secondLevelColor
+            cell.priceField.backgroundColor = color.secondLevelColor
+            cell.negotiableField.backgroundColor = color.secondLevelColor
+            
+            cell.titleLabel.textColor = .white
+            cell.typeLabel.textColor = .white
+            cell.priceLabel.textColor = .white
+            cell.negotiableLabel.textColor = .white
+            cell.titleField.textColor = .white
+            cell.typeField.textColor = .white
+            cell.priceField.textColor = .white
+            cell.negotiableField.textColor = .white
             
             cell.titleLabel.text = "title"
             cell.typeLabel.text = "type"
             cell.priceLabel.text = "price"
             cell.negotiableLabel.text = "negotiable"
             
-            cell.titleField.placeholder = "title for sell details"
-            cell.typeField.placeholder = "write type eg: book, iPhone, car etc"
-            cell.priceField.placeholder = "write price in dollar"
-            cell.negotiableField.placeholder = "yes/no"
+//            cell.titleField.placeholder = "title for sell details"
+//            cell.typeField.placeholder = "write type eg: book, iPhone, car etc"
+//            cell.priceField.placeholder = "write price in dollar"
+//            cell.negotiableField.placeholder = "yes/no"
+            
+            cell.titleField.attributedPlaceholder = NSAttributedString(
+                string: "title for sell details",
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+            )
+            cell.typeField.attributedPlaceholder = NSAttributedString(
+                string: "write type eg: book, iPhone, car etc",
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+            )
+            cell.priceField.attributedPlaceholder = NSAttributedString(
+                string: "write price in dollar",
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+            )
+            cell.negotiableField.attributedPlaceholder = NSAttributedString(
+                string: "yes/no",
+                attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+            )
             
             cell.titleField.text = viewModel.getEditedText(for: .title)
             cell.typeField.text = viewModel.getEditedText(for: .type)
@@ -331,6 +460,7 @@ extension SellDetailsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard editOption == true else {
             let headerView = UIView()
+            headerView.backgroundColor = color.groundLevelColor
             return headerView
         }
         if section == 1 {
@@ -342,7 +472,9 @@ extension SellDetailsViewController: UITableViewDelegate {
                 viewController: self
             )
             self.videoManager = videoManager
-            return videoManager.getView()
+            let view = videoManager.getView()
+            view.backgroundColor = color.groundLevelColor
+            return view
         } else if section == 0 {
             let imagePickerManager = ImagePickerManager(
                 rect: CGRect(
@@ -352,11 +484,13 @@ extension SellDetailsViewController: UITableViewDelegate {
                 viewController: self
             )
             self.imagePickerManager = imagePickerManager
-            return imagePickerManager.getView()
+            let view = imagePickerManager.getView()
+            view.backgroundColor = color.groundLevelColor
+            return view
         } else {
             let view = UIView()
             //view.backgroundColor = UIColor(hex: "#67aebe", alpha: 1)
-            view.backgroundColor = .white
+            view.backgroundColor = color.groundLevelColor
             return view
         }
     }
@@ -371,7 +505,7 @@ extension SellDetailsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = color.groundLevelColor
         
         guard section == 3 else {
             return view
@@ -384,7 +518,7 @@ extension SellDetailsViewController: UITableViewDelegate {
             width: selfWidth - 10,
             height: postButtonFooterHeight - 10
         )
-        postButton.backgroundColor = .blue
+        postButton.backgroundColor = color.firstLevelColor
         postButton.layer.cornerRadius = 10
         postButton.setTitle(viewModel.buttonTitle, for: .normal)
         postButton.setTitleColor(.gray, for: .highlighted)

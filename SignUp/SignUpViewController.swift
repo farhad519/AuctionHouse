@@ -14,6 +14,9 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var signUpButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var stackViewContainer: UIStackView!
+    
+    private let color = CustomColor(colorSpectrumValue: Int.random(in: CustomColor.colorRange)).value
     
     var viewModel: SignUpMainViewModel!
     
@@ -27,17 +30,28 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        stackViewContainer.backgroundColor = color.groundLevelColor
         signUpButton.setTitleColor(.white, for: .normal)
-        signUpButton.backgroundColor = UIColor(hex: "097969")
+        signUpButton.backgroundColor = color.firstLevelColor
         signUpButton.layer.cornerRadius = 20
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
+        userName.backgroundColor = color.secondLevelColor
+        gmail.backgroundColor = color.secondLevelColor
+        password.backgroundColor = color.secondLevelColor
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.backgroundColor = .clear
-        navigationController?.isNavigationBarHidden = false
-        navigationController?.navigationBar.tintColor = .black
+        setupNavigationBar()
+    }
+    
+    private func setupNavigationBar() {
+        self.view.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.backgroundColor = color.groundLevelColor
+        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
     }
     
     @IBAction func signUpButtonAction(_ sender: Any) {

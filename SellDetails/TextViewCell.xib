@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -11,7 +10,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextViewCell" id="KGk-i7-Jjw" customClass="TextViewCell" customModule="Buy_And_Sell_App" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TextViewCell" id="KGk-i7-Jjw" customClass="TextViewCell" customModule="AuctionHouse" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -27,14 +26,14 @@
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
                 </subviews>
-                <constraints>
-                    <constraint firstItem="hyU-Wp-yZP" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="KK9-5L-J3m"/>
-                    <constraint firstAttribute="bottom" secondItem="hyU-Wp-yZP" secondAttribute="bottom" constant="10" id="gdf-0S-DPX"/>
-                    <constraint firstAttribute="trailing" secondItem="hyU-Wp-yZP" secondAttribute="trailing" constant="10" id="qvD-eP-Ltl"/>
-                    <constraint firstItem="hyU-Wp-yZP" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="sYV-vN-hxs"/>
-                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <constraints>
+                <constraint firstItem="njF-e1-oar" firstAttribute="bottom" secondItem="hyU-Wp-yZP" secondAttribute="bottom" constant="10" id="IKt-wm-avk"/>
+                <constraint firstItem="hyU-Wp-yZP" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" constant="10" id="KtW-Ve-ehU"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="hyU-Wp-yZP" secondAttribute="trailing" constant="10" id="T23-ur-6ko"/>
+                <constraint firstItem="hyU-Wp-yZP" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="10" id="fnA-aJ-0In"/>
+            </constraints>
             <connections>
                 <outlet property="descriptionTextView" destination="hyU-Wp-yZP" id="VpP-FA-JVL"/>
             </connections>
