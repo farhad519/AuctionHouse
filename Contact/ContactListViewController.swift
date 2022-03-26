@@ -115,10 +115,18 @@ extension ContactListViewController: UITableViewDataSource {
             textColorForLastRead = .lightGray
         }
         
-        cell.contactCellImageView.image = UIImage(named: "img1")
-        cell.contactCellImageView.clipsToBounds = true
-        cell.contactCellImageView.layer.cornerRadius = 30
-        cell.contactCellImageView.contentMode = .scaleAspectFill
+//        cell.contactCellImageView.image = UIImage(named: "img1")
+//        cell.contactCellImageView.clipsToBounds = true
+//        cell.contactCellImageView.layer.cornerRadius = 30
+//        cell.contactCellImageView.contentMode = .scaleAspectFill
+        cell.contactCellImageView.isHidden = true
+        
+        cell.contactCellLabelView.text = String(contactItem.email.prefix(1))
+        cell.contactCellLabelView.textColor = .white
+        cell.contactCellLabelView.backgroundColor = CommonCalculation.shared.getColorFor(str: contactItem.email)
+        cell.contactCellLabelView.textAlignment = .center
+        cell.contactCellLabelView.clipsToBounds = true
+        cell.contactCellLabelView.layer.cornerRadius = 30
         
         cell.titleLabel.font = UIFont(name: "Helvetica", size: 16)!
         cell.titleLabel.text = contactItem.email

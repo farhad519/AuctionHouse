@@ -14,6 +14,7 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var otherImageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var rightExtraSpace: NSLayoutConstraint!
     @IBOutlet weak var otherMessageCellLeftInset: NSLayoutConstraint!
+    @IBOutlet weak var otherLabelView: UILabel!
     
     func setupCell(
         message: String,
@@ -51,5 +52,13 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
         otherImageViewWidth.constant = imageSize
         otherImageViewHeight.constant = imageSize
         otherImageView.layer.cornerRadius = imageSize / 2
+        
+        otherImageView.isHidden = true
+        otherLabelView.textColor = .white
+        otherLabelView.text = "F"
+        otherLabelView.backgroundColor = .green
+        otherLabelView.textAlignment = .center
+        otherLabelView.clipsToBounds = true
+        otherLabelView.layer.cornerRadius = imageSize / 2
     }
 }

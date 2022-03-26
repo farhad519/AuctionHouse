@@ -27,10 +27,6 @@ class SignUpMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         DataCollector().getAllSellList()
-        //DataCollector().postRecentMessages(message: "hi there ee", iconUrl: "", toId: "jZyx5PCCtDV95lFExJQ4RtYHjIR2")
-        //let vm = ContactListViewModel()
-        //vm.fetchData()
-        //navigationController?.pushViewController(ChatViewController.makeViewController(toId: ""), animated: true)
         
         stackViewContainer.backgroundColor = color.groundLevelColor
         signInButton.backgroundColor = color.firstLevelColor

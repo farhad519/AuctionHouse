@@ -24,14 +24,19 @@
                             <constraint firstAttribute="height" constant="20" id="gF7-7N-LIV"/>
                         </constraints>
                     </imageView>
-                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BaP-fG-6pV">
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Label" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="BaP-fG-6pV">
                         <rect key="frame" x="30" y="44" width="404" height="68"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <color key="textColor" systemColor="labelColor"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vm0-5J-mge">
+                        <rect key="frame" x="5" y="92" width="20" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -39,8 +44,12 @@
                 <constraint firstItem="XqY-lz-yPb" firstAttribute="bottom" secondItem="ZTg-uK-7eu" secondAttribute="bottom" id="2Tz-fN-4Sf"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="BaP-fG-6pV" secondAttribute="trailing" constant="40" id="AUX-Bu-jc4"/>
                 <constraint firstItem="XqY-lz-yPb" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="5" id="DGg-gW-Kw4"/>
+                <constraint firstItem="Vm0-5J-mge" firstAttribute="width" secondItem="XqY-lz-yPb" secondAttribute="width" id="MOA-MO-2eJ"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="top" secondItem="BaP-fG-6pV" secondAttribute="top" id="Vv7-kT-y5T"/>
                 <constraint firstItem="BaP-fG-6pV" firstAttribute="leading" secondItem="XqY-lz-yPb" secondAttribute="trailing" constant="5" id="YfL-k3-7q2"/>
+                <constraint firstItem="Vm0-5J-mge" firstAttribute="height" secondItem="XqY-lz-yPb" secondAttribute="height" id="cFA-Tn-Q7P"/>
+                <constraint firstItem="Vm0-5J-mge" firstAttribute="top" secondItem="XqY-lz-yPb" secondAttribute="top" id="dSp-qp-tQU"/>
+                <constraint firstItem="Vm0-5J-mge" firstAttribute="leading" secondItem="XqY-lz-yPb" secondAttribute="leading" id="oyN-9d-zt9"/>
                 <constraint firstItem="BaP-fG-6pV" firstAttribute="bottom" secondItem="ZTg-uK-7eu" secondAttribute="bottom" id="srd-oz-hFa"/>
             </constraints>
             <size key="customSize" width="474" height="146"/>
@@ -48,6 +57,7 @@
                 <outlet property="otherImageView" destination="XqY-lz-yPb" id="YPv-Ms-eS9"/>
                 <outlet property="otherImageViewHeight" destination="gF7-7N-LIV" id="Ajd-H3-b8i"/>
                 <outlet property="otherImageViewWidth" destination="Cdp-og-ZCP" id="4th-94-3pS"/>
+                <outlet property="otherLabelView" destination="Vm0-5J-mge" id="gRs-NT-biv"/>
                 <outlet property="otherMessageCellLeftInset" destination="DGg-gW-Kw4" id="mlh-Yz-sMK"/>
                 <outlet property="otherMessageTextView" destination="BaP-fG-6pV" id="PyL-04-Rva"/>
                 <outlet property="rightExtraSpace" destination="AUX-Bu-jc4" id="rm0-X4-gBZ"/>

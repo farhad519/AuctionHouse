@@ -70,14 +70,24 @@
                                     <constraint firstAttribute="bottom" secondItem="pV4-O4-UGG" secondAttribute="bottom" constant="10" id="y7d-R4-Yb1"/>
                                 </constraints>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vrc-3p-zcY">
+                                <rect key="frame" x="10" y="10" width="60" height="54"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="vrc-3p-zcY" firstAttribute="height" secondItem="wRe-Pn-I5J" secondAttribute="height" id="7zR-2e-GW7"/>
                             <constraint firstItem="wRe-Pn-I5J" firstAttribute="leading" secondItem="7ZU-wV-y3N" secondAttribute="leading" constant="10" id="89l-Zw-jLq"/>
+                            <constraint firstItem="vrc-3p-zcY" firstAttribute="leading" secondItem="wRe-Pn-I5J" secondAttribute="leading" id="PEb-dT-uTv"/>
                             <constraint firstItem="tgJ-S8-G39" firstAttribute="centerY" secondItem="7ZU-wV-y3N" secondAttribute="centerY" id="TKQ-3B-xY3"/>
                             <constraint firstItem="tgJ-S8-G39" firstAttribute="leading" secondItem="wRe-Pn-I5J" secondAttribute="trailing" constant="10" id="W7w-TR-3VL"/>
+                            <constraint firstItem="vrc-3p-zcY" firstAttribute="top" secondItem="wRe-Pn-I5J" secondAttribute="top" id="WyH-yz-ZkD"/>
                             <constraint firstItem="wRe-Pn-I5J" firstAttribute="top" secondItem="7ZU-wV-y3N" secondAttribute="top" constant="10" id="eob-cp-UtO"/>
                             <constraint firstAttribute="bottom" secondItem="wRe-Pn-I5J" secondAttribute="bottom" constant="10" id="pNH-od-jOB"/>
+                            <constraint firstItem="vrc-3p-zcY" firstAttribute="width" secondItem="wRe-Pn-I5J" secondAttribute="width" id="wBZ-Vu-0dk"/>
                             <constraint firstAttribute="trailing" secondItem="tgJ-S8-G39" secondAttribute="trailing" constant="10" id="xV1-8V-f3R"/>
                         </constraints>
                     </view>
@@ -92,6 +102,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="contactCellImageView" destination="wRe-Pn-I5J" id="XzO-oF-Jkd"/>
+                <outlet property="contactCellLabelView" destination="vrc-3p-zcY" id="QBz-Dn-pmb"/>
                 <outlet property="containerView" destination="7ZU-wV-y3N" id="Yon-Ec-RsW"/>
                 <outlet property="dateLabel" destination="4kO-fL-0be" id="Uhy-q3-TOg"/>
                 <outlet property="subtitleLabel" destination="pV4-O4-UGG" id="Mi5-Yk-vy1"/>
