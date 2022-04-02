@@ -489,4 +489,42 @@ class DataCollector {
             completion(.success(bidList))
         }
     }
+    
+    func getEmail(with id: String) -> SignalProducer<String, Error> {
+        SignalProducer { [weak self] (observer, disposable) in
+            guard let self = self else {
+                observer.send(error: DataCollectorError.referenceFailure)
+                return
+            }
+            self.getEmail(with: id) { result in
+                switch result {
+                case .success(let email):
+                    observer.send(value: email)
+                    observer.sendCompleted()
+                case .failure(let error):
+                    observer.send(error: error)
+                }
+            }
+        }
+    }
+    
+    private func getEmail(with id: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let query = Firestore.firestore().collection(MyKeys.users.rawValue)
+            .whereField(MyKeys.Users.uid.rawValue, isEqualTo: id)
+        query.getDocuments { (snapShot, error) in
+            print("[DataCollector][getEmail] email recieved \(String(describing: error)).")
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            guard let snapShot = snapShot else {
+                completion(.failure(DataCollectorError.noSnapShot))
+                return
+            }
+            let emails = snapShot.documents.compactMap { document in
+                document[MyKeys.Users.email.rawValue] as? String ?? ""
+            }
+            completion(.success(emails.first ?? ""))
+        }
+    }
 }

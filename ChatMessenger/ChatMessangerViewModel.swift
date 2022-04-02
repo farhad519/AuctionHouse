@@ -26,6 +26,7 @@ class ChatMessangerViewModel {
     private var otherMessageList: [MessageModel] = []
     private let dataCollector = DataCollector()
     private let toId: String
+    var email: String = ""
     let font: UIFont = .systemFont(ofSize: 19)
     let otherMessageCellLeftSpace: CGFloat = 40
     let textViewInsetSpace: CGFloat = 10
@@ -42,6 +43,19 @@ class ChatMessangerViewModel {
     init(toId: String) {
         self.toId = toId
         fetchMyMessageFromFire()
+        fetchEmail()
+    }
+    
+    func fetchEmail() {
+        dataCollector.getEmail(with: toId).startWithResult { [weak self] result in
+            switch result {
+            case .success(let email):
+                self?.email = email
+                self?.sendInput.send(value: .reloadData)
+            case .failure(let error):
+                print("[ChatMessangerViewModel][fetchEmail] error at fetching email \(error)")
+            }
+        }
     }
     
     func fetchData() -> Disposable {

@@ -17,6 +17,7 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var otherLabelView: UILabel!
     
     func setupCell(
+        email: String,
         message: String,
         image: UIImage,
         font: UIFont,
@@ -55,8 +56,9 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
         
         otherImageView.isHidden = true
         otherLabelView.textColor = .white
-        otherLabelView.text = "F"
-        otherLabelView.backgroundColor = .green
+        otherLabelView.text = String(email.prefix(1))
+        otherLabelView.backgroundColor = CommonCalculation.shared.getColorFor(str: email)
+        otherLabelView.font = .systemFont(ofSize: 10)
         otherLabelView.textAlignment = .center
         otherLabelView.clipsToBounds = true
         otherLabelView.layer.cornerRadius = imageSize / 2

@@ -310,8 +310,9 @@ extension ChatViewController: UICollectionViewDataSource {
             }
             
             cell.setupCell(
+                email: viewModel.email,
                 message: messageData.message,
-                image: UIImage(named: "img1") ?? UIImage(),
+                image: UIImage(),
                 font: viewModel.font,
                 color: color.secondLevelColor,
                 imageSize: viewModel.oneLineHeight(),
