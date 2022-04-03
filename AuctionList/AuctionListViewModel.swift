@@ -101,7 +101,9 @@ class AuctionListViewModel {
                     maxV: 200000000,
                     searchKey: []
                 )
-                self?.delegate?.reloadViewController()
+                DispatchQueue.main.async {
+                    self?.delegate?.reloadViewController()
+                }
             case .failure(let error):
                 print("[AuctionListViewModel][getMyBidList] error at fetching bid data data \(error)")
             }

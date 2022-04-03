@@ -150,6 +150,7 @@ class ChatViewController: UIViewController {
         guard viewModel.isOnlySpaceAndNewLine(text: myTextView.text) == false else { return }
         
         viewModel.saveMyMessage(message: myTextView.text)
+        myTextView.text = ""
     }
     
     @objc private func downButtonAction(sender: UIButton) {
