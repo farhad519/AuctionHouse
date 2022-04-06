@@ -69,6 +69,7 @@ class ChatViewController: UIViewController {
     
     private func setupNavigationBar() {
         self.view.backgroundColor = color.groundLevelColor
+        //navigationController?.title = viewModel.email
         navigationController?.navigationBar.backgroundColor = color.groundLevelColor
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.barStyle = .black
