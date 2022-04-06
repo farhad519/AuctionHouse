@@ -71,13 +71,13 @@ class SignInViewController: UIViewController {
                 return
             }
             
-            if let value = authResult?.user.isEmailVerified, value == true {
+            //if let value = authResult?.user.isEmailVerified, value == true {
                 Toast.show(message: "successful sign in.", controller: self ?? UIViewController())
                 let vc = DashboardViewController()
                 self?.navigationController?.pushViewController(vc, animated: true)
-            } else {
+            //} else {
                 Toast.show(message: "email not verified.", controller: self ?? UIViewController())
-            }
+            //}
         }
     }
 }

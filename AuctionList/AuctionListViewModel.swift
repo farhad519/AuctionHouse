@@ -81,7 +81,7 @@ class AuctionListViewModel {
         auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
             myId: ownerId,
             offset: 0,
-            blockCount: 2,
+            blockCount: 20,
             minV: 0,
             maxV: 200000000,
             searchKey: []
@@ -232,7 +232,7 @@ class AuctionListViewModel {
         auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
             myId: ownerId,
             offset: (pageNum - 1) * 2,
-            blockCount: 2,
+            blockCount: 20,
             minV: minV,
             maxV: maxV,
             searchKey: keyArrs
