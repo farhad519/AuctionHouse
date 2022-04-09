@@ -283,7 +283,7 @@ extension ChatViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            let textViewWidth = viewModel.getTextWidth(text: messageData.message, font: viewModel.font)
+            let textViewWidth = viewModel.getTextWidth(text: "\(messageData.message) ", font: viewModel.font)
             var leftSpace = selfWidth - (textViewWidth + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             if viewModel.otherMessageCellLeftSpace > leftSpace {
                 leftSpace = viewModel.otherMessageCellLeftSpace
@@ -305,7 +305,8 @@ extension ChatViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            let textViewWidth = viewModel.getTextWidth(text: messageData.message, font: viewModel.font)
+            let textViewWidth = viewModel.getTextWidth(text: "\(messageData.message) ", font: viewModel.font)
+            
             var rightSpace = selfWidth - (viewModel.oneLineHeight() + 5 + textViewWidth + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             if viewModel.otherMessageCellLeftSpace > rightSpace {
                 rightSpace = viewModel.otherMessageCellLeftSpace
