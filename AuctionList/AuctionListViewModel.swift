@@ -81,7 +81,7 @@ class AuctionListViewModel {
         auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
             myId: ownerId,
             offset: 0,
-            blockCount: 2,
+            blockCount: 20,
             minV: 0,
             maxV: 200000000,
             searchKey: []
@@ -101,7 +101,9 @@ class AuctionListViewModel {
                     maxV: 200000000,
                     searchKey: []
                 )
-                self?.delegate?.reloadViewController()
+                DispatchQueue.main.async {
+                    self?.delegate?.reloadViewController()
+                }
             case .failure(let error):
                 print("[AuctionListViewModel][getMyBidList] error at fetching bid data data \(error)")
             }
@@ -230,7 +232,7 @@ class AuctionListViewModel {
         auctionSellItemList = CoreDataManager.shared.getAuctionItemDatas(
             myId: ownerId,
             offset: (pageNum - 1) * 2,
-            blockCount: 2,
+            blockCount: 20,
             minV: minV,
             maxV: maxV,
             searchKey: keyArrs

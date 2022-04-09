@@ -69,6 +69,7 @@ class ChatViewController: UIViewController {
     
     private func setupNavigationBar() {
         self.view.backgroundColor = color.groundLevelColor
+        //navigationController?.title = viewModel.email
         navigationController?.navigationBar.backgroundColor = color.groundLevelColor
         navigationController?.navigationBar.tintColor = .white
         navigationController?.navigationBar.barStyle = .black
@@ -150,6 +151,7 @@ class ChatViewController: UIViewController {
         guard viewModel.isOnlySpaceAndNewLine(text: myTextView.text) == false else { return }
         
         viewModel.saveMyMessage(message: myTextView.text)
+        myTextView.text = ""
     }
     
     @objc private func downButtonAction(sender: UIButton) {
@@ -281,7 +283,7 @@ extension ChatViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            let textViewWidth = viewModel.getTextWidth(text: messageData.message, font: viewModel.font)
+            let textViewWidth = viewModel.getTextWidth(text: "\(messageData.message) ", font: viewModel.font)
             var leftSpace = selfWidth - (textViewWidth + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             if viewModel.otherMessageCellLeftSpace > leftSpace {
                 leftSpace = viewModel.otherMessageCellLeftSpace
@@ -303,15 +305,17 @@ extension ChatViewController: UICollectionViewDataSource {
                 return UICollectionViewCell()
             }
             
-            let textViewWidth = viewModel.getTextWidth(text: messageData.message, font: viewModel.font)
+            let textViewWidth = viewModel.getTextWidth(text: "\(messageData.message) ", font: viewModel.font)
+            
             var rightSpace = selfWidth - (viewModel.oneLineHeight() + 5 + textViewWidth + (viewModel.textViewInsetSpace * 2) + viewModel.myMessageCellRightInset)
             if viewModel.otherMessageCellLeftSpace > rightSpace {
                 rightSpace = viewModel.otherMessageCellLeftSpace
             }
             
             cell.setupCell(
+                email: viewModel.email,
                 message: messageData.message,
-                image: UIImage(named: "img1") ?? UIImage(),
+                image: UIImage(),
                 font: viewModel.font,
                 color: color.secondLevelColor,
                 imageSize: viewModel.oneLineHeight(),

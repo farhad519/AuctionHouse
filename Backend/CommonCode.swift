@@ -123,3 +123,48 @@ struct CustomColor {
         self.colorSpectrumValue = colorSpectrumValue
     }
 }
+
+class CommonCalculation {
+    static let shared = CommonCalculation()
+    func getColorFor(str: String) -> UIColor? {
+        guard str.count != 0 else { return nil }
+        var str = str
+        if str.count % 3 == 1 {
+            str += "aa"
+        } else if str.count % 3 == 2 {
+            str += "a"
+        }
+        let maxLength = (str.count + 0) / 3
+        let subStrArr = splitString(with: str, withMaxLength: maxLength)
+        guard subStrArr.count >= 3 else { return nil }
+        let rC = getColorValueFromString(str: subStrArr[0])
+        let gC = getColorValueFromString(str: subStrArr[1])
+        let bC = getColorValueFromString(str: subStrArr[2])
+        return UIColor(
+            red: rC,
+            green: gC,
+            blue: bC,
+            alpha: 1
+        )
+    }
+    
+    private func splitString(with str: String, withMaxLength length: Int) -> [String] {
+        return stride(from: 0, to: str.count, by: length).map {
+            let start = str.index(str.startIndex, offsetBy: $0)
+            let end = str.index(start, offsetBy: length, limitedBy: str.endIndex) ?? str.endIndex
+            return String(str[start..<end])
+        }
+    }
+    
+    private func getColorValueFromString(str: String) -> CGFloat {
+        var sum = 0
+        var idx = 1
+        for c in str {
+            let asciiValue = Int(c.asciiValue ?? 0)
+            let mulvalue = (asciiValue * idx) % 256
+            sum = (sum + mulvalue) % 256
+            idx += 1
+        }
+        return CGFloat(CGFloat(sum) / 255.0)
+    }
+}

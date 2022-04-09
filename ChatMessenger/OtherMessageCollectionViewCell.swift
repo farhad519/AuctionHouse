@@ -14,8 +14,10 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var otherImageViewHeight: NSLayoutConstraint!
     @IBOutlet weak var rightExtraSpace: NSLayoutConstraint!
     @IBOutlet weak var otherMessageCellLeftInset: NSLayoutConstraint!
+    @IBOutlet weak var otherLabelView: UILabel!
     
     func setupCell(
+        email: String,
         message: String,
         image: UIImage,
         font: UIFont,
@@ -51,5 +53,14 @@ class OtherMessageCollectionViewCell: UICollectionViewCell {
         otherImageViewWidth.constant = imageSize
         otherImageViewHeight.constant = imageSize
         otherImageView.layer.cornerRadius = imageSize / 2
+        
+        otherImageView.isHidden = true
+        otherLabelView.textColor = .white
+        otherLabelView.text = String(email.prefix(1))
+        otherLabelView.backgroundColor = CommonCalculation.shared.getColorFor(str: email)
+        otherLabelView.font = .systemFont(ofSize: 10)
+        otherLabelView.textAlignment = .center
+        otherLabelView.clipsToBounds = true
+        otherLabelView.layer.cornerRadius = imageSize / 2
     }
 }

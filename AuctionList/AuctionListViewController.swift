@@ -143,17 +143,18 @@ extension AuctionListViewController: UITableViewDataSource {
         cell.lowerLabel.textColor = .lightGray
         
         cell.titleLabel.text = item.title
+        cell.titleLabel.textColor = .white
         cell.titleLabel.font = UIFont(name: "Helvetica", size: 15)!
         
-        cell.arrowLabel.text = ">"
+        cell.arrowLabel.text = ""
         cell.arrowLabel.textColor = .white
         cell.arrowLabel.backgroundColor = .clear
         
         cell.detailsButton.titleLabel?.font = UIFont(name: "Helvetica", size: 30)!
         cell.detailsButton.setTitle("?", for: .normal)
+        cell.detailsButton.setTitleColor(.lightGray, for: .normal)
         cell.detailsButton.layer.cornerRadius = 20
         cell.detailsButton.backgroundColor = .clear
-        cell.detailsButton.setTitleColor(.white, for: .normal)
         cell.detailsButton.addTarget(
             self,
             action: #selector(detailsButtonAction),
@@ -194,9 +195,16 @@ extension AuctionListViewController: UITableViewDelegate {
         }
         
         workGroup.notify(queue: DispatchQueue.main, execute: { [weak self] in
+            var viewType = SellDetailsViewType.forBid
+            switch self?.viewModel.auctionListViewType {
+            case .createdView:
+                viewType = .forModify
+            default:
+                viewType = .forBid
+            }
             DispatchQueue.main.async {
                 let vc = SellDetailsViewController.makeViewController(
-                    viewType: .forBid,
+                    viewType: viewType,
                     imageUrlCoupleList: imageUrlCoupleList,
                     fireAuctionItem: fireAuctionItem
                 )

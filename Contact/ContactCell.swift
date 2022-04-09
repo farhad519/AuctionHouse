@@ -13,4 +13,5 @@ class ContactCell: UITableViewCell {
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var contactCellLabelView: UILabel!
 }
