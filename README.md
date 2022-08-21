@@ -17,7 +17,7 @@ Tools Used:
 
 Some pic of the app.
 
-product details that user wants to sell.
+Product details that user wants to sell.
 
 <img width="478" alt="Screenshot 2022-08-21 at 5 32 16 PM" src="https://user-images.githubusercontent.com/7429178/185789355-4f927619-7539-4636-a2bf-ce2e877eba37.png">
 
