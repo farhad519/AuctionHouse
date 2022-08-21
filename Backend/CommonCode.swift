@@ -62,16 +62,26 @@ struct CustomColor {
                 secondLevelColor: UIColor(hex: "6497b1")
             )
         case 2:
+//            return Color(
+//                groundLevelColor: UIColor(hex: "009688"),
+//                firstLevelColor: UIColor(hex: "35a79c"),
+//                secondLevelColor: UIColor(hex: "65c3ba")
+//            )
             return Color(
-                groundLevelColor: UIColor(hex: "009688"),
-                firstLevelColor: UIColor(hex: "35a79c"),
-                secondLevelColor: UIColor(hex: "65c3ba")
+                groundLevelColor: UIColor(hex: "011f4b"),
+                firstLevelColor: UIColor(hex: "03396c"),
+                secondLevelColor: UIColor(hex: "005b96")
             )
         case 3:
+//            return Color(
+//                groundLevelColor: UIColor(hex: "c99789"),
+//                firstLevelColor: UIColor(hex: "dfa290"),
+//                secondLevelColor: UIColor(hex: "e0a899")
+//            )
             return Color(
-                groundLevelColor: UIColor(hex: "c99789"),
-                firstLevelColor: UIColor(hex: "dfa290"),
-                secondLevelColor: UIColor(hex: "e0a899")
+                groundLevelColor: UIColor(hex: "011f4b"),
+                firstLevelColor: UIColor(hex: "03396c"),
+                secondLevelColor: UIColor(hex: "005b96")
             )
         case 4:
             return Color(
@@ -86,16 +96,26 @@ struct CustomColor {
                 secondLevelColor: UIColor(hex: "65737e")
             )
         case 6:
+//            return Color(
+//                groundLevelColor: UIColor(hex: "3b7dd8"),
+//                firstLevelColor: UIColor(hex: "4a91f2"),
+//                secondLevelColor: UIColor(hex: "64a1f4")
+//            )
             return Color(
-                groundLevelColor: UIColor(hex: "3b7dd8"),
-                firstLevelColor: UIColor(hex: "4a91f2"),
-                secondLevelColor: UIColor(hex: "64a1f4")
+                groundLevelColor: UIColor(hex: "011f4b"),
+                firstLevelColor: UIColor(hex: "03396c"),
+                secondLevelColor: UIColor(hex: "005b96")
             )
         case 7:
+//            return Color(
+//                groundLevelColor: UIColor(hex: "3b5998"),
+//                firstLevelColor: UIColor(hex: "8b9dc3"),
+//                secondLevelColor: UIColor(hex: "dfe3ee")
+//            )
             return Color(
-                groundLevelColor: UIColor(hex: "3b5998"),
-                firstLevelColor: UIColor(hex: "8b9dc3"),
-                secondLevelColor: UIColor(hex: "dfe3ee")
+                groundLevelColor: UIColor(hex: "011f4b"),
+                firstLevelColor: UIColor(hex: "03396c"),
+                secondLevelColor: UIColor(hex: "005b96")
             )
         case 8:
             return Color(

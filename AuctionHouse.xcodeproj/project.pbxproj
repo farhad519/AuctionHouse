@@ -54,7 +54,6 @@
 		5AC3BBEF274D00CB00166B0A /* ContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3BBEE274D00CB00166B0A /* ContactCell.xib */; };
 		5AC3BBF1274D00D300166B0A /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF0274D00D300166B0A /* ContactCell.swift */; };
 		5AC3BBF3274D00D900166B0A /* ContactListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF2274D00D900166B0A /* ContactListViewController.swift */; };
-		5AC3BBF6274D010D00166B0A /* ChatMesengerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF5274D010D00166B0A /* ChatMesengerViewController.swift */; };
 		5AC3BBF9274D014500166B0A /* AuctionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */; };
 		5AC3BBFB274D014C00166B0A /* AuctionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */; };
 		5AC3BBFD274D015600166B0A /* AuctionListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5AC3BBFC274D015600166B0A /* AuctionListCell.xib */; };
@@ -113,7 +112,6 @@
 		5AC3BBEE274D00CB00166B0A /* ContactCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactCell.xib; sourceTree = "<group>"; };
 		5AC3BBF0274D00D300166B0A /* ContactCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactCell.swift; sourceTree = "<group>"; };
 		5AC3BBF2274D00D900166B0A /* ContactListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactListViewController.swift; sourceTree = "<group>"; };
-		5AC3BBF5274D010D00166B0A /* ChatMesengerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMesengerViewController.swift; sourceTree = "<group>"; };
 		5AC3BBF8274D014500166B0A /* AuctionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionListViewController.swift; sourceTree = "<group>"; };
 		5AC3BBFA274D014C00166B0A /* AuctionListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuctionListCell.swift; sourceTree = "<group>"; };
 		5AC3BBFC274D015600166B0A /* AuctionListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AuctionListCell.xib; sourceTree = "<group>"; };
@@ -197,14 +195,8 @@
 		5A9A8354274BD8E400F80CB9 = {
 			isa = PBXGroup;
 			children = (
-				5A06AB962756C0A600E858A4 /* SignUp */,
+				5AAF01E428B24DAE00BA9DEF /* SubModule */,
 				5A5343F5274D6AF900912DC1 /* Backend */,
-				5AC3BBF7274D012B00166B0A /* AuctionList */,
-				5AC3BBF4274D00EF00166B0A /* ChatMessenger */,
-				5AC3BBED274D00BB00166B0A /* Contact */,
-				5AC3BBE0274D004300166B0A /* SellDetails */,
-				5AC3BBDD274D000800166B0A /* Dashboard */,
-				5AC3BBD0274CFEE400166B0A /* CustomViews */,
 				5A9A835F274BD8E400F80CB9 /* AuctionHouse */,
 				5A9A835E274BD8E400F80CB9 /* Products */,
 				F9B8AA716C9BC7AA4842AC30 /* Pods */,
@@ -233,6 +225,20 @@
 				5A9A8371274BD8E500F80CB9 /* Info.plist */,
 			);
 			path = AuctionHouse;
+			sourceTree = "<group>";
+		};
+		5AAF01E428B24DAE00BA9DEF /* SubModule */ = {
+			isa = PBXGroup;
+			children = (
+				5AC3BBD0274CFEE400166B0A /* CustomViews */,
+				5AC3BBDD274D000800166B0A /* Dashboard */,
+				5AC3BBE0274D004300166B0A /* SellDetails */,
+				5AC3BBED274D00BB00166B0A /* Contact */,
+				5AC3BBF4274D00EF00166B0A /* ChatMessenger */,
+				5AC3BBF7274D012B00166B0A /* AuctionList */,
+				5A06AB962756C0A600E858A4 /* SignUp */,
+			);
+			path = SubModule;
 			sourceTree = "<group>";
 		};
 		5AC3BBD0274CFEE400166B0A /* CustomViews */ = {
@@ -284,7 +290,6 @@
 		5AC3BBF4274D00EF00166B0A /* ChatMessenger */ = {
 			isa = PBXGroup;
 			children = (
-				5AC3BBF5274D010D00166B0A /* ChatMesengerViewController.swift */,
 				5A0BFD142797579600E138BD /* ChatMessangerViewModel.swift */,
 				5A4154FA279C3FE8004E3290 /* ChatViewController.swift */,
 				5A4154FC279CD3A3004E3290 /* MyMessageCollectionViewCell.swift */,
@@ -477,7 +482,6 @@
 				5AC3BBDF274D001D00166B0A /* DashboardViewController.swift in Sources */,
 				5AC3BBD8274CFF1E00166B0A /* PriceDetailsCustomView.swift in Sources */,
 				5A565FC4276E8B54007758C2 /* FireDataModel.swift in Sources */,
-				5AC3BBF6274D010D00166B0A /* ChatMesengerViewController.swift in Sources */,
 				5A356AC727539B3D00A5F3DC /* HelperViews.swift in Sources */,
 				5A0BFD152797579600E138BD /* ChatMessangerViewModel.swift in Sources */,
 				5AC3BBEA274D008700166B0A /* TextViewCell.swift in Sources */,
