@@ -23,7 +23,7 @@ product details that user wants to sell.
 
 Contact list and there last messages.
 
-<img width="478" alt="Screenshot 2022-08-21 at 5 32 51 PM" src="https://user-images.githubusercontent.com/7429178/185789359-04f1b662-298b-47df-b7e3-f0d4561ab8d8.png">
+<img width="478" alt="Screenshot 2022-08-21 at 5 32 51 PM" src="https://user-images.githubusercontent.com/7429178/185789567-719f1bbf-4f1c-4d30-b998-11f43bbf9127.png">
 
 Chat window
 
